@@ -10,7 +10,7 @@ count = 0
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('sound_demo.html')
 
 @app.route('/ancient')
 def ancient():

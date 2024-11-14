@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Sound Effects</title>
+</head>
+<body>
+<h1>Medieval and Ancient Times Web App</h1>
+
+<!-- Buttons with sounds -->
+<button onclick="playSound('click1')">Button 1</button>
+<button onclick="playSound('click2')">Button 2</button>
+
+<!-- Audio elements with sound file URLs -->
+<audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
+<audio id="click2" src="static/sad-meow-song.mp3" preload="auto"></audio>
+
+<script>
+    // Function to play sound based on button ID
+    function playSound(soundId) {
+        const sound = document.getElementById(soundId);
+        sound.currentTime = 0; // Reset sound to the beginning
+        sound.play();
+    }
+</script>
+</body>
+</html>
