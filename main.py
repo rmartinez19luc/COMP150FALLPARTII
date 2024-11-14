@@ -12,6 +12,25 @@ count = 0
 def index():
     return render_template('index.html')
 
+@app.route('/ancient')
+def ancient():
+    return render_template('ancient.html')
+
+@app.route('/medieval')
+def medieval():
+    return render_template('medieval.html')
+
+@app.route('/futuristic')
+def futuristic():
+    return render_template('futuristic.html')
+
+@app.route('/boss')
+def boss():
+    return render_template('boss.html')
+
+
+
+
 @app.route('/increment', methods=['POST'])
 def increment():
     global count
