@@ -17,6 +17,19 @@
             font-size: 3em;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
+        .info-box {
+            margin: 20px auto;
+            padding: 20px;
+            width: 80%;
+            background-color: #e6ccff; /* Light purple background */
+            border: 2px solid #4b0082; /* Darker purple border */
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            font-family: 'Exo 2', sans-serif; /* Futuristic font */
+            font-size: 1.5em;
+            color: #000000; /* Black text */
+            text-align: center;
+        }
         button {
             background: linear-gradient(45deg, #ff6347, #ff1493); /* Colorful gradient */
             color: white;
@@ -43,7 +56,13 @@
 </head>
 <body>
 <h1>Future Corps</h1>
-
+    
+    <!-- Info Box -->
+    <div class="info-box">
+        <strong>Shattered Realms: The Rise of Heroes</strong><br>
+        Long ago, a vast world existed where all dimensions were seamlessly connected. But then he appeared—Bertak, the ruthless leader of the Three Generals. With a single act of destruction, he shattered the legendary time machine and scattered its fragments across three perilous time portals. Now, a brave band of heroes rises, determined to face Bertak and his generals, reclaim the lost fragments, and restore the time machine to return to their rightful homes. The fate of the dimensions rests in their hands.
+    </div>
+    
 <!-- Buttons with sounds -->
 <button onclick="playSound('click1')">"Begin adventure here!"</button>
 
@@ -51,7 +70,7 @@
 <audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
 <audio id="click2" src="static/sad-meow-song.mp3" preload="auto"></audio>
 
-<script>
+    <script>
     // Function to play sound for 5 seconds based on button ID
     function playSound(soundId) {
         const sound = document.getElementById(soundId);
