@@ -4,9 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Button Sound Effects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #4b0082; /* Indigo color */
+            font-size: 3em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            background: linear-gradient(45deg, #ff6347, #ff1493); /* Colorful gradient */
+            color: white;
+            font-size: 1.5em;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Button focus effect */
+        button:focus {
+            outline: none;
+        }
+    </style>
 </head>
 <body>
-<h1>Medieval and Ancient Times Web App</h1>
+<h1>Future Corps</h1>
 
 <!-- Buttons with sounds -->
 <button onclick="playSound('click1')">"Begin adventure here!"</button>
@@ -16,11 +52,17 @@
 <audio id="click2" src="static/sad-meow-song.mp3" preload="auto"></audio>
 
 <script>
-    // Function to play sound based on button ID
+    // Function to play sound for 5 seconds based on button ID
     function playSound(soundId) {
         const sound = document.getElementById(soundId);
         sound.currentTime = 0; // Reset sound to the beginning
         sound.play();
+
+        // Stop the sound after 5 seconds
+        setTimeout(function() {
+            sound.pause(); // Pause the sound after 5 seconds
+            sound.currentTime = 0; // Reset the time to the beginning
+        }, 5000); // 5000ms = 5 seconds
     }
 </script>
 </body>

@@ -10,8 +10,8 @@ count = 0
 
 @app.route('/')
 def index():
-    return render_template('sound_demo.html')
-
+    return render_template('sound_demo.html') #ask professor how to make it go from the begin page to the options for portals
+    
 @app.route('/ancient')
 def ancient():
     return render_template('ancient.html')
