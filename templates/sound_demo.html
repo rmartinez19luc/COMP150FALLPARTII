@@ -14,32 +14,35 @@
         }
         h1 {
             color: #4b0082; /* Indigo color */
+            font-family: 'Orbitron', sans-serif;
             font-size: 3em;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
         .info-box {
             margin: 20px auto;
             padding: 20px;
-            width: 80%;
+            width: 90%;
             background-color: #e6ccff; /* Light purple background */
             border: 2px solid #4b0082; /* Darker purple border */
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            font-family: 'Exo 2', sans-serif; /* Futuristic font */
+            font-family: 'Orbitron', sans-serif; /* Futuristic font */
             font-size: 1.5em;
             color: #000000; /* Black text */
             text-align: center;
         }
         button {
-            background: linear-gradient(45deg, #ff6347, #ff1493); /* Colorful gradient */
+            background: linear-gradient(45deg, #ff6347, #ff1493); /* Vibrant gradient */
+            font-family: 'Orbitron', sans-serif; /* Ensure font is Orbitron */
+            font-size: 1.4em;
             color: white;
-            font-size: 1.5em;
-            padding: 15px 30px;
+            padding: 15px 40px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px; /* Match rounded corners with info-box */
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Slight shadow */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            letter-spacing: 0.05em; /* Add slight spacing for a futuristic effect */
         }
 
         /* Button hover effect */
@@ -64,25 +67,23 @@
     </div>
     
 <!-- Buttons with sounds -->
-<button onclick="playSound('click1')">"Begin adventure here!"</button>
+    <button onclick="navigateToPortals()">"Begin adventure here!"</button>
 
-<!-- Audio elements with sound file URLs -->
-<audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
-<audio id="click2" src="static/sad-meow-song.mp3" preload="auto"></audio>
+    <!-- Audio elements -->
+    <audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
 
     <script>
-    // Function to play sound for 5 seconds based on button ID
-    function playSound(soundId) {
-        const sound = document.getElementById(soundId);
-        sound.currentTime = 0; // Reset sound to the beginning
-        sound.play();
+        // Function to play sound and navigate to the portals page
+        function navigateToPortals() {
+            const sound = document.getElementById('click1');
+            sound.currentTime = 0; // Reset sound to the beginning
+            sound.play();
 
-        // Stop the sound after 5 seconds
-        setTimeout(function() {
-            sound.pause(); // Pause the sound after 5 seconds
-            sound.currentTime = 0; // Reset the time to the beginning
-        }, 5000); // 5000ms = 5 seconds
-    }
-</script>
+            // Navigate to the portals page after a short delay
+            setTimeout(function() {
+                window.location.href = 'index.html'; // Replace with the actual path to your portals page
+            }, 5000); // Delay for 1 second
+        }
+    </script>
 </body>
 </html>
