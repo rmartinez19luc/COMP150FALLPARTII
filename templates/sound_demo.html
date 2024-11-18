@@ -59,15 +59,15 @@
 </head>
 <body>
 <h1>Future Corps</h1>
-    
+
     <!-- Info Box -->
     <div class="info-box">
         <strong>Shattered Realms: The Rise of Heroes</strong><br>
         Long ago, a vast world existed where all dimensions were seamlessly connected. But then he appeared—Bertak, the ruthless leader of the Three Generals. With a single act of destruction, he shattered the legendary time machine and scattered its fragments across three perilous time portals. Now, a brave band of heroes rises, determined to face Bertak and his generals, reclaim the lost fragments, and restore the time machine to return to their rightful homes. The fate of the dimensions rests in their hands.
     </div>
-    
-<!-- Buttons with sounds -->
-    <button onclick="navigateToPortals()">"Begin adventure here!"</button>
+
+    <!-- Button with sound -->
+    <button onclick="navigateToPortals()">Begin adventure here!</button>
 
     <!-- Audio elements -->
     <audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
@@ -81,8 +81,8 @@
 
             // Navigate to the portals page after a short delay
             setTimeout(function() {
-                window.location.href = 'index.html'; // Replace with the actual path to your portals page
-            }, 5000); // Delay for 1 second
+                window.location.href = '/'; // Change to the actual path of your portal options page
+            }, sound.duration * 1000); // Delay for the duration of the sound
         }
     </script>
 </body>
