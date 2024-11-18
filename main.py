@@ -28,8 +28,9 @@ def futuristic():
 def boss():
     return render_template('boss.html')
 
-
-
+@app.route('/futuristic_minigame')
+def minigame():
+    return render_template('futuristic_minigame.html')
 
 @app.route('/increment', methods=['POST'])
 def increment():
