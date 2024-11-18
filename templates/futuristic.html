@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Futuristic Portal</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"> <!-- Link to styles.css -->
+  <script src="game.js" defer></script> <!-- Link to game.js -->
 </head>
 <body>
-  <h1>Welcome to the Futuristic Portal</h1>
-  <p>Test your reaction speed in the future!</p>
-  <button onclick="location.href='futuristic_minigame.html'">Start Futuristic Reaction Game</button>
-  <a href="index.html">Return to Main Portal</a>
+  <div class="portal-container">
+    <h1>Futuristic Portal</h1>
+    <p>Welcome to the futuristic world! Ready to play the gem minigame?</p>
+
+    <!-- Gem Minigame Container -->
+    <div id="gem-minigame-container">
+      <h2>Gem Minigame</h2>
+      <canvas id="gem-minigame-canvas"></canvas>
+    </div>
+
+    <!-- Back to Main Portal Button -->
+    <button onclick="window.location.href='/'">Back to Main Portal</button>
+  </div>
 </body>
 </html>
