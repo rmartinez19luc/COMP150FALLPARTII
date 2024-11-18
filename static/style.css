@@ -12,7 +12,6 @@ textarea {
 button {
   padding: 10px 20px;
   font-size: 18px;
-  background-color: #4CAF50;
   color: white;
   border: none;
   cursor: pointer;
@@ -20,16 +19,37 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  opacity: 0.8;
+}
+
+/* Ancient Portal Button (Earthy tones) */
+.ancient-portal {
+  background-color: #8B4513; /* SaddleBrown */
+}
+
+/* Medieval Portal Button (Rich, dark colors) */
+.medieval-portal {
+  background-color: #800000; /* DarkRed */
+}
+
+/* Futuristic Portal Button (Cool, techy colors) */
+.futuristic-portal {
+  background-color: #00CED1; /* DarkTurquoise */
+}
+
+/* Final Boss Portal Button (Bold, intense colors) */
+.final-boss-portal {
+  background-color: #4B0082; /* Indigo */
 }
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #f4f4f4; /* Light background */
   color: #333;
   text-align: center;
 }
 
+/* Additional styling */
 h1 {
   color: #0055a5;
 }
@@ -52,12 +72,6 @@ a {
 
 a:hover {
   text-decoration: underline;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #121212; /* Dark background for futuristic look */
-  color: #fff;
 }
 
 .portal-container {
