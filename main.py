@@ -23,10 +23,7 @@ def medieval():
 @app.route('/futuristic')
 def futuristic():
     return render_template('futuristic.html')
-@app.route('/futuristic_minigame')
-def futuristic_minigame():
-    return render_template('futuristic_minigame.html')
-    
+      
 @app.route('/boss')
 def boss():
     return render_template('boss.html')

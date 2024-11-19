@@ -38,47 +38,45 @@
     <div id="result"></div>
 
     <script>
-        
-
-        let score = 0;
+        let score = 0; 
         let gameActive = false;
         const gemColors = ['red', 'green', 'blue'];
-        const gemBoard = document.getElementById('gemBoard');
-        const scoreDisplay = document.getElementById('score');
-        const resultDisplay = document.getElementById('result');
+        const gemBoard = document.getElementById('gem-minigame-board'); 
+        const scoreDisplay = document.getElementById('gem-minigame-score');
 
         
         function createGems() {
             gemBoard.innerHTML = ''; 
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 25; i++) { 
                 const gem = document.createElement('div');
-                const color = gemColors[Math.floor(Math.random() * gemColors.length)];
-                gem.className = `gem ${color}`;
-                gem.onclick = () => {
-                    if (gameActive) {
-                        score++;
-                        scoreDisplay.textContent = `Score: ${score}`;
-                        gem.remove(); 
+                const color = gemColors[Math.floor(Math.random() * gemColors.length)]; 
+                gem.className = `gem ${color}`; 
+                gem.onclick = () => { 
+                    if (gameActive) { 
+                        score++; 
+                        scoreDisplay.textContent = `Score: ${score}`; 
+                        gem.remove();
                     }
                 };
-                gemBoard.appendChild(gem);
+                gemBoard.appendChild(gem); 
             }
         }
 
         
-        function startGame() {
-            score = 0;
-            gameActive = true;
-            resultDisplay.textContent = '';
-            scoreDisplay.textContent = `Score: ${score}`;
-            createGems();
+        function startGemGame() {
+            score = 0; 
+            gameActive = true; 
+            scoreDisplay.textContent = `Score: ${score}`; 
+            createGems(); 
 
             
             setTimeout(() => {
                 gameActive = false;
-                resultDisplay.textContent = `Game Over! Your final score is ${score}.`;
+                scoreDisplay.textContent = `Game Over! Your final score is ${score}.`; 
             }, 10000);
         }
+        
+
     </script>
 </body>
 </html>
