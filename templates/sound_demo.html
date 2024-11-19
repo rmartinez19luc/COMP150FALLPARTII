@@ -67,30 +67,27 @@
         Long ago, a vast world existed where all dimensions were seamlessly connected. But then he appeared—Bertak, the ruthless leader of the Three Generals. With a single act of destruction, he shattered the legendary time machine and scattered its fragments across three perilous time portals. Now, a brave band of heroes rises, determined to face Bertak and his generals, reclaim the lost fragments, and restore the time machine to return to their rightful homes. The fate of the dimensions rests in their hands.
     </div>
 
-    <!-- Original Button for Sound -->
+    <!-- First Button -->
     <button onclick="navigateToPortals()">Begin adventure here!</button>
 
-    <!-- New Section: Welcome to Sound Demo -->
-    <h2>Welcome to the Sound Demo</h2>
-    <p>Click below to start your adventure:</p>
-    <a href="/portals">
-        <button>Pick Your Portal</button>
-    </a>
+    <!-- Second Button -->
+    <p>Or click below to start your adventure:</p>
+    <button onclick="navigateToPortals()">Pick Your Portal</button>
 
     <!-- Audio Element -->
     <audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
 
     <script>
-        // Function to play sound and navigate to the portals page
+        // Function to handle navigation
         function navigateToPortals() {
             const sound = document.getElementById('click1');
             sound.currentTime = 0; // Reset sound to the beginning
             sound.play();
 
-            // Navigate to the portals page after a short delay
+            // Redirect to portals page after the sound plays
             setTimeout(function() {
                 window.location.href = '/portals'; // Redirect to the portals page
-            }, sound.duration * 1000); // Delay for the duration of the sound
+            }, sound.duration * 1000);
         }
     </script>
 </body>
