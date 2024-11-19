@@ -7,7 +7,7 @@ app = Flask(__name__)
 #hello
 
 count = 0
-
+    
 @app.route('/')
 def index():
     return render_template('index.html') 
