@@ -2,16 +2,16 @@ from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
-# Hi bye
-
-#hello
-
 count = 0
-    
+
 @app.route('/')
 def index():
-    return render_template('index.html') 
-    
+    return render_template('sound_demo.html') 
+
+@app.route('/portals')
+def portals():
+    return render_template('portals.html')
+
 @app.route('/ancient')
 def ancient():
     return render_template('ancient.html')
@@ -38,7 +38,6 @@ def increment():
     count += 1
     return jsonify({'count': count})
 
-
 @app.route('/flip_case', methods=['POST'])
 def flip_case():
     text = request.json['text']
@@ -47,7 +46,3 @@ def flip_case():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
