@@ -38,7 +38,7 @@
     <div id="result"></div>
 
     <script>
-        // === Gem Minigame Logic ===
+        
 
         let score = 0;
         let gameActive = false;
@@ -47,9 +47,9 @@
         const scoreDisplay = document.getElementById('score');
         const resultDisplay = document.getElementById('result');
 
-        // Create gems dynamically
+        
         function createGems() {
-            gemBoard.innerHTML = ''; // Clear the board
+            gemBoard.innerHTML = ''; 
             for (let i = 0; i < 25; i++) {
                 const gem = document.createElement('div');
                 const color = gemColors[Math.floor(Math.random() * gemColors.length)];
@@ -58,14 +58,14 @@
                     if (gameActive) {
                         score++;
                         scoreDisplay.textContent = `Score: ${score}`;
-                        gem.remove(); // Remove gem after clicking
+                        gem.remove(); 
                     }
                 };
                 gemBoard.appendChild(gem);
             }
         }
 
-        // Start the game
+        
         function startGame() {
             score = 0;
             gameActive = true;
@@ -73,7 +73,7 @@
             scoreDisplay.textContent = `Score: ${score}`;
             createGems();
 
-            // Game lasts 10 seconds
+            
             setTimeout(() => {
                 gameActive = false;
                 resultDisplay.textContent = `Game Over! Your final score is ${score}.`;
