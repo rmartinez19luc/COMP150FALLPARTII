@@ -13,7 +13,7 @@
             padding: 50px;
         }
         h1 {
-            color: #4b0082; /* Indigo color */
+            color: #4b0082; 
             font-family: 'Orbitron', sans-serif;
             font-size: 3em;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -22,72 +22,68 @@
             margin: 20px auto;
             padding: 20px;
             width: 90%;
-            background-color: #e6ccff; /* Light purple background */
-            border: 2px solid #4b0082; /* Darker purple border */
+            background-color: #e6ccff;
+            border: 2px solid #4b0082; 
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            font-family: 'Orbitron', sans-serif; /* Futuristic font */
+            font-family: 'Orbitron', sans-serif; 
             font-size: 1.5em;
-            color: #000000; /* Black text */
+            color: #000000; 
             text-align: center;
         }
         button {
-            background: linear-gradient(45deg, #ff6347, #ff1493); /* Vibrant gradient */
-            font-family: 'Orbitron', sans-serif; /* Ensure font is Orbitron */
+            background: linear-gradient(45deg, #ff6347, #ff1493);
+            font-family: 'Orbitron', sans-serif; 
             font-size: 1.4em;
             color: white;
             padding: 15px 40px;
             border: none;
-            border-radius: 10px; /* Match rounded corners with info-box */
+            border-radius: 10px; 
             cursor: pointer;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Slight shadow */
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            letter-spacing: 0.05em; /* Add slight spacing for a futuristic effect */
+            letter-spacing: 0.05em; 
         }
 
-        /* Button hover effect */
+       
         button:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Button focus effect */
+        
         button:focus {
             outline: none;
         }
     </style>
 </head>
 <body>
-    <!-- Main Title -->
+    
     <h1>Future Corps</h1>
 
-    <!-- Backstory Info Box -->
+   
     <div class="info-box">
         <strong>Shattered Realms: The Rise of Heroes</strong><br>
         Long ago, a vast world existed where all dimensions were seamlessly connected. But then he appeared—Bertak, the ruthless leader of the Three Generals. With a single act of destruction, he shattered the legendary time machine and scattered its fragments across three perilous time portals. Now, a brave band of heroes rises, determined to face Bertak and his generals, reclaim the lost fragments, and restore the time machine to return to their rightful homes. The fate of the dimensions rests in their hands.
     </div>
 
-    <!-- First Button -->
+   
     <button onclick="navigateToPortals()">Begin adventure here!</button>
 
-    <!-- Second Button -->
-    <p>Or click below to start your adventure:</p>
-    <button onclick="navigateToPortals()">Pick Your Portal</button>
-
-    <!-- Audio Element -->
+   
     <audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
 
     <script>
-        // Function to handle navigation
+        
         function navigateToPortals() {
             const sound = document.getElementById('click1');
-            sound.currentTime = 0; // Reset sound to the beginning
+            sound.currentTime = 0; 
             sound.play();
 
-            // Redirect to portals page after the sound plays
+            
             setTimeout(function() {
-                window.location.href = '/portals'; // Redirect to the portals page
-            }, sound.duration * 1000);
+                window.location.href = '/portals'; 
+            }, sound.duration * 1000); 
         }
     </script>
 </body>
