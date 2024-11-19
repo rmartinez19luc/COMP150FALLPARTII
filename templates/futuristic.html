@@ -1,56 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Futuristic Portal</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
-  <style>
-    /* Inline CSS for purple page and Orbitron font */
-    body {
-      background-color: purple; /* Set the page background to purple */
-      font-family: 'Orbitron', sans-serif; /* Set the font to Orbitron */
-      color: white; /* Use white text for contrast */
-      margin: 0;
-      padding: 0;
-    }
-
-    .portal-container {
-      text-align: center;
-      padding: 20px;
-    }
-
-    button {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 16px;
-      padding: 10px 20px;
-      border: none;
-      background-color: white;
-      color: purple;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 20px;
-    }
-
-    button:hover {
-      background-color: lightgray;
-    }
-  </style>
-  <script src="game.js" defer></script> <!-- Link to game.js -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Portal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
+    <style>
+        body {
+            background-color: purple;
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .portal-container {
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            background-color: white;
+            color: purple;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: lightgray;
+        }
+    </style>
 </head>
 <body>
-  <div class="portal-container">
-    <h1>Futuristic Portal</h1>
-    <p>Welcome to the futuristic world! Ready to play the gem minigame?</p>
+    <div class="portal-container">
+        <h1>Futuristic Portal</h1>
+        <p>Welcome to the futuristic world! Ready to play the gem minigame?</p>
 
-    <!-- Gem Minigame Container -->
-    <div id="gem-minigame-container">
-      <h2>Gem Minigame</h2>
-      <canvas id="gem-minigame-canvas"></canvas>
+       
+        <button onclick="startGemMinigame()">Start Gem Minigame</button>
+
+        
+        <div id="gem-minigame-container" style="display: none;">
+            <h2>Gem Minigame</h2>
+            <div id="gem-minigame-board"></div>
+            <div id="gem-minigame-score"></div>
+            <button onclick="returnToPortal()">Back to Portal</button>
+        </div>
     </div>
 
-    
-    <button onclick="window.location.href='/'">Back to Main Portal</button>
-  </div>
+    <script src="game.js" defer></script>
+    <script>
+        
+        function startGemMinigame() {
+            document.querySelector('.portal-container').style.display = 'none'; 
+            document.getElementById('gem-minigame-container').style.display = 'block'; 
+            startGemGame(); 
+        }
+
+        
+        function returnToPortal() {
+            document.querySelector('.portal-container').style.display = 'block';
+            document.getElementById('gem-minigame-container').style.display = 'none'; 
+        }
+    </script>
 </body>
 </html>
