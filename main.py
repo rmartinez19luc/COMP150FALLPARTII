@@ -4,6 +4,33 @@ app = Flask(__name__)
 
 count = 0
 
+# Global variables for game state (e.g., player health, boss health)
+player_health = 100
+boss_health = 120
+
+# Cyborg Boss Battle Logic (For simplicity, kept as a function)
+def cyborg_boss_battle(action):
+    global player_health, boss_health
+
+    if action == "attack":
+        damage = random.randint(10, 20)
+        boss_health -= damage
+        return f"You strike the Cyborg Boss for {damage} damage!"
+
+    elif action == "defend":
+        return "You brace for the boss's attack!"
+
+    elif action == "run":
+        return "You run away from the fight!"
+
+    # Cyborg Boss attack (Random damage)
+    if boss_health > 0:
+        boss_damage = random.randint(5, 15)
+        player_health -= boss_damage
+        return f"The Cyborg Boss strikes you for {boss_damage} damage!"
+
+    return ""
+
 @app.route('/')
 def index():
     return render_template('sound_demo.html') 
@@ -16,7 +43,7 @@ def portals():
 def ancient():
     return render_template('ancient.html')
 
-@app.route('/ancient_minigame')  # Route for the Snake game
+@app.route('/ancient_minigame')
 def ancient_minigame():
     return render_template('ancient_minigame.html')
 
@@ -27,14 +54,35 @@ def medieval():
 @app.route('/futuristic')
 def futuristic():
     return render_template('futuristic.html')
-      
+
 @app.route('/boss')
 def boss():
-    return render_template('boss.html')
+    # Display current health states for both player and boss
+    return render_template('boss.html', player_health=player_health, boss_health=boss_health)
 
 @app.route('/futuristic_minigame')
 def minigame():
     return render_template('futuristic_minigame.html')
+
+@app.route('/battle', methods=['POST'])
+def battle():
+    global player_health, boss_health
+    action = request.json.get('action')  # Get action from the POST request
+
+    result = cyborg_boss_battle(action)  # Process the action
+
+    # Check if the player or the boss has been defeated
+    if player_health <= 0:
+        result += " You have been defeated by the Cyborg Boss!"
+    elif boss_health <= 0:
+        result += " You have defeated the Cyborg Boss!"
+
+    # Return battle status and updated healths
+    return jsonify({
+        'result': result,
+        'player_health': player_health,
+        'boss_health': boss_health
+    })
 
 @app.route('/increment', methods=['POST'])
 def increment():
@@ -50,3 +98,4 @@ def flip_case():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
