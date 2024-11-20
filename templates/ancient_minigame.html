@@ -108,14 +108,21 @@
     // Game over
     function gameOver() {
       clearInterval(gameInterval);
-      alert("Game Over! Your score: " + score);
+      alert("You lose! The challenging Snake Boss awaits your arrival.");
+      redirectToPortal();
     }
 
     // Win condition
     function winGame() {
       clearInterval(gameInterval);
-      alert("You Win! Your score: " + score);
+      alert("You win! You have learned the secret technique of the snake warriors (Your chances of winning have increased against the Snake Boss).");
+      redirectToPortal();
     }
+
+    function redirectToPortal() {
+      window.location.href = '/templates/ancient.html'; 
+    }
+
   </script>
 </body>
 </html>
