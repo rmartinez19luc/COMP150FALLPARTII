@@ -125,3 +125,86 @@ a:hover {
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3);
 }
 
+
+/* Portal Container and Doors Styling */
+.portal-container {
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Space between the doors */
+}
+
+.door {
+  width: 200px;
+  height: 300px;
+  background-color: #3b3b3b; /* Dark background for the doors */
+  color: white;
+  margin: 20px;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Smooth hover transition */
+}
+
+.door p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 100px;
+}
+
+/* Hover effect for doors */
+.door:hover {
+  transform: scale(1.1); /* Slightly enlarge the door on hover */
+  background-color: #555; /* Lighter background when hovered */
+}
+
+/* The door prompt text (hidden by default) */
+.door-prompt {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  width: 80%;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; /* Smooth transition for the prompt text */
+}
+
+/* Show prompt on door hover */
+.door:hover .door-prompt {
+  display: block;
+  opacity: 1;
+}
+
+/* Hover animation for the door prompt */
+.door:hover {
+  background-color: #444;
+  transition: background-color 0.3s ease;
+}
+
+/* Optional: Add some style to the overall door container */
+.portal-container {
+  padding: 50px;
+}
+
+/* Optional: You can adjust the rest of your buttons and game container styling as needed */
+
+/* Example of the door's prompt styling and overall responsiveness for mobile */
+@media (max-width: 768px) {
+  .door {
+    width: 150px;
+    height: 250px;
+  }
+  .door-prompt {
+    font-size: 14px;
+  }
+}

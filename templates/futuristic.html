@@ -5,6 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Futuristic Portal</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <h1>Futuristic Portal</h1>
+
+        <div class="portal-container">
+            <!-- Door 1 -->
+            <div class="door" id="door1">
+                <div class="door-prompt">Step into the future and face the Cyborg Boss!</div>
+                <p>Door 1</p>
+            </div>
+
+            <!-- Door 2 -->
+            <div class="door" id="door2">
+                <div class="door-prompt">Explore the secrets of advanced technology!</div>
+                <p>Door 2</p>
+            </div>
+
+            <!-- Door 3 -->
+            <div class="door" id="door3">
+                <div class="door-prompt">Unlock hidden powers beyond the portal!</div>
+                <p>Door 3</p>
+            </div>
+        </div>
+
+        <script>
+            // Optional JavaScript to add interactivity if needed
+            $(document).ready(function() {
+                // Example: Change prompt text when hovering over a specific door
+                $('#door1').hover(function() {
+                    $(this).find('.door-prompt').fadeIn();
+                }, function() {
+                    $(this).find('.door-prompt').fadeOut();
+                });
+
+                $('#door2').hover(function() {
+                    $(this).find('.door-prompt').fadeIn();
+                }, function() {
+                    $(this).find('.door-prompt').fadeOut();
+                });
+
+                $('#door3').hover(function() {
+                    $(this).find('.door-prompt').fadeIn();
+                }, function() {
+                    $(this).find('.door-prompt').fadeOut();
+                });
+            });
+        </script>
+
     <style>
         body {
             background-color: purple;
