@@ -1,4 +1,4 @@
-from cyborg_boss import cyborg_boss_battle 
+from cyborg_boss import cyborg_boss_battle
 
 def futuristic_portal():
     print("You have entered the Futuristic Portal.")
@@ -13,7 +13,7 @@ def futuristic_portal():
     if choice == "1":
         print("You have chosen to fight the Cyborg Boss.")
         print("Prepare for battle!")
-        cyborg_boss_battle()
+        cyborg_boss_battle()  # Call the battle logic from cyborg_boss.py
     elif choice == "2":
         print("You have chosen to run away.")
         print("You have successfully escaped the Futuristic Portal.")
