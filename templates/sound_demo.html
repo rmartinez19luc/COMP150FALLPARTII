@@ -68,12 +68,11 @@
     </div>
 
    
-    
     <p>Click Below to Start your Adventure!</p>
     <button onclick="navigateToPortals()">Begin Your Adventure </button>
 
    
-    <audio id="click1" src="static/sad-meow-song.mp3" preload="auto"></audio>
+    <audio id="click1" src="static/host-palastinalied2.mp3" preload="auto"></audio>
 
     <script>
         
@@ -82,10 +81,12 @@
             sound.currentTime = 0; 
             sound.play();
 
-            
+            // Play only part of the song
+            const playDuration = 6;
+
             setTimeout(function() {
                 window.location.href = '/portals'; 
-            }, sound.duration * 1000); 
+            }, playDuration * 1000); 
         }
     </script>
 </body>
