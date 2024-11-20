@@ -16,6 +16,10 @@ def portals():
 def ancient():
     return render_template('ancient.html')
 
+@app.route('/ancient_minigame')  # Route for the Snake game
+def ancient_minigame():
+    return render_template('ancient_minigame.html')
+
 @app.route('/medieval')
 def medieval():
     return render_template('medieval.html')

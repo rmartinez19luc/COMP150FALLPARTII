@@ -11,6 +11,7 @@
 <body>
   <h1>Ancient Minigame: Snake</h1>
   <canvas id="gameCanvas" width="600" height="600"></canvas>
+  <button id="startButton">Start Game</button>
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
@@ -25,6 +26,12 @@
     // Define win condition
     const WINNING_SCORE = 100; // Target score to win the game
 
+    // Start the game only when the button is clicked
+    startButton.addEventListener("click", () => {
+      startGame();
+      startButton.style.display = "none"; // Hide the start button after clicking
+    });
+    
     // Update game every 100ms
     function startGame() {
       gameInterval = setInterval(updateGame, 100);
@@ -109,9 +116,6 @@
       clearInterval(gameInterval);
       alert("You Win! Your score: " + score);
     }
-
-    // Start the game
-    startGame();
   </script>
 </body>
 </html>
