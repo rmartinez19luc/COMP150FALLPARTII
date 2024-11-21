@@ -1,18 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portals</title>
-  <link rel="stylesheet" href="static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portals</title>
+    <link rel="stylesheet" href="static/style.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <h1>Welcome to the Shattered Realms</h1>
-  <p>The fate of the dimensions rests in your hands. Choose a portal to embark on your quest and confront Bertak in the ultimate battle to restore the time machine and save all realms.</p>
+<h1>Welcome to the Shattered Realms</h1>
+<p>The fate of the dimensions rests in your hands. Choose a portal to embark on your quest and confront Bertak in the ultimate battle to restore the time machine and save all realms.</p>
 
-    <button class="ancient-portal" onclick="window.location.href='/ancient'">Ancient Portal</button>
-  <button class="medieval-portal" onclick="window.location.href='/medieval'">Medieval Portal</button>
-  <button class="futuristic-portal" onclick="window.location.href='/futuristic'">Futuristic Portal</button>
-  <button class="final-boss-portal" onclick="window.location.href='/boss'">Final Boss Portal</button>
+<button class="ancient-portal" onclick="portalClick('ancient', '/ancient')">Ancient Portal</button>
+<button class="medieval-portal" onclick="portalClick('medieval', '/medieval')">Medieval Portal</button>
+<button class="futuristic-portal" onclick="portalClick('futuristic', '/futuristic')">Futuristic Portal</button>
+<button class="final-boss-portal hidden" id="finalBossButton" onclick="window.location.href='/boss'">Final Boss Portal</button>
+
+<script>
+    // Load the portalsClicked state from sessionStorage or initialize with default values
+    const portalsClicked = JSON.parse(sessionStorage.getItem('portalsClicked')) || {
+        ancient: false,
+        medieval: false,
+        futuristic: false
+    };
+
+    // Save portalsClicked state to sessionStorage
+    function savePortalsState() {
+        sessionStorage.setItem('portalsClicked', JSON.stringify(portalsClicked));
+    }
+
+    // Function to handle portal click and redirection
+    function portalClick(portal, url) {
+        portalsClicked[portal] = true; // Mark portal as clicked
+        savePortalsState(); // Save the updated state
+        checkPortals(); // Check if all portals have been clicked
+        window.location.href = url; // Redirect to the specified URL
+    }
+
+    // Check if all portals have been clicked and show the Final Boss button if true
+    function checkPortals() {
+        if (portalsClicked.ancient && portalsClicked.medieval && portalsClicked.futuristic) {
+            const finalBossButton = document.getElementById('finalBossButton');
+            finalBossButton.classList.remove('hidden'); // Show the Final Boss button
+        }
+    }
+
+    // Ensure the correct button visibility on page load
+    checkPortals();
+</script>
 </body>
 </html>

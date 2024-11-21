@@ -30,53 +30,50 @@
     </style>
 </head>
 <body>
-    <h1>Gem Minigame</h1>
-    <p>Click on as many gems as you can in 10 seconds!</p>
-    <div id="score">Score: 0</div>
-    <div class="gem-board" id="gemBoard"></div>
-    <button onclick="startGame()">Start Game</button>
-    <div id="result"></div>
+<h1>Gem Minigame</h1>
+<p>Click on as many gems as you can in 10 seconds!</p>
+<div id="score">Score: 0</div>
+<div class="gem-board" id="gemBoard"></div>
+<button onclick="startGame()">Start Game</button>
+<div id="result"></div>
 
-    <script>
-        let score = 0; 
-        let gameActive = false;
-        const gemColors = ['red', 'green', 'blue'];
-        const gemBoard = document.getElementById('gem-minigame-board'); 
-        const scoreDisplay = document.getElementById('gem-minigame-score');
+<script>
+    let score = 0;
+    let gameActive = false;
+    const gemColors = ['red', 'green', 'blue'];
+    const gemBoard = document.getElementById('gemBoard'); // Match the HTML id 'gemBoard'
+    const scoreDisplay = document.getElementById('score'); // Match the HTML id 'score'
 
-        
-        function createGems() {
-            gemBoard.innerHTML = ''; 
-            for (let i = 0; i < 25; i++) { 
-                const gem = document.createElement('div');
-                const color = gemColors[Math.floor(Math.random() * gemColors.length)]; 
-                gem.className = `gem ${color}`; 
-                gem.onclick = () => { 
-                    if (gameActive) { 
-                        score++; 
-                        scoreDisplay.textContent = `Score: ${score}`; 
-                        gem.remove();
-                    }
-                };
-                gemBoard.appendChild(gem); 
-            }
+    function createGems() {
+        gemBoard.innerHTML = '';
+        for (let i = 0; i < 25; i++) {
+            const gem = document.createElement('div');
+            const color = gemColors[Math.floor(Math.random() * gemColors.length)];
+            gem.className = `gem ${color}`;
+            gem.onclick = () => {
+                if (gameActive) {
+                    score++;
+                    scoreDisplay.textContent = `Score: ${score}`;
+                    gem.remove();
+                }
+            };
+            gemBoard.appendChild(gem);
         }
+    }
 
-        
-        function startGemGame() {
-            score = 0; 
-            gameActive = true; 
-            scoreDisplay.textContent = `Score: ${score}`; 
-            createGems(); 
+    function startGame() {
+        score = 0;
+        gameActive = true;
+        scoreDisplay.textContent = `Score: ${score}`;
+        createGems();
 
-            
-            setTimeout(() => {
-                gameActive = false;
-                scoreDisplay.textContent = `Game Over! Your final score is ${score}.`; 
-            }, 10000);
-        }
-        
-
-    </script>
+        setTimeout(() => {
+            gameActive = false;
+            scoreDisplay.textContent = `Game Over! Your final score is ${score}.`;
+        }, 10000);
+    }
+</script>
 </body>
+<button onclick="window.location.href='/futuristic'">Go Back to Portal</button>
+
 </html>
