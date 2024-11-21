@@ -3,77 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gem Minigame</title>
+    <title>Gem Jumper</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            background-color: #1e272e;
+            color: #ffffff;
             text-align: center;
             padding: 20px;
         }
-        .gem-board {
+        .game-grid {
             display: grid;
             grid-template-columns: repeat(5, 50px);
-            gap: 10px;
+            gap: 5px;
             justify-content: center;
+            margin-top: 20px;
         }
-        .gem {
+        .grid-cell {
             width: 50px;
             height: 50px;
-            border-radius: 10px;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ecf0f1;
+            border-radius: 4px;
+            font-size: 20px;
         }
-        .gem.red { background-color: #e74c3c; }
-        .gem.green { background-color: #2ecc71; }
-        .gem.blue { background-color: #3498db; }
+        .player {
+            background-color: #f1c40f;
+            color: black;
+        }
+        .gem {
+            background-color: #e74c3c;
+            color: white;
+        }
     </style>
 </head>
 <body>
-<h1>Gem Minigame</h1>
-<p>Click on as many gems as you can in 10 seconds!</p>
-<div id="score">Score: 0</div>
-<div class="gem-board" id="gemBoard"></div>
-<button onclick="startGame()">Start Game</button>
-<div id="result"></div>
+    <h1>Gem Jumper</h1>
+    <p>Move to collect gems before you run out of energy!</p>
+    <div id="status">
+        <p>Energy: <span id="energy">15</span></p> <!-- Increased starting energy -->
+        <p>Gems Collected: <span id="gemsCollected">0</span></p>
+    </div>
+    <div class="game-grid" id="gameGrid"></div>
+    <div>
+        <button onclick="movePlayer('up')">Up</button>
+        <button onclick="movePlayer('left')">Left</button>
+        <button onclick="movePlayer('down')">Down</button>
+        <button onclick="movePlayer('right')">Right</button>
+    </div>
+    <div id="result"></div>
+    <button onclick="window.location.href='/futuristic'">Go Back to Portal</button>
 
-<script>
-    let score = 0;
-    let gameActive = false;
-    const gemColors = ['red', 'green', 'blue'];
-    const gemBoard = document.getElementById('gemBoard'); // Match the HTML id 'gemBoard'
-    const scoreDisplay = document.getElementById('score'); // Match the HTML id 'score'
+    <script>
+        const gridSize = 5;
+        let energy = 15; // Increased initial energy
+        let gemsCollected = 0;
+        const player = { x: Math.floor(Math.random() * gridSize), y: Math.floor(Math.random() * gridSize) };
+        const gems = Array.from({ length: 2 }, () => ({ // Reduced gems on grid
+            x: Math.floor(Math.random() * gridSize),
+            y: Math.floor(Math.random() * gridSize)
+        }));
 
-    function createGems() {
-        gemBoard.innerHTML = '';
-        for (let i = 0; i < 25; i++) {
-            const gem = document.createElement('div');
-            const color = gemColors[Math.floor(Math.random() * gemColors.length)];
-            gem.className = `gem ${color}`;
-            gem.onclick = () => {
-                if (gameActive) {
-                    score++;
-                    scoreDisplay.textContent = `Score: ${score}`;
-                    gem.remove();
+        const gameGrid = document.getElementById('gameGrid');
+        const energyDisplay = document.getElementById('energy');
+        const gemsCollectedDisplay = document.getElementById('gemsCollected');
+        const resultDisplay = document.getElementById('result');
+
+        function renderGrid() {
+            gameGrid.innerHTML = '';
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('grid-cell');
+
+                    if (player.x === row && player.y === col) {
+                        cell.classList.add('player');
+                        cell.textContent = 'P';
+                    } else if (gems.some(gem => gem.x === row && gem.y === col)) {
+                        cell.classList.add('gem');
+                        cell.textContent = 'G';
+                    }
+
+                    gameGrid.appendChild(cell);
                 }
-            };
-            gemBoard.appendChild(gem);
+            }
         }
-    }
 
-    function startGame() {
-        score = 0;
-        gameActive = true;
-        scoreDisplay.textContent = `Score: ${score}`;
-        createGems();
+        function movePlayer(direction) {
+            if (energy <= 0) {
+                loseGame();
+                return;
+            }
 
-        setTimeout(() => {
-            gameActive = false;
-            scoreDisplay.textContent = `Game Over! Your final score is ${score}.`;
-        }, 10000);
-    }
-</script>
+            switch (direction) {
+                case 'up': if (player.x > 0) player.x--; break;
+                case 'down': if (player.x < gridSize - 1) player.x++; break;
+                case 'left': if (player.y > 0) player.y--; break;
+                case 'right': if (player.y < gridSize - 1) player.y++; break;
+            }
+
+            energy--;
+            energyDisplay.textContent = energy;
+
+            const gemIndex = gems.findIndex(gem => gem.x === player.x && gem.y === player.y);
+            if (gemIndex !== -1) {
+                gems.splice(gemIndex, 1);
+                gemsCollected++;
+                gemsCollectedDisplay.textContent = gemsCollected;
+                gems.push({ // Add a new gem after collecting one
+                    x: Math.floor(Math.random() * gridSize),
+                    y: Math.floor(Math.random() * gridSize)
+                });
+                energy += 2; // Reward bonus energy for collecting a gem
+                energyDisplay.textContent = energy;
+            }
+
+            if (gemsCollected === 5) { // Reduced gems needed to win
+                winGame();
+            } else if (energy <= 0) {
+                loseGame();
+            }
+
+            renderGrid();
+        }
+
+        function winGame() {
+            resultDisplay.textContent = 'Congratulations! You collected all the gems!';
+            energy = 0; // End the game
+        }
+
+        function loseGame() {
+            resultDisplay.textContent = 'Game Over! Out of energy. Redirecting to the portal...';
+            setTimeout(() => {
+                window.location.href = '/futuristic'; // Redirects after 3 seconds
+            }, 3000);
+        }
+
+        renderGrid();
+    </script>
 </body>
-<button onclick="window.location.href='/futuristic'">Go Back to Portal</button>
-
 </html>
+
+
