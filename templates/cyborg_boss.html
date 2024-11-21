@@ -137,3 +137,71 @@ class CyborgBoss {
         }
     }
 }
+
+
+
+
+            import java.util.Scanner;
+            import java.util.Random;
+
+            public class CyborgBossBattle {
+                public static void main(String[] args) {
+                    cyborgBossBattle();
+                }
+
+                public static void cyborgBossBattle() {
+                    System.out.println("\n=== Cyborg Boss Battle ===");
+                    System.out.println("A towering Cyborg Boss appears, ready to fight!");
+
+                    int playerHealth = 100;
+                    int bossHealth = 120;
+
+                    Scanner scanner = new Scanner(System.in);
+                    Random random = new Random();
+
+                    while (playerHealth > 0 && bossHealth > 0) {
+                        System.out.println("\nYour Health: " + playerHealth);
+                        System.out.println("Cyborg Boss Health: " + bossHealth);
+
+                        System.out.println("\nChoose your action:");
+                        System.out.println("1. Attack");
+                        System.out.println("2. Defend");
+                        System.out.println("3. Run");
+
+                        System.out.print("Enter 1, 2, or 3: ");
+                        String action = scanner.nextLine();
+
+                        switch (action) {
+                            case "1":
+                                int damage = random.nextInt(11) + 10; // Random damage between 10 and 20
+                                System.out.println("You strike the Cyborg Boss for " + damage + " damage!");
+                                bossHealth -= damage;
+                                break;
+                            case "2":
+                                System.out.println("You brace for the boss's attack!");
+                                break;
+                            case "3":
+                                System.out.println("You run away from the fight!");
+                                scanner.close();
+                                return; // Exit the battle
+                            default:
+                                System.out.println("Invalid action. You lose your turn!");
+                                break;
+                        }
+
+                        if (bossHealth > 0) {
+                            int bossDamage = random.nextInt(11) + 5; // Random damage between 5 and 15
+                            System.out.println("The Cyborg Boss strikes you for " + bossDamage + " damage!");
+                            playerHealth -= bossDamage;
+                        }
+                    }
+
+                    scanner.close();
+
+                    if (playerHealth > 0) {
+                        System.out.println("\nYou defeated the Cyborg Boss!");
+                    } else {
+                        System.out.println("\nThe Cyborg Boss defeated you!");
+                    }
+                }
+            }
