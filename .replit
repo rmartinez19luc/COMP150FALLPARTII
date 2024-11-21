@@ -1,5 +1,5 @@
 run = "gunicorn --bind 0.0.0.0:80 main:app"
-modules = ["nodejs-20", "web", "python-3.10"]
+modules = ["python-3.10", "web", "nodejs-20", "nix"]
 
 hidden = [".pythonlibs"]
 

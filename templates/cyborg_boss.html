@@ -1,0 +1,139 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+class CyborgBoss {
+    private String name;
+    private int health;
+    private int attackPower;
+    private List<SpecialMove> specialMoves;
+
+    public CyborgBoss(String name, int health, int attackPower) {
+        this.name = name;
+        this.health = health;
+        this.attackPower = attackPower;
+        this.specialMoves = new ArrayList<>();
+        this.specialMoves.add(new SpecialMove("Laser Beam", 20, 0, "damage"));
+        this.specialMoves.add(new SpecialMove("EMP Shock", 15, 0, "damage"));
+        this.specialMoves.add(new SpecialMove("Repair Mode", 0, 25, "heal"));
+    }
+
+    public CyborgBoss() {
+        this("Cyborg Boss", 120, 15);
+    }
+
+    public int attack() {
+        // Regular attack
+        Random random = new Random();
+        int damage = random.nextInt(attackPower - 10 + 1) + 10;
+        System.out.println(name + " attacks for " + damage + " damage!");
+        return damage;
+    }
+
+    public MoveResult useSpecialMove() {
+        // Randomly use a special move
+        Random random = new Random();
+        SpecialMove move = specialMoves.get(random.nextInt(specialMoves.size()));
+
+        if (move.getType().equals("damage")) {
+            System.out.println(name + " uses " + move.getName() + " for " + move.getDamage() + " damage!");
+            return new MoveResult("damage", move.getDamage());
+        } else if (move.getType().equals("heal")) {
+            System.out.println(name + " activates " + move.getName() + " and heals for " + move.getHeal() + " health!");
+            this.health += move.getHeal();
+            return new MoveResult("heal", move.getHeal());
+        }
+        return null;
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
+    }
+
+    public void setAttackPower(int attackPower) {
+        this.attackPower = attackPower;
+    }
+
+    // Inner class for SpecialMove
+    static class SpecialMove {
+        private String name;
+        private int damage;
+        private int heal;
+        private String type;
+
+        public SpecialMove(String name, int damage, int heal, String type) {
+            this.name = name;
+            this.damage = damage;
+            this.heal = heal;
+            this.type = type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getDamage() {
+            return damage;
+        }
+
+        public int getHeal() {
+            return heal;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
+    // Inner class for MoveResult
+    static class MoveResult {
+        private String type;
+        private int value;
+
+        public MoveResult(String type, int value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    // Main method to demonstrate functionality
+    public static void main(String[] args) {
+        CyborgBoss boss = new CyborgBoss();
+
+        System.out.println("A wild " + boss.getName() + " appears!");
+        System.out.println(boss.getName() + " has " + boss.getHealth() + " health and " + boss.getAttackPower() + " attack power.");
+
+        // Simulate the boss using a special move
+        MoveResult moveResult = boss.useSpecialMove();
+
+        if (moveResult.getType().equals("damage")) {
+            System.out.println("The boss inflicted " + moveResult.getValue() + " damage.");
+        } else if (moveResult.getType().equals("heal")) {
+            System.out.println("The boss healed for " + moveResult.getValue() + " health.");
+        }
+    }
+}
