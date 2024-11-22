@@ -5,62 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Futuristic Portal</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    </head>
-    <body>
-        <h1>Futuristic Portal</h1>
-
-        <div class="portal-container">
-            <!-- Door 1 -->
-            <div class="door" id="door1">
-                <div class="door-prompt">Step into the future and face the Cyborg Boss!</div>
-                <p>Door 1</p>
-            </div>
-
-            <!-- Door 2 -->
-            <div class="door" id="door2">
-                <div class="door-prompt">Explore the secrets of advanced technology!</div>
-                <p>Door 2</p>
-            </div>
-
-            <!-- Door 3 -->
-            <div class="door" id="door3">
-                <div class="door-prompt">Unlock hidden powers beyond the portal!</div>
-                <p>Door 3</p>
-            </div>
-        </div>
-
-        <script>
-            // Optional JavaScript to add interactivity if needed
-            $(document).ready(function() {
-                // Example: Change prompt text when hovering over a specific door
-                $('#door1').hover(function() {
-                    $(this).find('.door-prompt').fadeIn();
-                }, function() {
-                    $(this).find('.door-prompt').fadeOut();
-                });
-
-                $('#door2').hover(function() {
-                    $(this).find('.door-prompt').fadeIn();
-                }, function() {
-                    $(this).find('.door-prompt').fadeOut();
-                });
-
-                $('#door3').hover(function() {
-                    $(this).find('.door-prompt').fadeIn();
-                }, function() {
-                    $(this).find('.door-prompt').fadeOut();
-                });
-            });
-        </script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        body {
+    body {
             background-color: purple;
             font-family: 'Orbitron', sans-serif;
             color: white;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
         .portal-container {
             text-align: center;
@@ -80,17 +33,87 @@
         button:hover {
             background-color: lightgray;
         }
+        .door {
+            margin: 10px;
+            border: 2px solid white;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 150px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .door:hover {
+            transform: scale(1.1);
+        }
+        .door-prompt {
+            display: none;
+            font-size: 14px;
+            color: black;
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .hover-oval {
+            position: absolute;
+            width: 20px;
+            height: 80%;
+            background-color: lightblue;
+            opacity: 0.8;
+            border-radius: 50%; /* Makes it look like an ellipse */
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        .hover-oval:hover {
+            opacity: 1;
+        }
+        .left-oval {
+            left: 50px;
+            top: 10%;
+        }
+        .right-oval {
+            right: 50px;
+            top: 10%;
+        }
+        .prompt {
+            display: none;
+            position: absolute;
+            color: black;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
+    <h1>Futuristic Portal</h1>
+
     <div class="portal-container">
-        <h1>Futuristic Portal</h1>
+        <!-- Door 1 -->
+        <div class="door" id="door1">
+            <div class="door-prompt">Step into the future and face the Cyborg Boss!</div>
+            <p>Door 1</p>
+        </div>
+
+        <!-- Door 2 -->
+        <div class="door" id="door2">
+            <div class="door-prompt">Explore the secrets of advanced technology!</div>
+            <p>Door 2</p>
+        </div>
+
+        <!-- Door 3 -->
+        <div class="door" id="door3">
+            <div class="door-prompt">Unlock hidden powers beyond the portal!</div>
+            <p>Door 3</p>
+        </div>
+
         <p>Welcome to the futuristic world! Ready to play the gem minigame?</p>
         <button onclick="window.location.href='/futuristic_minigame'">Start Gem Minigame</button>
         <button onclick="window.location.href='/portals'">Go Back to Portals</button>
-
-        {#    <button onclick="startGemMinigame()"></button>#}
-
 
         <div id="gem-minigame-container" style="display: none;">
             <h2>Gem Minigame</h2>
@@ -100,20 +123,77 @@
         </div>
     </div>
 
+    <!-- Left Oval -->
+    <div class="hover-oval left-oval" id="left-oval">
+        <div class="prompt">Do you want to go back to the other portals?</div>
+    </div>
+
+    <!-- Right Oval -->
+    <div class="hover-oval right-oval" id="right-oval">
+        <div class="prompt">Do you want to fight the Cyborg Boss?</div>
+    </div>
+
     <script src="game.js" defer></script>
     <script>
-        
         function startGemMinigame() {
-            document.querySelector('.portal-container').style.display = 'none'; 
-            document.getElementById('gem-minigame-container').style.display = 'block'; 
-            startGemGame(); 
+            document.querySelector('.portal-container').style.display = 'none';
+            document.getElementById('gem-minigame-container').style.display = 'block';
+            startGemGame();
         }
 
-        
         function returnToPortal() {
             document.querySelector('.portal-container').style.display = 'block';
-            document.getElementById('gem-minigame-container').style.display = 'none'; 
+            document.getElementById('gem-minigame-container').style.display = 'none';
         }
+
+        $(document).ready(function () {
+            // Show door prompts on hover
+            $('#door1').hover(
+                function () {
+                    $(this).find('.door-prompt').fadeIn();
+                },
+                function () {
+                    $(this).find('.door-prompt').fadeOut();
+                }
+            );
+
+            $('#door2').hover(
+                function () {
+                    $(this).find('.door-prompt').fadeIn();
+                },
+                function () {
+                    $(this).find('.door-prompt').fadeOut();
+                }
+            );
+
+            $('#door3').hover(
+                function () {
+                    $(this).find('.door-prompt').fadeIn();
+                },
+                function () {
+                    $(this).find('.door-prompt').fadeOut();
+                }
+            );
+
+            // Show prompts on hover for ovals
+            $('#left-oval').hover(
+                function () {
+                    $(this).find('.prompt').fadeIn();
+                },
+                function () {
+                    $(this).find('.prompt').fadeOut();
+                }
+            );
+
+            $('#right-oval').hover(
+                function () {
+                    $(this).find('.prompt').fadeIn();
+                },
+                function () {
+                    $(this).find('.prompt').fadeOut();
+                }
+            );
+        });
     </script>
 </body>
 </html>
