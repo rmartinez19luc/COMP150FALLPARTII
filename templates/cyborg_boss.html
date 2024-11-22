@@ -1,207 +1,39 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyborg Boss Battle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Cyborg Boss Battle</h1>
+    <div id="class-selection">
+        <h2>Select Your Character</h2>
+        <button onclick="selectClass('Mage')">Mage</button>
+        <button onclick="selectClass('Rogue')">Rogue</button>
+        <button onclick="selectClass('Time Keeper')">Time Keeper</button>
+        <button onclick="selectClass('Knight')">Knight</button>
+    </div>
 
-class CyborgBoss {
-    private String name;
-    private int health;
-    private int attackPower;
-    private List<SpecialMove> specialMoves;
+    <div id="battle" style="display: none;">
+        <h2>You are playing as: <span id="character-class"></span></h2>
+        <div id="game-area">
+            <div id="player">
+                <img id="player-sprite" src="sprites/placeholder.png" alt="Player Sprite">
+            </div>
+            <div id="boss">
+                <img id="boss-sprite" src="sprites/cyborg-boss.png" alt="Cyborg Boss">
+                <p id="boss-health">Boss Health: 100</p>
+            </div>
+        </div>
+        <div id="controls">
+            <button onclick="attack()">Attack</button>
+            <button onclick="specialAttack()">Special Attack</button>
+        </div>
+        <p id="message"></p>
+    </div>
 
-    public CyborgBoss(String name, int health, int attackPower) {
-        this.name = name;
-        this.health = health;
-        this.attackPower = attackPower;
-        this.specialMoves = new ArrayList<>();
-        this.specialMoves.add(new SpecialMove("Laser Beam", 20, 0, "damage"));
-        this.specialMoves.add(new SpecialMove("EMP Shock", 15, 0, "damage"));
-        this.specialMoves.add(new SpecialMove("Repair Mode", 0, 25, "heal"));
-    }
-
-    public CyborgBoss() {
-        this("Cyborg Boss", 120, 15);
-    }
-
-    public int attack() {
-        // Regular attack
-        Random random = new Random();
-        int damage = random.nextInt(attackPower - 10 + 1) + 10;
-        System.out.println(name + " attacks for " + damage + " damage!");
-        return damage;
-    }
-
-    public MoveResult useSpecialMove() {
-        // Randomly use a special move
-        Random random = new Random();
-        SpecialMove move = specialMoves.get(random.nextInt(specialMoves.size()));
-
-        if (move.getType().equals("damage")) {
-            System.out.println(name + " uses " + move.getName() + " for " + move.getDamage() + " damage!");
-            return new MoveResult("damage", move.getDamage());
-        } else if (move.getType().equals("heal")) {
-            System.out.println(name + " activates " + move.getName() + " and heals for " + move.getHeal() + " health!");
-            this.health += move.getHeal();
-            return new MoveResult("heal", move.getHeal());
-        }
-        return null;
-    }
-
-    public boolean isAlive() {
-        return health > 0;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public int getAttackPower() {
-        return attackPower;
-    }
-
-    public void setAttackPower(int attackPower) {
-        this.attackPower = attackPower;
-    }
-
-    // Inner class for SpecialMove
-    static class SpecialMove {
-        private String name;
-        private int damage;
-        private int heal;
-        private String type;
-
-        public SpecialMove(String name, int damage, int heal, String type) {
-            this.name = name;
-            this.damage = damage;
-            this.heal = heal;
-            this.type = type;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getDamage() {
-            return damage;
-        }
-
-        public int getHeal() {
-            return heal;
-        }
-
-        public String getType() {
-            return type;
-        }
-    }
-
-    // Inner class for MoveResult
-    static class MoveResult {
-        private String type;
-        private int value;
-
-        public MoveResult(String type, int value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
-    // Main method to demonstrate functionality
-    public static void main(String[] args) {
-        CyborgBoss boss = new CyborgBoss();
-
-        System.out.println("A wild " + boss.getName() + " appears!");
-        System.out.println(boss.getName() + " has " + boss.getHealth() + " health and " + boss.getAttackPower() + " attack power.");
-
-        // Simulate the boss using a special move
-        MoveResult moveResult = boss.useSpecialMove();
-
-        if (moveResult.getType().equals("damage")) {
-            System.out.println("The boss inflicted " + moveResult.getValue() + " damage.");
-        } else if (moveResult.getType().equals("heal")) {
-            System.out.println("The boss healed for " + moveResult.getValue() + " health.");
-        }
-    }
-}
-
-
-
-
-            import java.util.Scanner;
-            import java.util.Random;
-
-            public class CyborgBossBattle {
-                public static void main(String[] args) {
-                    cyborgBossBattle();
-                }
-
-                public static void cyborgBossBattle() {
-                    System.out.println("\n=== Cyborg Boss Battle ===");
-                    System.out.println("A towering Cyborg Boss appears, ready to fight!");
-
-                    int playerHealth = 100;
-                    int bossHealth = 120;
-
-                    Scanner scanner = new Scanner(System.in);
-                    Random random = new Random();
-
-                    while (playerHealth > 0 && bossHealth > 0) {
-                        System.out.println("\nYour Health: " + playerHealth);
-                        System.out.println("Cyborg Boss Health: " + bossHealth);
-
-                        System.out.println("\nChoose your action:");
-                        System.out.println("1. Attack");
-                        System.out.println("2. Defend");
-                        System.out.println("3. Run");
-
-                        System.out.print("Enter 1, 2, or 3: ");
-                        String action = scanner.nextLine();
-
-                        switch (action) {
-                            case "1":
-                                int damage = random.nextInt(11) + 10; // Random damage between 10 and 20
-                                System.out.println("You strike the Cyborg Boss for " + damage + " damage!");
-                                bossHealth -= damage;
-                                break;
-                            case "2":
-                                System.out.println("You brace for the boss's attack!");
-                                break;
-                            case "3":
-                                System.out.println("You run away from the fight!");
-                                scanner.close();
-                                return; // Exit the battle
-                            default:
-                                System.out.println("Invalid action. You lose your turn!");
-                                break;
-                        }
-
-                        if (bossHealth > 0) {
-                            int bossDamage = random.nextInt(11) + 5; // Random damage between 5 and 15
-                            System.out.println("The Cyborg Boss strikes you for " + bossDamage + " damage!");
-                            playerHealth -= bossDamage;
-                        }
-                    }
-
-                    scanner.close();
-
-                    if (playerHealth > 0) {
-                        System.out.println("\nYou defeated the Cyborg Boss!");
-                    } else {
-                        System.out.println("\nThe Cyborg Boss defeated you!");
-                    }
-                }
-            }
+    <script src="script.js"></script>
+</body>
+</html>
