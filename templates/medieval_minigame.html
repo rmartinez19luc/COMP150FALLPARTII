@@ -1,18 +1,170 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Medieval Portal Minigame</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body onload="startGuessingGame()">
-  <h1>Medieval Number Guessing Game</h1>
-  <p>Guess a number between 1 and 10</p>
-  <input type="number" id="guess" min="1" max="10" placeholder="Enter your guess">
-  <button onclick="makeGuess()">Submit Guess</button>
-  <p id="guess-feedback"></p>
-  <a href="medieval.html">Back to Medieval Portal</a>
-  <script src="../minigames%20and%20portals/script.js"></script>
-</body>
-</html>
+import java.util.Scanner;
+import java.util.Random;
+
+public class ConnectFour {
+    static final int ROWS = 6;
+    static final int COLUMNS = 7;
+    static char[][] board = new char[ROWS][COLUMNS];
+    static final char PLAYER_PIECE = 'X';
+    static final char AI_PIECE = 'O';
+
+    public static void main(String[] args) {
+        initializeBoard();
+        boolean gameOver = false;
+        boolean playerTurn = true;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to Connect Four!");
+        System.out.println("You are 'X' and the AI is 'O'.");
+        printBoard();
+
+        while (!gameOver) {
+            if (playerTurn) {
+                System.out.print("Your turn! Choose a column (0-6): ");
+                int column;
+                try {
+                    column = scanner.nextInt();
+                    if (column < 0 || column >= COLUMNS || !isValidMove(column)) {
+                        System.out.println("Invalid move. Try again.");
+                        continue;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Please enter a valid number between 0 and 6.");
+                    scanner.next(); // Clear invalid input
+                    continue;
+                }
+
+                int row = getNextOpenRow(column);
+                dropPiece(row, column, PLAYER_PIECE);
+
+                if (checkWin(PLAYER_PIECE)) {
+                    printBoard();
+                    System.out.println("You win, you have successfully poked holes in the Knight's armor!");
+                    gameOver = true;
+                    continue;
+                }
+            } else {
+                System.out.println("AI is thinking...");
+                int column = aiMove();
+                int row = getNextOpenRow(column);
+                dropPiece(row, column, AI_PIECE);
+
+                if (checkWin(AI_PIECE)) {
+                    printBoard();
+                    System.out.println("You have failed to sabotage the Knight's armor.");
+                    gameOver = true;
+                    continue;
+                }
+            }
+
+            printBoard();
+
+            if (isBoardFull()) {
+                System.out.println("It's a draw! The Knight's armor remains intact.");
+                gameOver = true;
+            }
+
+            playerTurn = !playerTurn; // Switch turns
+        }
+
+        scanner.close();
+    }
+
+    static void initializeBoard() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+                board[i][j] = ' ';
+            }
+        }
+    }
+
+    static void printBoard() {
+        for (char[] row : board) {
+            System.out.print("| ");
+            for (char cell : row) {
+                System.out.print(cell + " | ");
+            }
+            System.out.println();
+        }
+        System.out.println("  0   1   2   3   4   5   6");
+    }
+
+    static boolean isValidMove(int column) {
+        return board[0][column] == ' ';
+    }
+
+    static int getNextOpenRow(int column) {
+        for (int row = ROWS - 1; row >= 0; row--) {
+            if (board[row][column] == ' ') {
+                return row;
+            }
+        }
+        return -1;
+    }
+
+    static void dropPiece(int row, int column, char piece) {
+        board[row][column] = piece;
+    }
+
+    static boolean checkWin(char piece) {
+        // Check horizontal
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLUMNS - 3; col++) {
+                if (board[row][col] == piece && board[row][col + 1] == piece
+                        && board[row][col + 2] == piece && board[row][col + 3] == piece) {
+                    return true;
+                }
+            }
+        }
+
+        // Check vertical
+        for (int row = 0; row < ROWS - 3; row++) {
+            for (int col = 0; col < COLUMNS; col++) {
+                if (board[row][col] == piece && board[row + 1][col] == piece
+                        && board[row + 2][col] == piece && board[row + 3][col] == piece) {
+                    return true;
+                }
+            }
+        }
+
+        // Check positively sloped diagonals
+        for (int row = 0; row < ROWS - 3; row++) {
+            for (int col = 0; col < COLUMNS - 3; col++) {
+                if (board[row][col] == piece && board[row + 1][col + 1] == piece
+                        && board[row + 2][col + 2] == piece && board[row + 3][col + 3] == piece) {
+                    return true;
+                }
+            }
+        }
+
+        // Check negatively sloped diagonals
+        for (int row = 3; row < ROWS; row++) {
+            for (int col = 0; col < COLUMNS - 3; col++) {
+                if (board[row][col] == piece && board[row - 1][col + 1] == piece
+                        && board[row - 2][col + 2] == piece && board[row - 3][col + 3] == piece) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    static int aiMove() {
+        Random random = new Random();
+        int column;
+        do {
+            column = random.nextInt(COLUMNS);
+        } while (!isValidMove(column));
+        return column;
+    }
+
+    static boolean isBoardFull() {
+        for (int col = 0; col < COLUMNS; col++) {
+            if (isValidMove(col)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
