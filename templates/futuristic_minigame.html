@@ -3,47 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gem Jumper</title>
+    <title>Gem Jumper 3000</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #1e272e;
-            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
+            background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
+            color: #00ffcc;
             text-align: center;
             padding: 20px;
         }
+        h1 {
+            font-size: 3rem;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(5, 50px);
-            gap: 5px;
+            grid-template-columns: repeat(5, 70px);
+            gap: 8px;
             justify-content: center;
             margin-top: 20px;
         }
         .grid-cell {
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #ecf0f1;
-            border-radius: 4px;
-            font-size: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 5px rgba(0, 255, 204, 0.6), inset 0 0 10px rgba(0, 255, 204, 0.4);
         }
         .player {
-            background-color: #f1c40f;
-            color: black;
-        }
-        .gem {
-            background-color: #e74c3c;
+            background: linear-gradient(45deg, #00ffcc, #0077ff);
             color: white;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00ffcc, 0 0 30px #0077ff;
+        }
+        .gem-triangle {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 50px solid #ff7700;
+            position: relative;
+        }
+        .gem-triangle::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: -25px;
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 40px solid #ff4500;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            background: #00ffcc;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #00ffcc;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00ffcc, 0 0 30px #0077ff;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #ff0077;
+            text-shadow: 0 0 10px #ff0077, 0 0 20px #ff77ff;
         }
     </style>
 </head>
 <body>
-    <h1>Gem Jumper</h1>
+    <h1>Gem Jumper 3000</h1>
     <p>Move to collect gems before you run out of energy!</p>
     <div id="status">
-        <p>Energy: <span id="energy">15</span></p> <!-- Increased starting energy -->
+        <p>Energy: <span id="energy">15</span></p>
         <p>Gems Collected: <span id="gemsCollected">0</span></p>
     </div>
     <div class="game-grid" id="gameGrid"></div>
@@ -58,12 +103,18 @@
 
     <script>
         const gridSize = 5;
-        let energy = 15; // Increased initial energy
+        let energy = 15;
         let gemsCollected = 0;
-        const player = { x: Math.floor(Math.random() * gridSize), y: Math.floor(Math.random() * gridSize) };
-        const gems = Array.from({ length: 2 }, () => ({ // Reduced gems on grid
+
+        const player = {
             x: Math.floor(Math.random() * gridSize),
             y: Math.floor(Math.random() * gridSize)
+        };
+
+        const gems = Array.from({ length: 3 }, () => ({
+            x: Math.floor(Math.random() * gridSize),
+            y: Math.floor(Math.random() * gridSize),
+            shape: 'gem-triangle'
         }));
 
         const gameGrid = document.getElementById('gameGrid');
@@ -80,10 +131,13 @@
 
                     if (player.x === row && player.y === col) {
                         cell.classList.add('player');
-                        cell.textContent = 'P';
-                    } else if (gems.some(gem => gem.x === row && gem.y === col)) {
-                        cell.classList.add('gem');
-                        cell.textContent = 'G';
+                    } else {
+                        const gem = gems.find(g => g.x === row && g.y === col);
+                        if (gem) {
+                            const gemShape = document.createElement('div');
+                            gemShape.classList.add(gem.shape);
+                            cell.appendChild(gemShape);
+                        }
                     }
 
                     gameGrid.appendChild(cell);
@@ -112,15 +166,16 @@
                 gems.splice(gemIndex, 1);
                 gemsCollected++;
                 gemsCollectedDisplay.textContent = gemsCollected;
-                gems.push({ // Add a new gem after collecting one
+                gems.push({
                     x: Math.floor(Math.random() * gridSize),
-                    y: Math.floor(Math.random() * gridSize)
+                    y: Math.floor(Math.random() * gridSize),
+                    shape: 'gem-triangle'
                 });
-                energy += 2; // Reward bonus energy for collecting a gem
+                energy += 2;
                 energyDisplay.textContent = energy;
             }
 
-            if (gemsCollected === 5) { // Reduced gems needed to win
+            if (gemsCollected === 5) {
                 winGame();
             } else if (energy <= 0) {
                 loseGame();
@@ -130,20 +185,29 @@
         }
 
         function winGame() {
-            resultDisplay.textContent = 'Congratulations! You collected all the gems!';
-            energy = 0; // End the game
+            resultDisplay.textContent = 'Congratulations! You collected all the gems! Redirecting to the portal...';
+            setTimeout(() => {
+                window.location.href = '/futuristic';
+            }, 2000);
         }
 
         function loseGame() {
             resultDisplay.textContent = 'Game Over! Out of energy. Redirecting to the portal...';
             setTimeout(() => {
-                window.location.href = '/futuristic'; // Redirects after 3 seconds
+                window.location.href = '/futuristic';
             }, 3000);
         }
+
+        // Add event listener for arrow keys
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            if (key === 'ArrowUp') movePlayer('up');
+            if (key === 'ArrowDown') movePlayer('down');
+            if (key === 'ArrowLeft') movePlayer('left');
+            if (key === 'ArrowRight') movePlayer('right');
+        });
 
         renderGrid();
     </script>
 </body>
 </html>
-
-
