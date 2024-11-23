@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-    body {
+        body {
             background-color: purple;
             font-family: 'Orbitron', sans-serif;
             color: white;
@@ -87,6 +87,64 @@
             font-size: 14px;
             z-index: 10;
         }
+
+        .gem-button {
+            position: absolute;
+            top: 30%; /* Adjusted vertical position */
+            left: 20px; /* Adjusted horizontal position for proximity to the left oval */
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, red, orange, yellow, green, blue, purple);
+            background-size: 300% 300%;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            border: 2px solid white;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            animation: colorShift 3s infinite;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .gem-button:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .gem-button-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .gem-tooltip {
+            display: none;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .gem-button-container:hover .gem-tooltip {
+            display: block;
+        }
+
+        @keyframes colorShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -112,7 +170,10 @@
         </div>
 
         <p>Welcome to the futuristic world! Ready to play the gem minigame?</p>
-        <button onclick="window.location.href='/futuristic_minigame'">Start Gem Minigame</button>
+        <div class="gem-button-container">
+            <div class="gem-button" onclick="window.location.href='/futuristic_minigame'"></div>
+            <div class="gem-tooltip">Start Gem Minigame</div>
+        </div>
         <button onclick="window.location.href='/portals'">Go Back to Portals</button>
 
         <div id="gem-minigame-container" style="display: none;">
