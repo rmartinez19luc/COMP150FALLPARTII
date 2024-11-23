@@ -16,6 +16,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      overflow: hidden; /* Prevent scrollbars */
     }
 
     h1 {
@@ -90,6 +91,18 @@
       transform: translate(-50%, -50%);
     }
 
+    /* Character styling */
+    #character {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-image: url('/static/sprites/Screenshot%202024-11-12%20135505.png'); /* Corrected the path */
+      background-size: cover;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
   </style>
 </head>
 <body>
@@ -102,5 +115,47 @@
     <div class="portal left"></div>
     <div class="portal right"></div>
   </div>
+
+  <div id="character"></div>
+
+  <script>
+    // Get the character element
+    const character = document.getElementById('character');
+
+    // Starting position
+    let posX = window.innerWidth / 2;
+    let posY = window.innerHeight / 2;
+
+    // Speed of movement
+    const speed = 10;
+
+    // Update the character position on the screen
+    function updatePosition() {
+      character.style.left = `${posX}px`;
+      character.style.top = `${posY}px`;
+    }
+
+    // Listen for keydown events to move the character
+    window.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowUp':
+          posY -= speed;
+          break;
+        case 'ArrowDown':
+          posY += speed;
+          break;
+        case 'ArrowLeft':
+          posX -= speed;
+          break;
+        case 'ArrowRight':
+          posX += speed;
+          break;
+      }
+      updatePosition();
+    });
+
+    // Initial position update
+    updatePosition();
+  </script>
 </body>
 </html>
