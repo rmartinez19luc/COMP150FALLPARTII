@@ -5,11 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medieval Portal</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #2c3e50;
+      font-family: Arial, sans-serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      background-color: #3498db;
+      border: none;
+      color: white;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Character styling with sprite */
+    #character {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-image: url('/static/sprites/Screenshot%202024-11-12%20135505.png'); /* Sprite image */
+      background-size: cover;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
 </head>
 <body>
   <h1>Welcome to the Medieval Portal</h1>
   <p>Armor lies on the floor. Would you like to sabotage the Knight General?</p>
   <button onclick="location.href='/medieval_minigame'">Sabotage the Knight General</button>
   <button onclick="window.location.href='/portals'">Go Back to Portals</button>
+
+  <!-- Character (Sprite) -->
+  <div id="character"></div>
+
+  <script>
+    // Get the character element
+    const character = document.getElementById('character');
+
+    // Starting position
+    let posX = window.innerWidth / 2;
+    let posY = window.innerHeight / 2;
+
+    // Speed of movement
+    const speed = 10;
+
+    // Update the character position on the screen
+    function updatePosition() {
+      character.style.left = `${posX}px`;
+      character.style.top = `${posY}px`;
+    }
+
+    // Listen for keydown events to move the character
+    window.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowUp':
+          posY -= speed;
+          break;
+        case 'ArrowDown':
+          posY += speed;
+          break;
+        case 'ArrowLeft':
+          posX -= speed;
+          break;
+        case 'ArrowRight':
+          posX += speed;
+          break;
+      }
+      updatePosition();
+    });
+
+    // Initial position update
+    updatePosition();
+  </script>
 </body>
 </html>
