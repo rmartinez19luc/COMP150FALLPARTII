@@ -146,6 +146,18 @@
                 background-position: 0% 50%;
             }
         }
+
+        /* Spotlight effect */
+        .spotlight {
+            position: absolute;
+            width: 30px;  /* Slightly larger than the cursor */
+            height: 30px; /* Same height to maintain a circular shape */
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%); /* Neon blue */
+            border-radius: 50%;
+            pointer-events: none;
+            transition: top 0.1s, left 0.1s;
+            z-index: 5;
+        }
     </style>
 </head>
 <body>
@@ -194,6 +206,9 @@
     <div class="hover-oval right-oval" id="right-oval">
         <div class="prompt">Do you want to fight the Cyborg Boss?</div>
     </div>
+
+    <!-- Spotlight -->
+    <div class="spotlight" id="spotlight"></div>
 
     <script src="game.js" defer></script>
     <script>
@@ -255,6 +270,14 @@
                     $(this).find('.prompt').fadeOut();
                 }
             );
+
+            // Spotlight effect
+            $(document).mousemove(function (e) {
+                $('#spotlight').css({
+                    left: e.pageX - $('#spotlight').width() / 2,
+                    top: e.pageY - $('#spotlight').height() / 2
+                });
+            });
         });
     </script>
 </body>
