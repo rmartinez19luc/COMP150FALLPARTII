@@ -6,15 +6,19 @@
     <title>Connect Four</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             text-align: center;
-            background-color: #f3f3f3;
+            background-image: url('https://example.com/medieval-background.jpg');
+            background-size: cover;
+            color: #d0c8a1; /* Light parchment color */
             margin: 0;
             padding: 0;
         }
 
         h1 {
-            color: #333;
+            font-size: 2.5em;
+            color: #8e5b3f; /* Dark brown */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
 
         #game-board {
@@ -23,37 +27,67 @@
             gap: 5px;
             justify-content: center;
             margin: 20px auto;
+            background-color: #4e3b31; /* Dark wooden board color */
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
         }
 
         .cell {
             width: 50px;
             height: 50px;
-            background-color: #eee;
-            border: 1px solid #ddd;
+            background-color: #d1b296; /* Light stone color */
+            border: 2px solid #8e5b3f; /* Dark border for medieval look */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .cell:hover {
+            background-color: #ab8f70; /* Slightly darker stone color on hover */
         }
 
         .cell.player {
-            background-color: red;
+            background-color: #a34736; /* Red as medieval warriors' color */
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
         }
 
         .cell.ai {
-            background-color: yellow;
+            background-color: #f4e04e; /* Gold color representing a knight's armor */
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
         }
 
         #message {
             margin-top: 20px;
-            font-size: 18px;
-            color: #555;
+            font-size: 20px;
+            color: #d0c8a1;
+            font-family: 'Garamond', serif;
         }
+
+        #navigate-button {
+            margin-top: 30px;
+            background-color: #8e5b3f; /* Dark brown button */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        #navigate-button:hover {
+            background-color: #6c4533; /* Darker brown for hover effect */
+        }
+
     </style>
 </head>
 <body>
-    <h1>Connect Four</h1>
+    <h1>Connect Four - Medieval Challenge</h1>
     <div id="game-board"></div>
     <div id="message"></div>
     <button id="navigate-button" onclick="goToLocation()">Back to Medieval Portal</button>
@@ -65,7 +99,6 @@
         const gameBoard = document.getElementById("game-board");
         const message = document.getElementById("message");
 
-        
         function createBoard() {
             gameBoard.innerHTML = "";
             for (let row = 0; row < ROWS; row++) {
@@ -146,7 +179,6 @@
         }
 
         function checkWin(player) {
-            // Check horizontal, vertical, and diagonal lines for a win
             for (let row = 0; row < ROWS; row++) {
                 for (let col = 0; col < COLUMNS; col++) {
                     if (
