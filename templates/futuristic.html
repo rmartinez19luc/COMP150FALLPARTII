@@ -158,6 +158,16 @@
             transition: top 0.1s, left 0.1s;
             z-index: 5;
         }
+
+        /* Character style */
+        #character {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: yellow; /* Placeholder color */
+            border-radius: 50%; /* Make it round */
+        }
+
     </style>
 </head>
 <body>
@@ -210,6 +220,9 @@
     <!-- Spotlight -->
     <div class="spotlight" id="spotlight"></div>
 
+    <!-- Character -->
+    <div id="character"></div>
+
     <script src="game.js" defer></script>
     <script>
         function startGemMinigame() {
@@ -252,31 +265,35 @@
                 }
             );
 
-            // Show prompts on hover for ovals
-            $('#left-oval').hover(
-                function () {
-                    $(this).find('.prompt').fadeIn();
-                },
-                function () {
-                    $(this).find('.prompt').fadeOut();
-                }
-            );
-
-            $('#right-oval').hover(
-                function () {
-                    $(this).find('.prompt').fadeIn();
-                },
-                function () {
-                    $(this).find('.prompt').fadeOut();
-                }
-            );
-
-            // Spotlight effect
-            $(document).mousemove(function (e) {
+            // Spotlight tracking cursor
+            $(document).mousemove(function (event) {
                 $('#spotlight').css({
-                    left: e.pageX - $('#spotlight').width() / 2,
-                    top: e.pageY - $('#spotlight').height() / 2
+                    top: event.clientY - 15 + 'px',
+                    left: event.clientX - 15 + 'px'
                 });
+            });
+
+            // Character movement
+            let character = document.getElementById('character');
+            let characterSpeed = 5;
+            let left = 0, top = 0;
+
+            $(document).keydown(function (e) {
+                if (e.key === 'ArrowUp') {
+                    top -= characterSpeed;
+                }
+                if (e.key === 'ArrowDown') {
+                    top += characterSpeed;
+                }
+                if (e.key === 'ArrowLeft') {
+                    left -= characterSpeed;
+                }
+                if (e.key === 'ArrowRight') {
+                    left += characterSpeed;
+                }
+
+                character.style.top = top + 'px';
+                character.style.left = left + 'px';
             });
         });
     </script>
