@@ -8,7 +8,11 @@
   <style>
     body {
       background-color: #2c3e50;
-      font-family: Arial, sans-serif;
+      background-image: url('/static/sprites/medieval_portal.jpg');
+      background-size: cover;
+      background-position: center 15%; /* Position the image with a vertical offset */
+      background-repeat: no-repeat;
+      font-family: 'Cinzel', serif;
       color: white;
       margin: 0;
       padding: 0;
@@ -17,7 +21,7 @@
 
     h1 {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 35px;
     }
 
     button {
@@ -35,59 +39,108 @@
       background-color: #2980b9;
     }
 
-    /* Character styling with sprite */
-    #character {
+    /* Character container styling */
+    #character-container {
       position: absolute;
+      top: 0%;
+      left: 0%;
+      transform: translate(0, 0);
+      display: flex;
+    }
+
+    /* Individual character images */
+    #character-container img {
       width: 50px;
       height: 50px;
-      background-image: url('/static/sprites/Screenshot%202024-11-12%20135505.png'); /* Sprite image */
-      background-size: cover;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      margin-right: 5px;
+    }
+
+    /* Popup Styling */
+    #popup {
+      display: none;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
   <h1>Welcome to the Medieval Portal</h1>
-  <p>Armor lies on the floor. Would you like to sabotage the Knight General?</p>
-  <button onclick="location.href='/medieval_minigame'">Sabotage the Knight General</button>
+
+  <!-- Popup message -->
+  <div id="popup">
+    <p>Armor lies on the floor. Would you like to sabotage the Knight General?</p>
+    <button onclick="location.href='/medieval_minigame'">Sabotage the Knight General</button>
+  </div>
+
+  <!-- Button to go back -->
   <button onclick="window.location.href='/portals'">Go Back to Portals</button>
 
-  <!-- Character (Sprite) -->
-  <div id="character"></div>
+  <!-- Character container with 4 images -->
+  <div id="character-container">
+    <img src="/static/sprites/knight.jpg" alt="Knight" id="knight">
+    <img src="/static/sprites/Mage.jpg" alt="Mage" id="mage">
+    <img src="/static/sprites/rouge..jpg" alt="Rouge" id="rouge">
+    <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper" id="timekeeper">
+  </div>
 
   <script>
-    // Get the character element
-    const character = document.getElementById('character');
+    // Get the character container and popup element
+    const characterContainer = document.getElementById('character-container');
+    const popup = document.getElementById('popup');
 
     // Starting position
-    let posX = window.innerWidth / 2;
-    let posY = window.innerHeight / 2;
+    let posX = window.innerWidth * 0.05;
+    let posY = window.innerHeight * 0.8;
 
     // Speed of movement
     const speed = 10;
 
-    // Update the character position on the screen
+    // Set padding so the character can't go too close to the left or right edges
+    const paddingX = 40;
+    const paddingY = 20;
+
+    // Get the viewport dimensions
+    const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
+    const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
+
+    // Define the trigger area for showing the popup (smaller range)
+    const triggerArea = {
+      minX: 550,  // smaller minimum X position to show popup
+      maxX: 650,  // smaller maximum X position to show popup
+      minY: 500,  // smaller minimum Y position to show popup
+      maxY: 600,  // smaller maximum Y position to show popup
+    };
+
+    // Update the character container position on the screen
     function updatePosition() {
-      character.style.left = `${posX}px`;
-      character.style.top = `${posY}px`;
+      characterContainer.style.left = `${posX}px`;
+      characterContainer.style.top = `${posY}px`;
+
+      // Check if the character is in the trigger area
+      if (posX >= triggerArea.minX && posX <= triggerArea.maxX && posY >= triggerArea.minY && posY <= triggerArea.maxY) {
+        popup.style.display = 'block';  // Show the popup
+        // Position the popup 50px to the left and 150px above the character (adjusted)
+        popup.style.left = `${posX - 165}px`;  // Move the popup 50px to the left
+        popup.style.top = `${posY - 175}px`;   // Move the popup 150px higher (further above)
+      } else {
+        popup.style.display = 'none';  // Hide the popup if not in the area
+      }
     }
 
-    // Listen for keydown events to move the character
+    // Listen for keydown events to move the character container
     window.addEventListener('keydown', (e) => {
       switch (e.key) {
-        case 'ArrowUp':
-          posY -= speed;
-          break;
-        case 'ArrowDown':
-          posY += speed;
-          break;
         case 'ArrowLeft':
-          posX -= speed;
+          if (posX > paddingX) posX -= speed; // Prevent moving past the left edge
           break;
         case 'ArrowRight':
-          posX += speed;
+          if (posX < maxX) posX += speed; // Prevent moving past the right edge
           break;
       }
       updatePosition();
