@@ -88,7 +88,7 @@
     <h1>Gem Jumper 3000</h1>
     <p>Move to collect gems before you run out of energy!</p>
     <div id="status">
-        <p>Energy: <span id="energy">15</span></p>
+        <p>Energy: <span id="energy">10</span></p>
         <p>Gems Collected: <span id="gemsCollected">0</span></p>
     </div>
     <div class="game-grid" id="gameGrid"></div>
@@ -103,7 +103,7 @@
 
     <script>
         const gridSize = 5;
-        let energy = 15;
+        let energy = 10;
         let gemsCollected = 0;
 
         const player = {
@@ -171,7 +171,7 @@
                     y: Math.floor(Math.random() * gridSize),
                     shape: 'gem-triangle'
                 });
-                energy += 2;
+                energy += 1;
                 energyDisplay.textContent = energy;
             }
 

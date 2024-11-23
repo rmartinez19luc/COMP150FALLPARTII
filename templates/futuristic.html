@@ -59,10 +59,10 @@
         .hover-oval {
             position: absolute;
             width: 20px;
-            height: 80%;
+            height: 30%; /* Reduced height for shorter ovals */
             background-color: lightblue;
             opacity: 0.8;
-            border-radius: 50%; /* Makes it look like an ellipse */
+            border-radius: 50%; /* Keeps it elliptical */
             cursor: pointer;
             transition: opacity 0.3s ease;
         }
@@ -71,11 +71,12 @@
         }
         .left-oval {
             left: 50px;
-            top: 10%;
+            top: 35%; /* Centers vertically by adjusting this */
         }
+
         .right-oval {
             right: 50px;
-            top: 10%;
+            top: 35%; /* Centers vertically by adjusting this */
         }
         .prompt {
             display: none;
@@ -89,9 +90,9 @@
         }
 
         .gem-button {
-            position: absolute;
-            top: 30%; /* Adjusted vertical position */
-            left: 20px; /* Adjusted horizontal position for proximity to the left oval */
+            position: absolute; /* Ensure it aligns with the oval */
+            top: 35%; /* Match the vertical positioning of the left oval */
+            right: 100px; /* Place it right next to the left oval */
             width: 100px;
             height: 100px;
             background: linear-gradient(45deg, red, orange, yellow, green, blue, purple);
