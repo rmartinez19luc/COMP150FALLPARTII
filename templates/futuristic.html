@@ -9,6 +9,7 @@
     <style>
         body {
             background-color: purple;
+              background-image: url('/static/sprites/cyberchase\ bkgd.webp');
             font-family: 'Orbitron', sans-serif;
             color: white;
             margin: 0;
@@ -68,6 +69,9 @@
         }
         .hover-oval:hover {
             opacity: 1;
+        }
+        .hover-oval:hover .prompt {
+            display: block;
         }
         .left-oval {
             left: 50px;
@@ -168,6 +172,7 @@
             border-radius: 50%; /* Make it round */
         }
 
+
     </style>
 </head>
 <body>
@@ -222,7 +227,8 @@
 
     <!-- Character -->
     <div id="character"></div>
-
+    
+    
     <script src="game.js" defer></script>
     <script>
         function startGemMinigame() {
@@ -278,6 +284,63 @@
             let characterSpeed = 5;
             let left = 0, top = 0;
 
+            // Detect collision with portals
+            function checkCollision(character, portal) {
+                let charRect = character.getBoundingClientRect();
+                let portalRect = portal.getBoundingClientRect();
+
+                return !(
+                    charRect.right < portalRect.left ||
+                    charRect.left > portalRect.right ||
+                    charRect.bottom < portalRect.top ||
+                    charRect.top > portalRect.bottom
+                );
+            }
+            function isPointInsideElement(x, y, element) {
+                let elemRect = element.getBoundingClientRect();
+                let elemX = x - elemRect.left;
+                let elemY = y - elemRect.top;
+
+                // Check if the point is inside the clipped area
+                return element.matches(':hover') || (elemX >= 0 && elemY >= 0 && elemX <= elemRect.width && elemY <= elemRect.height);
+            }
+            function handleCollision() {
+                // Check collisions with doors
+                document.querySelectorAll('.door').forEach(door => {
+                    if (checkCollision(character, door)) {
+                        door.querySelector('.door-prompt').style.display = 'block';
+                    } else {
+                        door.querySelector('.door-prompt').style.display = 'none';
+                    }
+                });
+
+                // Check collisions with ovals
+                document.querySelectorAll('.hover-oval').forEach(oval => {
+                    let prompt = oval.querySelector('.prompt');
+                    if (checkCollision(character, oval)) {
+                        prompt.style.display = 'block';
+                    } else {
+                        prompt.style.display = 'none';
+                    }
+                });
+
+                // Check collision with the gem button
+            let gemButton = document.querySelector('.gem-button');
+                if (gemButton) {
+                    let gemTooltip = gemButton.closest('.gem-button-container').querySelector('.gem-tooltip');
+
+                    // Check if the center of the character is inside the gem button
+                    let charCenterX = character.getBoundingClientRect().left + character.offsetWidth / 2;
+                    let charCenterY = character.getBoundingClientRect().top + character.offsetHeight / 2;
+
+                    if (isPointInsideElement(charCenterX, charCenterY, gemButton)) {
+                        gemTooltip.style.display = 'block';
+                    } else {
+                        gemTooltip.style.display = 'none';
+                    }
+                }
+            }
+
             $(document).keydown(function (e) {
                 if (e.key === 'ArrowUp') {
                     top -= characterSpeed;
@@ -294,8 +357,11 @@
 
                 character.style.top = top + 'px';
                 character.style.left = left + 'px';
+
+                handleCollision(); // Check for collisions after moving
             });
         });
+    
     </script>
 </body>
 </html>
