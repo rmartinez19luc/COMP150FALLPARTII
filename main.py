@@ -71,9 +71,13 @@ def futuristic():
 def futuristic_minigame():
     return render_template('futuristic_minigame.html')
 
+@app.route('/Boss')
+def Boss():
+    return render_template('Boss.html')
 
-
-
+@app.route('/boss_minigame')
+def boss_minigame():
+    return render_template('boss_minigame.html')
 
 @app.route('/boss')
 def boss():
