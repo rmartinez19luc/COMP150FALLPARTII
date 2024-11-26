@@ -3,152 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ancient Portal</title>
+  <title>Final Boss</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
-      font-family: 'Times New Roman', Times, serif;
-      background: linear-gradient(to bottom, #d0b18f, #8e7d53); /* Ancient stone gradient */
-      color: #6e4c3b; /* Dark brown text */
-      text-align: center;
+      background-color: #000;
+      background-image: url('/static/sprites/ancient_portal.jpg');
+      background-size: cover;
+      background-position: center 15%; /* Position the image with a vertical offset */
+      background-repeat: no-repeat;
+      font-family: 'Cinzel', serif;
+      color: white;
       margin: 0;
       padding: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      overflow: hidden; /* Prevent scrollbars */
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 3em;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-      color: #8b5a2b; /* Ancient gold color */
-    }
-
-    p {
-      font-size: 1.5em;
-      color: #4e3629;
+      text-align: center;
+      margin-top: 35px;
     }
 
     button {
-      background-color: #8e7d53; /* Ancient stone-like color */
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-size: 1.2em;
+      font-size: 16px;
+      padding: 10px 20px;
       margin: 10px;
-      border-radius: 5px;
       cursor: pointer;
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-      transition: background-color 0.3s ease;
+      background-color: #000;
+      border: none;
+      color: white;
+      border-radius: 5px;
     }
 
     button:hover {
-      background-color: #7b6a49; /* Darker shade on hover */
+      background-color: #2980b9;
     }
 
-    .portal-container {
+    /* Character container styling */
+    #character-container {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      transform: translate(0, 0);
       display: flex;
-      justify-content: space-between;
-      margin-top: 50px;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
     }
 
-    .portal {
-      width: 120px;
-      height: 200px;
-      border-radius: 50%;
-      background: #7a4f31; /* Portal color */
-      border: 5px solid #4a3023; /* Dark border */
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      position: relative;
-      transition: transform 0.3s ease;
-    }
-
-    .portal:hover {
-      transform: scale(1.1);
-    }
-
-    .portal.left {
-      background: linear-gradient(135deg, #6e4b33, #4a2e1f);
-    }
-
-    .portal.right {
-      background: linear-gradient(135deg, #6e4b33, #4a2e1f);
-    }
-
-    .portal::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
+    /* Individual character images */
+    #character-container img {
       width: 50px;
       height: 50px;
-      background-color: #fff;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
+      margin-right: 5px;
     }
 
-    /* Character styling */
-    #character {
+    /* Popup Styling */
+    #popup {
+      display: none;
       position: absolute;
-      width: 50px;
-      height: 50px;
-      background-image: url('/static/sprites/Screenshot%202024-11-12%20135505.png'); /* Corrected the path */
-      background-size: cover;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      z-index: 1000;
+    }
+
+    #popup-right {
+      display: none;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      z-index: 1000;
     }
 
   </style>
 </head>
 <body>
-  <h1>Welcome to the Ancient Portal</h1>
-  <p>A hidden tunnel lies ahead. Would you like to enter?</p>
-  <button onclick="location.href='/ancient_minigame'">Enter hidden tunnel</button>
-  <button onclick="window.location.href='/portals'">Go Back to Portals</button>
+  <h1>Welcome to the Ancient Portal!</h1>
 
-  <div class="portal-container">
-    <div class="portal left"></div>
-    <div class="portal right"></div>
+  <!-- Popup message -->
+  <div id="popup">
+    <p>There lies a undergroung passage. Do you wish to enter?</p>
+    <button onclick="location.href='/ancient_minigame'">Enter</button>
   </div>
 
-  <div id="character"></div>
+  <div id="popup-right">
+    <p>The Snake General senses your presence. Do you wish to face him?</p>
+    <button onclick="location.href='/ancient_snakeboss'">Face the Snake General</button>
+  </div>
+
+  <!-- Button to go back -->
+  <button onclick="window.location.href='/portals'">Go Back to Portals</button>
+
+  <!-- Character container with 4 images -->
+  <div id="character-container">
+    <img src="/static/sprites/knight.jpg" alt="Knight" id="knight">
+    <img src="/static/sprites/Mage.jpg" alt="Mage" id="mage">
+    <img src="/static/sprites/rouge..jpg" alt="Rouge" id="rouge">
+    <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper" id="timekeeper">
+  </div>
 
   <script>
-    // Get the character element
-    const character = document.getElementById('character');
-
+    // Get the character container and popup element
+    const characterContainer = document.getElementById('character-container');
+    const popup = document.getElementById('popup');
+    const popupRight = document.getElementById('popup-right');
+    
     // Starting position
-    let posX = window.innerWidth / 2;
-    let posY = window.innerHeight / 2;
+    let posX = window.innerWidth * 0.05;
+    let posY = window.innerHeight * 0.8;
 
     // Speed of movement
     const speed = 10;
 
-    // Update the character position on the screen
-    function updatePosition() {
-      character.style.left = `${posX}px`;
-      character.style.top = `${posY}px`;
-    }
+    // Set padding so the character can't go too close to the left or right edges
+    const paddingX = 40;
+    const paddingY = 20;
 
-    // Listen for keydown events to move the character
+    // Get the viewport dimensions
+    const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
+    const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
+
+    // Define the trigger area for showing the popup (smaller range)
+    const triggerAreaLeft = {
+      minX: 550,  // smaller minimum X position to show popup
+      maxX: 600,  // smaller maximum X position to show popup
+      minY: 500,  // smaller minimum Y position to show popup
+      maxY: 600,  // smaller maximum Y position to show popup
+    };
+
+    const triggerAreaRight = {
+      minX: 1000,
+      maxX: 1050,
+      minY: 500,
+      maxY: 600,
+    };
+
+    const updatePosition = () => {
+      characterContainer.style.left = `${posX}px`;
+      characterContainer.style.top = `${posY}px`;
+
+      if (
+        posX >= triggerAreaLeft.minX &&
+        posX <= triggerAreaLeft.maxX &&
+        posY >= triggerAreaLeft.minY &&
+        posY <= triggerAreaLeft.maxY
+      ) {
+        popup.style.display = 'block';
+        popup.style.left = `${posX - 165}px`;
+        popup.style.top = `${posY - 175}px`;
+      } else {
+        popup.style.display = 'none';
+      }
+
+      if (
+        posX >= triggerAreaRight.minX &&
+        posX <= triggerAreaRight.maxX &&
+        posY >= triggerAreaRight.minY &&
+        posY <= triggerAreaRight.maxY
+      ) {
+        popupRight.style.display = 'block';
+        popupRight.style.left = `${posX - 165}px`;
+        popupRight.style.top = `${posY - 175}px`;
+      } else {
+        popupRight.style.display = 'none';
+      }
+    };
+
+    // Listen for keydown events to move the character container
     window.addEventListener('keydown', (e) => {
       switch (e.key) {
-        case 'ArrowUp':
-          posY -= speed;
-          break;
-        case 'ArrowDown':
-          posY += speed;
-          break;
         case 'ArrowLeft':
-          posX -= speed;
+          if (posX > paddingX) posX -= speed; // Prevent moving past the left edge
           break;
         case 'ArrowRight':
-          posX += speed;
+          if (posX < maxX) posX += speed; // Prevent moving past the right edge
           break;
       }
       updatePosition();

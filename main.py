@@ -62,6 +62,9 @@ def ancient():
 def ancient_minigame():
     return render_template('ancient_minigame.html')
 
+@app.route('/ancient_snakeboss')
+def ancient_snakeboss():
+    return render_template('ancient_snakeboss.html')
 
 @app.route('/medieval')
 def medieval():
