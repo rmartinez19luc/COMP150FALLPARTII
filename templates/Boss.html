@@ -3,13 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Final Boss Portal</title>
+  <title>Final Boss</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #000;
+      background-image: url('/static/sprites/Bertek_background.gif');
+      background-size: cover;
+      background-position: center 100px; /* Position the image with a vertical offset */
+      background-repeat: no-repeat;
+      font-family: 'Cinzel', serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 35px;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      background-color: #000;
+      border: none;
+      color: white;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Character container styling */
+    #character-container {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      transform: translate(0, 0);
+      display: flex;
+    }
+
+    /* Individual character images */
+    #character-container img {
+      width: 50px;
+      height: 50px;
+      margin-right: 5px;
+    }
+
+    /* Popup Styling */
+    #popup {
+      display: none;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      z-index: 1000;
+    }
+
+    #popup-right {
+      display: none;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      z-index: 1000;
+    }
+
+  </style>
 </head>
 <body>
-  <h1>Welcome to the Bertak's Portal</h1>
-  <p>Bertak offers to make a deal with you. Would you like to gamble against him?</p>
-  <button onclick="location.href='/boss_minigame'">Gamble Away</button>
-  <a href="/portals">Return to Main Portal</a>
+  <h1>Welcome to Bertak's Evil Domain</h1>
+
+  <!-- Popup message -->
+  <div id="popup">
+    <p>Bertak offers you a deal. You must beat him in a game of Blackjack. Do you accept?</p>
+    <button onclick="location.href='/boss_minigame'">Gambel away!</button>
+  </div>
+
+  <div id="popup-right">
+    <p>Bertak awaits for your arrival. Do you wish to proceed?</p>
+    <button onclick="location.href='/bertak_boss'">Face the Final Boss!</button>
+  </div>
+
+  <!-- Button to go back -->
+  <button onclick="window.location.href='/portals'">Go Back to Portals</button>
+
+  <!-- Character container with 4 images -->
+  <div id="character-container">
+    <img src="/static/sprites/knight.jpg" alt="Knight" id="knight">
+    <img src="/static/sprites/Mage.jpg" alt="Mage" id="mage">
+    <img src="/static/sprites/rouge..jpg" alt="Rouge" id="rouge">
+    <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper" id="timekeeper">
+  </div>
+
+  <script>
+    // Get the character container and popup element
+    const characterContainer = document.getElementById('character-container');
+    const popup = document.getElementById('popup');
+    const popupRight = document.getElementById('popup-right');
+    
+    // Starting position
+    let posX = window.innerWidth * 0.05;
+    let posY = window.innerHeight * 0.8;
+
+    // Speed of movement
+    const speed = 10;
+
+    // Set padding so the character can't go too close to the left or right edges
+    const paddingX = 40;
+    const paddingY = 20;
+
+    // Get the viewport dimensions
+    const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
+    const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
+
+    // Define the trigger area for showing the popup (smaller range)
+    const triggerAreaLeft = {
+      minX: 550,  // smaller minimum X position to show popup
+      maxX: 600,  // smaller maximum X position to show popup
+      minY: 500,  // smaller minimum Y position to show popup
+      maxY: 600,  // smaller maximum Y position to show popup
+    };
+
+    const triggerAreaRight = {
+      minX: 1000,
+      maxX: 1050,
+      minY: 500,
+      maxY: 600,
+    };
+
+    const updatePosition = () => {
+      characterContainer.style.left = `${posX}px`;
+      characterContainer.style.top = `${posY}px`;
+
+      if (
+        posX >= triggerAreaLeft.minX &&
+        posX <= triggerAreaLeft.maxX &&
+        posY >= triggerAreaLeft.minY &&
+        posY <= triggerAreaLeft.maxY
+      ) {
+        popup.style.display = 'block';
+        popup.style.left = `${posX - 165}px`;
+        popup.style.top = `${posY - 175}px`;
+      } else {
+        popup.style.display = 'none';
+      }
+
+      if (
+        posX >= triggerAreaRight.minX &&
+        posX <= triggerAreaRight.maxX &&
+        posY >= triggerAreaRight.minY &&
+        posY <= triggerAreaRight.maxY
+      ) {
+        popupRight.style.display = 'block';
+        popupRight.style.left = `${posX - 165}px`;
+        popupRight.style.top = `${posY - 175}px`;
+      } else {
+        popupRight.style.display = 'none';
+      }
+    };
+
+    // Listen for keydown events to move the character container
+    window.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          if (posX > paddingX) posX -= speed; // Prevent moving past the left edge
+          break;
+        case 'ArrowRight':
+          if (posX < maxX) posX += speed; // Prevent moving past the right edge
+          break;
+      }
+      updatePosition();
+    });
+
+    // Initial position update
+    updatePosition();
+  </script>
 </body>
 </html>

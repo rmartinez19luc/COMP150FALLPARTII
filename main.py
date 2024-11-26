@@ -79,10 +79,14 @@ def Boss():
 def boss_minigame():
     return render_template('boss_minigame.html')
 
-@app.route('/boss')
+@app.route('/bertak_boss')
+def bertak_boss():
+    return render_template('bertak_boss.html')
+
+@app.route('/Boss')
 def boss():
     # Display current health states for both player and boss
-    return render_template('boss.html', player_health=player_health, boss_health=boss_health)
+    return render_template('Boss.html', player_health=player_health, boss_health=boss_health)
 
 
 @app.route('/futuristic_minigame')
