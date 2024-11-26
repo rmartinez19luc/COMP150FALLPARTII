@@ -1,371 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Portal</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            background-color: purple;
-              background-image: url('/static/sprites/cyberchase\ bkgd.webp');
-            font-family: 'Orbitron', sans-serif;
-            color: white;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        .portal-container {
-            text-align: center;
-            padding: 20px;
-        }
-        button {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            padding: 10px 20px;
-            border: none;
-            background-color: white;
-            color: purple;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: lightgray;
-        }
-        .door {
-            margin: 10px;
-            border: 2px solid white;
-            padding: 10px;
-            border-radius: 10px;
-            display: inline-block;
-            width: 150px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .door:hover {
-            transform: scale(1.1);
-        }
-        .door-prompt {
-            display: none;
-            font-size: 14px;
-            color: black;
-            background-color: white;
-            padding: 5px;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .hover-oval {
-            position: absolute;
-            width: 20px;
-            height: 30%; /* Reduced height for shorter ovals */
-            background-color: lightblue;
-            opacity: 0.8;
-            border-radius: 50%; /* Keeps it elliptical */
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-        .hover-oval:hover {
-            opacity: 1;
-        }
-        .hover-oval:hover .prompt {
-            display: block;
-        }
-        .left-oval {
-            left: 50px;
-            top: 35%; /* Centers vertically by adjusting this */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Boss</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #000;
+      background-image: url('/static/sprites/cyberchase\ bkgd.webp');
+      background-size: cover;
+      background-position: center 0%; /* Position the image with a vertical offset */
+      background-repeat: no-repeat;
+      font-family: 'Cinzel', serif;
+      color: white;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
 
-        .right-oval {
-            right: 50px;
-            top: 35%; /* Centers vertically by adjusting this */
-        }
-        .prompt {
-            display: none;
-            position: absolute;
-            color: black;
-            background-color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            z-index: 10;
-        }
-        
-        .gem-button {
-            position: absolute; /* Ensure it aligns with the oval */
-            top: 35%; /* Match the vertical positioning of the left oval */
-            right: 100px; /* Place it right next to the left oval */
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(45deg, red, orange, yellow, green, blue, purple);
-            background-size: 300% 300%;
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            border: 2px solid white;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            animation: colorShift 3s infinite;
-            cursor: pointer;
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
-        }
+    h1 {
+      text-align: center;
+      margin-top: 35px;
+    }
 
-        .gem-button:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 255, 1);
-            transform: scale(1.1);
-        }
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      background-color: #000;
+      border: none;
+      color: white;
+      border-radius: 5px;
+    }
 
-        .gem-button-container {
-            position: relative;
-            display: inline-block;
-        }
+    button:hover {
+      background-color: #2980b9;
+    }
 
-        .gem-tooltip {
-            display: none;
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: white;
-            color: black;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            white-space: nowrap;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-        }
+    /* Character container styling */
+    #character-container {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      transform: translate(0, 0);
+      display: flex;
+    }
 
-        .gem-button-container:hover .gem-tooltip {
-            display: block;
-        }
+    /* Individual character images */
+    #character-container img {
+      width: 50px;
+      height: 50px;
+      margin-right: 5px;
+    }
 
-        @keyframes colorShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
+    /* Popup Styling */
+    #popup {
+      display: none;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      z-index: 1000;
+    }
 
-        /* Spotlight effect */
-        .spotlight {
-            position: absolute;
-            width: 30px;  /* Slightly larger than the cursor */
-            height: 30px; /* Same height to maintain a circular shape */
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%); /* Neon blue */
-            border-radius: 50%;
-            pointer-events: none;
-            transition: top 0.1s, left 0.1s;
-            z-index: 5;
-        }
+    #popup-right {
+      display: none;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      z-index: 1000;
+    }
 
-        /* Character style */
-        #character {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: yellow; /* Placeholder color */
-            border-radius: 50%; /* Make it round */
-        }
-
-
-    </style>
+  </style>
 </head>
 <body>
-    <h1>Futuristic Portal</h1>
+  <h1>Welcome to the Futuristic Portal!</h1>
+
+  <!-- Popup message -->
+  <div id="popup">
+    <p>A gem lies on the ground. Would you like to inspect it?</p>
+    <button onclick="location.href='/futuristic_minigame'">Inspect the gem</button>
+  </div>
+
+  <div id="popup-right">
+    <p>The Cyborg General noticed the malware you have implanted. Do you wish to face him?</p>
+    <button onclick="location.href='/cyborg_boss'">Face the Cyborg General</button>
+  </div>
+
+  <!-- Button to go back -->
+  <button onclick="window.location.href='/portals'">Go Back to Portals</button>
+
+  <!-- Character container with 4 images -->
+  <div id="character-container">
+    <img src="/static/sprites/knight.jpg" alt="Knight" id="knight">
+    <img src="/static/sprites/Mage.jpg" alt="Mage" id="mage">
+    <img src="/static/sprites/rouge..jpg" alt="Rouge" id="rouge">
+    <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper" id="timekeeper">
+  </div>
+
+  <script>
+    // Get the character container and popup element
+    const characterContainer = document.getElementById('character-container');
+    const popup = document.getElementById('popup');
+    const popupRight = document.getElementById('popup-right');
     
-    <div class="portal-container">
-        <!-- Door 1 -->
-        <div class="door" id="door1">
-            <div class="door-prompt">Step into the future and face the Cyborg Boss!</div>
-            <p>Door 1</p>
-        </div>
+    // Starting position
+    let posX = window.innerWidth * 0.05;
+    let posY = window.innerHeight * 0.8;
 
-        <!-- Door 2 -->
-        <div class="door" id="door2">
-            <div class="door-prompt">Explore the secrets of advanced technology!</div>
-            <p>Door 2</p>
-        </div>
+    // Speed of movement
+    const speed = 10;
 
-        <!-- Door 3 -->
-        <div class="door" id="door3">
-            <div class="door-prompt">Unlock hidden powers beyond the portal!</div>
-            <p>Door 3</p>
-        </div>
+    // Set padding so the character can't go too close to the left or right edges
+    const paddingX = 40;
+    const paddingY = 20;
 
-        <p>Welcome to the futuristic world! Ready to play the gem minigame?</p>
-        <div class="gem-button-container">
-            <div class="gem-button" onclick="window.location.href='/futuristic_minigame'"></div>
-            <div class="gem-tooltip">Start Gem Minigame</div>
-        </div>
-        <button onclick="window.location.href='/portals'">Go Back to Portals</button>
-        <button onclick="window.location.href='/cyborg_boss'">Go to Cyborg Boss</button>
-        
-        <div id="gem-minigame-container" style="display: none;">
-            <h2>Gem Minigame</h2>
-            <div id="gem-minigame-board"></div>
-            <div id="gem-minigame-score"></div>
-            <button onclick="returnToPortal()">Back to Portal</button>
-        </div>
-    </div>
+    // Get the viewport dimensions
+    const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
+    const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
 
-    <!-- Left Oval -->
-    <div class="hover-oval left-oval" id="left-oval">
-        <div class="prompt">Do you want to go back to the other portals?</div>
-    </div>
+    // Define the trigger area for showing the popup (smaller range)
+    const triggerAreaLeft = {
+      minX: 550,  // smaller minimum X position to show popup
+      maxX: 600,  // smaller maximum X position to show popup
+      minY: 500,  // smaller minimum Y position to show popup
+      maxY: 600,  // smaller maximum Y position to show popup
+    };
 
-    <!-- Right Oval -->
-    <div class="hover-oval right-oval" id="right-oval">
-        <div class="prompt">Do you want to fight the Cyborg Boss?</div>
-    </div>
+    const triggerAreaRight = {
+      minX: 1000,
+      maxX: 1050,
+      minY: 500,
+      maxY: 600,
+    };
 
-    <!-- Spotlight -->
-    <div class="spotlight" id="spotlight"></div>
+    const updatePosition = () => {
+      characterContainer.style.left = `${posX}px`;
+      characterContainer.style.top = `${posY}px`;
 
-    <!-- Character -->
-    <div id="character"></div>
-    
-    
-    <script src="game.js" defer></script>
-    <script>
-        function startGemMinigame() {
-            document.querySelector('.portal-container').style.display = 'none';
-            document.getElementById('gem-minigame-container').style.display = 'block';
-            startGemGame();
-        }
+      if (
+        posX >= triggerAreaLeft.minX &&
+        posX <= triggerAreaLeft.maxX &&
+        posY >= triggerAreaLeft.minY &&
+        posY <= triggerAreaLeft.maxY
+      ) {
+        popup.style.display = 'block';
+        popup.style.left = `${posX - 165}px`;
+        popup.style.top = `${posY - 175}px`;
+      } else {
+        popup.style.display = 'none';
+      }
 
-        function returnToPortal() {
-            document.querySelector('.portal-container').style.display = 'block';
-            document.getElementById('gem-minigame-container').style.display = 'none';
-        }
+      if (
+        posX >= triggerAreaRight.minX &&
+        posX <= triggerAreaRight.maxX &&
+        posY >= triggerAreaRight.minY &&
+        posY <= triggerAreaRight.maxY
+      ) {
+        popupRight.style.display = 'block';
+        popupRight.style.left = `${posX - 165}px`;
+        popupRight.style.top = `${posY - 175}px`;
+      } else {
+        popupRight.style.display = 'none';
+      }
+    };
 
-        $(document).ready(function () {
-            // Show door prompts on hover
-            $('#door1').hover(
-                function () {
-                    $(this).find('.door-prompt').fadeIn();
-                },
-                function () {
-                    $(this).find('.door-prompt').fadeOut();
-                }
-            );
+    // Listen for keydown events to move the character container
+    window.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          if (posX > paddingX) posX -= speed; // Prevent moving past the left edge
+          break;
+        case 'ArrowRight':
+          if (posX < maxX) posX += speed; // Prevent moving past the right edge
+          break;
+      }
+      updatePosition();
+    });
 
-            $('#door2').hover(
-                function () {
-                    $(this).find('.door-prompt').fadeIn();
-                },
-                function () {
-                    $(this).find('.door-prompt').fadeOut();
-                }
-            );
-
-            $('#door3').hover(
-                function () {
-                    $(this).find('.door-prompt').fadeIn();
-                },
-                function () {
-                    $(this).find('.door-prompt').fadeOut();
-                }
-            );
-
-            // Spotlight tracking cursor
-            $(document).mousemove(function (event) {
-                $('#spotlight').css({
-                    top: event.clientY - 15 + 'px',
-                    left: event.clientX - 15 + 'px'
-                });
-            });
-
-            // Character movement
-            let character = document.getElementById('character');
-            let characterSpeed = 5;
-            let left = 0, top = 0;
-
-            // Detect collision with portals
-            function checkCollision(character, portal) {
-                let charRect = character.getBoundingClientRect();
-                let portalRect = portal.getBoundingClientRect();
-
-                return !(
-                    charRect.right < portalRect.left ||
-                    charRect.left > portalRect.right ||
-                    charRect.bottom < portalRect.top ||
-                    charRect.top > portalRect.bottom
-                );
-            }
-            function isPointInsideElement(x, y, element) {
-                let elemRect = element.getBoundingClientRect();
-                let elemX = x - elemRect.left;
-                let elemY = y - elemRect.top;
-
-                // Check if the point is inside the clipped area
-                return element.matches(':hover') || (elemX >= 0 && elemY >= 0 && elemX <= elemRect.width && elemY <= elemRect.height);
-            }
-            function handleCollision() {
-                // Check collisions with doors
-                document.querySelectorAll('.door').forEach(door => {
-                    if (checkCollision(character, door)) {
-                        door.querySelector('.door-prompt').style.display = 'block';
-                    } else {
-                        door.querySelector('.door-prompt').style.display = 'none';
-                    }
-                });
-
-                // Check collisions with ovals
-                document.querySelectorAll('.hover-oval').forEach(oval => {
-                    let prompt = oval.querySelector('.prompt');
-                    if (checkCollision(character, oval)) {
-                        prompt.style.display = 'block';
-                    } else {
-                        prompt.style.display = 'none';
-                    }
-                });
-
-                // Check collision with the gem button
-            let gemButton = document.querySelector('.gem-button');
-                if (gemButton) {
-                    let gemTooltip = gemButton.closest('.gem-button-container').querySelector('.gem-tooltip');
-
-                    // Check if the center of the character is inside the gem button
-                    let charCenterX = character.getBoundingClientRect().left + character.offsetWidth / 2;
-                    let charCenterY = character.getBoundingClientRect().top + character.offsetHeight / 2;
-
-                    if (isPointInsideElement(charCenterX, charCenterY, gemButton)) {
-                        gemTooltip.style.display = 'block';
-                    } else {
-                        gemTooltip.style.display = 'none';
-                    }
-                }
-            }
-
-            $(document).keydown(function (e) {
-                if (e.key === 'ArrowUp') {
-                    top -= characterSpeed;
-                }
-                if (e.key === 'ArrowDown') {
-                    top += characterSpeed;
-                }
-                if (e.key === 'ArrowLeft') {
-                    left -= characterSpeed;
-                }
-                if (e.key === 'ArrowRight') {
-                    left += characterSpeed;
-                }
-
-                character.style.top = top + 'px';
-                character.style.left = left + 'px';
-
-                handleCollision(); // Check for collisions after moving
-            });
-        });
-
-
-
-
-    </script>
+    // Initial position update
+    updatePosition();
+  </script>
 </body>
 </html>
