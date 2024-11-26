@@ -4,35 +4,43 @@ from flask import Flask, jsonify, render_template, request
 
 app = Flask(__name__)
 
-count = 0
-
-# Global variables for game state (e.g., player health, boss health)
 player_health = 100
 boss_health = 120
 
-
-# Cyborg Boss Battle Logic (For simplicity, kept as a function)
-def cyborg_boss_battle(action):
+@app.route('/cyborg_battle', methods=['POST'])
+def cyborg_battle():
     global player_health, boss_health
+
+    # Get action from the request
+    action = request.json.get("action")
+    result = ""  # Initialize the result as an empty string
 
     if action == "attack":
         damage = random.randint(10, 20)
         boss_health -= damage
-        return f"You strike the Cyborg Boss for {damage} damage!"
+        result = f"You strike the Cyborg Boss for {damage} damage!"
 
     elif action == "defend":
-        return "You brace for the boss's attack!"
+        result = "You brace for the boss's attack!"
 
     elif action == "run":
-        return "You run away from the fight!"
+        result = "You run away from the fight!"
 
     # Cyborg Boss attack (Random damage)
     if boss_health > 0:
         boss_damage = random.randint(5, 15)
         player_health -= boss_damage
-        return f"The Cyborg Boss strikes you for {boss_damage} damage!"
+        result += f" The Cyborg Boss strikes you for {boss_damage} damage!"  # Correct concatenation
 
-    return ""
+    # Return the updated battle state
+    return jsonify({
+        "player_health": player_health,
+        "boss_health": boss_health,
+        "message": result
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 @app.route('/')
