@@ -92,7 +92,7 @@
             font-size: 14px;
             z-index: 10;
         }
-
+        
         .gem-button {
             position: absolute; /* Ensure it aligns with the oval */
             top: 35%; /* Match the vertical positioning of the left oval */
@@ -177,7 +177,7 @@
 </head>
 <body>
     <h1>Futuristic Portal</h1>
-
+    
     <div class="portal-container">
         <!-- Door 1 -->
         <div class="door" id="door1">
@@ -203,7 +203,8 @@
             <div class="gem-tooltip">Start Gem Minigame</div>
         </div>
         <button onclick="window.location.href='/portals'">Go Back to Portals</button>
-
+        <button onclick="window.location.href='/cyborg_boss'">Go to Cyborg Boss</button>
+        
         <div id="gem-minigame-container" style="display: none;">
             <h2>Gem Minigame</h2>
             <div id="gem-minigame-board"></div>
@@ -361,7 +362,10 @@
                 handleCollision(); // Check for collisions after moving
             });
         });
-    
+
+
+
+
     </script>
 </body>
 </html>

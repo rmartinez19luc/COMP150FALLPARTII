@@ -71,6 +71,10 @@ def futuristic():
 def futuristic_minigame():
     return render_template('futuristic_minigame.html')
 
+@app.route('/cyborg_boss')
+def cyborg_boss():
+    return render_template('cyborg_boss.html')
+
 @app.route('/Boss')
 def Boss():
     return render_template('Boss.html')
