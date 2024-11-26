@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyborg Boss Battle</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
     <h1>Cyborg Boss Battle</h1>
@@ -20,20 +20,55 @@
         <h2>You are playing as: <span id="character-class"></span></h2>
         <div id="game-area">
             <div id="player">
-                <img id="player-sprite" src="sprites/placeholder.png" alt="Player Sprite">
+                <img id="player-sprite" src="static/sprites/placeholder.png" alt="Player Sprite">
             </div>
             <div id="boss">
-                <img id="boss-sprite" src="sprites/cyborg-boss.png" alt="Cyborg Boss">
+                <img id="boss-sprite" src="static/sprites/cyborg_boss.jpg" alt="Cyborg Boss">
                 <p id="boss-health">Boss Health: 100</p>
             </div>
         </div>
         <div id="controls">
             <button onclick="attack()">Attack</button>
             <button onclick="specialAttack()">Special Attack</button>
+            <button onclick="goBack()">Go Back</button>
         </div>
         <p id="message"></p>
     </div>
 
-    <script src="script.js"></script>
+    <script src="static/script.js"></script>
+    <script>
+        function selectClass(character) {
+            // Change the displayed character class
+            document.getElementById('character-class').innerText = character;
+            
+            // Change the player's sprite based on the character selected
+            const spriteMap = {
+                'Mage': 'static/sprites/Mage.jpg',
+                'Rogue': 'static/sprites/rouge..jpg',
+                'Time Keeper': 'static/sprites/timekeeper.jpg',
+                'Knight': 'static/sprites/knight.jpg'
+            };
+
+            // Set the new sprite image based on the character selected
+            document.getElementById('player-sprite').src = spriteMap[character] || 'static/sprites/placeholder.png';
+            
+            // Show the battle screen after character selection
+            document.getElementById('class-selection').style.display = 'none';
+            document.getElementById('battle').style.display = 'block';
+        }
+
+        function attack() {
+            document.getElementById('message').innerText = 'You attacked the Cyborg Boss!';
+        }
+
+        function specialAttack() {
+            document.getElementById('message').innerText = 'You used a special attack!';
+        }
+        
+        function goBack() {
+            document.getElementById('battle').style.display = 'none';
+            document.getElementById('class-selection').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
