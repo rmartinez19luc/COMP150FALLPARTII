@@ -70,7 +70,7 @@
     .gem-button {
       position: absolute;
       top: 45%;
-      left: 200px;
+      left: 250px;
       width: 100px;
       height: 100px;
       background: linear-gradient(45deg, red, orange, yellow, green, blue, purple);
@@ -194,6 +194,11 @@
     <p>A gem lies on the ground. Would you like to inspect it?</p>
   </div>
 
+  <div class="gem-button" onclick="location.href='/futuristic_minigame'" onmouseenter="playSound()"></div>
+
+  <!-- MP3 audio -->
+  <audio id="gemSound" src="static/shiny-sparkles-drama.mp3" preload="auto"></audio>
+  
   <script>
     // Get the character container and popup elements
     const characterContainer = document.getElementById('character-container');
@@ -205,6 +210,11 @@
     const rightPrompt = rightOval.querySelector('.prompt');
     const gemPrompt = document.getElementById('gem-prompt');
 
+    // Function to play sound on hover
+    function playSound() {
+      const gemSound = document.getElementById('gemSound');
+      gemSound.play();
+    }
     // Starting position
     let posX = window.innerWidth * 0.05;
     let posY = window.innerHeight * 0.8;
