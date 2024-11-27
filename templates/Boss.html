@@ -79,12 +79,30 @@
       font-size: 18px;
       z-index: 1000;
     }
-
+    #blackjack-box {
+      position: fixed;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 200px;
+      height: 100px;
+      background-color: #2980b9;
+      color: white;
+      text-align: center;
+      line-height: 100px;
+      cursor: pointer;
+      font-size: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
   </style>
 </head>
 <body>
   <h1>Welcome to Bertak's Evil Domain</h1>
 
+  <div id="blackjack-box" onclick="window.location.href='/boss_minigame'">
+    Go to Blackjack
+  </div>
   <!-- Popup message -->
   <div id="popup">
     <p>Bertak offers you a deal. You must beat him in a game of Blackjack. Do you accept?</p>

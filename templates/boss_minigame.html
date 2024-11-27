@@ -3,14 +3,236 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Final Boss Memory Match</title>
+  <title>Blackjack - Final Boss Minigame</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #2c3e50;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin-top: 50px;
+      font-size: 36px;
+    }
+
+    #game-container {
+      margin: 20px;
+    }
+
+    .card {
+      width: 80px;
+      height: 120px;
+      margin: 10px;
+      display: inline-block;
+      background-color: #fff;
+      color: black;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 120px;
+      font-size: 20px;
+      font-weight: bold;
+      border: 2px solid #34495e;
+    }
+
+    #player-hand, #dealer-hand {
+      margin-bottom: 20px;
+    }
+
+    #game-feedback {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    #control-buttons {
+      margin-top: 30px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #2980b9;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #3498db;
+    }
+
+    .hidden-card {
+      background-color: #7f8c8d;
+      color: #7f8c8d;
+    }
+  </style>
 </head>
-<body onload="initializeMemoryGame()">
-  <h1>Memory Card Match</h1>
-  <div id="memory-game"></div>
-  <p id="match-feedback"></p>
-  <a href="/Boss">Back to Final Boss Portal</a>
-  <script src="../minigames%20and%20portals/script.js"></script>
+<body>
+  <h1>Welcome to Blackjack!</h1>
+  
+  <div id="game-container">
+    <div id="player-hand">
+      <h2>Your Cards</h2>
+      <div id="player-cards"></div>
+    </div>
+
+    <div id="dealer-hand">
+      <h2>Dealer's Cards</h2>
+      <div id="dealer-cards">
+        <div class="card hidden-card"></div>
+      </div>
+    </div>
+
+    <p id="game-feedback"></p>
+
+    <div id="control-buttons">
+      <button onclick="hit()">Hit</button>
+      <button onclick="stand()">Stand</button>
+    </div>
+
+    <a href="/Boss">Back to Final Boss Portal</a>
+  </div>
+
+  <script>
+    const suits = ['♠', '♣', '♦', '♥'];
+    const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+    let playerHand = [];
+    let dealerHand = [];
+    let deck = [];
+    let playerScore = 0;
+    let dealerScore = 0;
+
+    // Create a deck of cards
+    function createDeck() {
+      deck = [];
+      for (let suit of suits) {
+        for (let value of values) {
+          deck.push({ value, suit });
+        }
+      }
+      shuffleDeck();
+    }
+
+    // Shuffle the deck
+    function shuffleDeck() {
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+    }
+
+    // Deal two cards to both the player and the dealer
+    function dealCards() {
+      playerHand = [drawCard(), drawCard()];
+      dealerHand = [drawCard(), drawCard()];
+      updateUI();
+    }
+
+    // Draw a card from the deck
+    function drawCard() {
+      return deck.pop();
+    }
+
+    // Update the UI with the player's and dealer's hands
+    function updateUI() {
+      // Update player cards
+      const playerCardsDiv = document.getElementById('player-cards');
+      playerCardsDiv.innerHTML = '';
+      for (let card of playerHand) {
+        playerCardsDiv.innerHTML += `<div class="card">${card.value} ${card.suit}</div>`;
+      }
+
+      // Update dealer cards (hide the second card initially)
+      const dealerCardsDiv = document.getElementById('dealer-cards');
+      dealerCardsDiv.innerHTML = `<div class="card">${dealerHand[0].value} ${dealerHand[0].suit}</div><div class="card hidden-card"></div>`;
+
+      // Update scores
+      playerScore = calculateScore(playerHand);
+      dealerScore = calculateScore(dealerHand);
+      document.getElementById('game-feedback').innerText = `Your score: ${playerScore}, Dealer's score: ${dealerScore}`;
+    }
+
+    // Calculate the score of a hand
+    function calculateScore(hand) {
+      let score = 0;
+      let aces = 0;
+      for (let card of hand) {
+        if (card.value === 'A') {
+          aces++;
+          score += 11;
+        } else if (['K', 'Q', 'J'].includes(card.value)) {
+          score += 10;
+        } else {
+          score += parseInt(card.value);
+        }
+      }
+      // Adjust for Aces
+      while (score > 21 && aces > 0) {
+        score -= 10;
+        aces--;
+      }
+      return score;
+    }
+
+    // Hit - draw a card for the player
+    function hit() {
+      playerHand.push(drawCard());
+      playerScore = calculateScore(playerHand);
+      updateUI();
+
+      if (playerScore > 21) {
+        gameOver('You busted! Dealer wins!');
+      }
+    }
+
+    // Stand - reveal dealer's second card and let the dealer play
+    function stand() {
+      document.getElementById('dealer-cards').innerHTML = `<div class="card">${dealerHand[0].value} ${dealerHand[0].suit}</div><div class="card">${dealerHand[1].value} ${dealerHand[1].suit}</div>`;
+      dealerPlay();
+    }
+
+    // Dealer's turn - Dealer hits until they have at least 17
+    function dealerPlay() {
+      while (dealerScore < 17) {
+        dealerHand.push(drawCard());
+        dealerScore = calculateScore(dealerHand);
+        updateUI();
+      }
+
+      if (dealerScore > 21) {
+        gameOver('Dealer busted! You win!');
+      } else {
+        if (playerScore > dealerScore) {
+          gameOver('You win!');
+        } else if (playerScore < dealerScore) {
+          gameOver('Dealer wins!');
+        } else {
+          gameOver('It\'s a tie!');
+        }
+      }
+    }
+
+    // End the game and display a message
+    function gameOver(message) {
+      document.getElementById('game-feedback').innerText = message;
+      document.querySelector('#control-buttons').style.display = 'none';
+    }
+
+    // Initialize the game when the page loads
+    function initializeGame() {
+      createDeck();
+      dealCards();
+    }
+
+    // Start the game
+    window.onload = initializeGame;
+  </script>
 </body>
 </html>
