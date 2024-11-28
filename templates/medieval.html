@@ -42,7 +42,7 @@
     /* Character container styling */
     #character-container {
       position: absolute;
-      top: 0%;
+      top: 80%;
       left: 0%;
       transform: translate(0, 0);
       display: flex;
@@ -143,9 +143,15 @@
       maxY: 600,
     };
 
-    const updatePosition = () => {
-      characterContainer.style.left = `${posX}px`;
-      characterContainer.style.top = `${posY}px`;
+      const updatePosition = () => {
+      characterContainer.style.left = `${posX}px`; // Corrected syntax
+      characterContainer.style.top = `${posY}px`;  // Corrected syntax
+
+        console.log(`Character X: ${posX}, Y: ${posY}`);
+
+        // Check and log if the character is in the trigger areas
+        console.log('Left Trigger:', posX >= triggerAreaLeft.minX && posX <= triggerAreaLeft.maxX && posY >= triggerAreaLeft.minY && posY <= triggerAreaLeft.maxY);
+        console.log('Right Trigger:', posX >= triggerAreaRight.minX && posX <= triggerAreaRight.maxX && posY >= triggerAreaRight.minY && posY <= triggerAreaRight.maxY);
 
       if (
         posX >= triggerAreaLeft.minX &&
@@ -154,12 +160,12 @@
         posY <= triggerAreaLeft.maxY
       ) {
         console.log('Showing left popup');
-        popup.style.display = 'block';
-        popup.style.left = `${posX - 165}px`;
-        popup.style.top = `${posY - 175}px`;
-      } else {
-        popup.style.display = 'none';
-      }
+          popup.style.display = 'block';
+          popup.style.left = `${Math.min(window.innerWidth - popup.offsetWidth, posX - 165)}px`;
+          popup.style.top = `${Math.min(window.innerHeight - popup.offsetHeight, posY - 175)}px`;
+        } else {
+          popup.style.display = 'none';
+        }
 
       if (
         posX >= triggerAreaRight.minX &&
@@ -167,10 +173,10 @@
         posY >= triggerAreaRight.minY &&
         posY <= triggerAreaRight.maxY
       ) {
-        console.log('Showing right popup');
+    console.log('Showing right popup');
         popupRight.style.display = 'block';
-        popupRight.style.left = `${posX - 165}px`;
-        popupRight.style.top = `${posY - 175}px`;
+        popupRight.style.left = `${Math.min(window.innerWidth - popupRight.offsetWidth, posX - 165)}px`;
+        popupRight.style.top = `${Math.min(window.innerHeight - popupRight.offsetHeight, posY - 175)}px`;
       } else {
         popupRight.style.display = 'none';
       }
