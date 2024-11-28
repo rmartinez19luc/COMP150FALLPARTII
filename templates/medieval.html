@@ -92,7 +92,7 @@
   </div>
 
   <div id="popup-right">
-    <p>The Knight is alerted of your presenc. Do you wish to face him?</p>
+    <p>The Knight is alerted of your presence. Do you wish to face him?</p>
     <button onclick="location.href='/medieval_knightboss'">Face the Knight General</button>
   </div>
 
@@ -130,16 +130,16 @@
 
     // Define the trigger area for showing the popup (smaller range)
     const triggerAreaLeft = {
-      minX: 550,  // smaller minimum X position to show popup
+      minX: 500,  // smaller minimum X position to show popup
       maxX: 600,  // smaller maximum X position to show popup
-      minY: 500,  // smaller minimum Y position to show popup
+      minY: 400,  // smaller minimum Y position to show popup
       maxY: 600,  // smaller maximum Y position to show popup
     };
 
     const triggerAreaRight = {
-      minX: 1000,
+      minX: 950,
       maxX: 1050,
-      minY: 500,
+      minY: 400,
       maxY: 600,
     };
 
@@ -153,6 +153,7 @@
         posY >= triggerAreaLeft.minY &&
         posY <= triggerAreaLeft.maxY
       ) {
+        console.log('Showing left popup');
         popup.style.display = 'block';
         popup.style.left = `${posX - 165}px`;
         popup.style.top = `${posY - 175}px`;
@@ -166,6 +167,7 @@
         posY >= triggerAreaRight.minY &&
         posY <= triggerAreaRight.maxY
       ) {
+        console.log('Showing right popup');
         popupRight.style.display = 'block';
         popupRight.style.left = `${posX - 165}px`;
         popupRight.style.top = `${posY - 175}px`;

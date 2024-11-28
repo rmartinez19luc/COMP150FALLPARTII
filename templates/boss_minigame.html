@@ -37,6 +37,7 @@
       max-width: 800px;
       border: 3px solid gold;
       border-radius: 10px;
+      display: none; /* Hidden until game starts */
     }
 
     /* Explanation Box */
@@ -66,6 +67,12 @@
       font-weight: bold;
       border: 2px solid #444;
       box-shadow: 2px 2px 5px #666;
+      transform: rotateY(90deg);
+      transition: transform 0.5s;
+    }
+
+    .card.revealed {
+      transform: rotateY(0deg);
     }
 
     .hidden-card {
@@ -113,17 +120,35 @@
       background-color: gold;
       color: black;
     }
+
+    /* Style for the Start Game button */
+    .gold-button {
+      font-size: 24px;
+      font-family: 'Broadway', Arial, sans-serif;
+      color: black;
+      background-color: gold;
+      padding: 15px 30px;
+      border: 2px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      text-shadow: 1px 1px 2px #fff;
+    }
+
+    .gold-button:hover {
+      background-color: #ffcc00;
+      color: black;
+    }
   </style>
 </head>
 <body>
   <h1>Welcome to Blackjack!</h1>
   
   <div id="explanation">
-    <p><b>How to Play:</b> In Blackjack, your goal is to get a hand value as close to 21 as possible without going over.</p>
+    <p><b>How to Play:</b>  Outsmart the general in a high-stakes card duel by achieving a hand value as close to 21 as possible without going over. Show your skill and strategy to claim victory!</p>
     <p><b>Hit:</b> Draw another card to increase your hand's value.</p>
     <p><b>Stand:</b> Keep your current hand and let the general play...</p>
   </div>
-  
+
   <div id="game-container">
     <div id="player-hand">
       <h2>Your Cards</h2>
@@ -147,6 +172,12 @@
     <a href="/Boss">Back to Final Boss Portal</a>
   </div>
 
+  <div id="start-button">
+    <button onclick="startGame()" class="gold-button">Start Game</button>
+  </div>
+  
+  <audio id="reveal-sound" src="card-flip.mp3"></audio>
+
   <script>
     const suits = ['♠', '♣', '♦', '♥'];
     const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
@@ -157,7 +188,8 @@
     let playerScore = 0;
     let dealerScore = 0;
 
-    // Create a deck of cards
+    const revealSound = document.getElementById('reveal-sound');
+
     function createDeck() {
       deck = [];
       for (let suit of suits) {
@@ -168,7 +200,6 @@
       shuffleDeck();
     }
 
-    // Shuffle the deck
     function shuffleDeck() {
       for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -176,141 +207,121 @@
       }
     }
 
-    // Deal two cards to both the player and the dealer
     function dealCards() {
       playerHand = [drawCard(), drawCard()];
       dealerHand = [drawCard(), drawCard()];
       updateUI();
     }
 
-    // Draw a card from the deck
     function drawCard() {
       return deck.pop();
     }
 
-    // Update the UI with the player's and dealer's hands
-    // Update dealer cards (reveal second card after stand)
+    function revealCard(cardElement) {
+      setTimeout(() => {
+        cardElement.classList.add('revealed');
+        revealSound.play();
+      }, 100);
+    }
+
+    function calculateScore(hand) {
+      let total = 0;
+      let aces = 0;
+
+      for (let card of hand) {
+        if (['J', 'Q', 'K'].includes(card.value)) {
+          total += 10;
+        } else if (card.value === 'A') {
+          aces += 1;
+          total += 11;
+        } else {
+          total += parseInt(card.value);
+        }
+      }
+
+      while (total > 21 && aces > 0) {
+        total -= 10;
+        aces -= 1;
+      }
+
+      return total;
+    }
+
     function updateUI() {
-      // Update player cards
       const playerCardsDiv = document.getElementById('player-cards');
       playerCardsDiv.innerHTML = '';
       for (let card of playerHand) {
-        playerCardsDiv.innerHTML += `<div class="card">${card.value} ${card.suit}</div>`;
+        const cardElement = document.createElement('div');
+        cardElement.className = 'card';
+        cardElement.innerHTML = `${card.value} ${card.suit}`;
+        playerCardsDiv.appendChild(cardElement);
+        revealCard(cardElement);
       }
 
-      // Update dealer cards
       const dealerCardsDiv = document.getElementById('dealer-cards');
-      if (dealerHand.length === 2) {
-        dealerCardsDiv.innerHTML = `
-          <div class="card">${dealerHand[0].value} ${dealerHand[0].suit}</div>
-          <div class="card">${dealerHand[1].value} ${dealerHand[1].suit}</div>
-        `;
-      } else {
-        dealerCardsDiv.innerHTML = `<div class="card">${dealerHand[0].value} ${dealerHand[0].suit}</div><div class="card hidden-card"></div>`;
-      }
+      dealerCardsDiv.innerHTML = '';
+      dealerHand.forEach((card, index) => {
+        const cardElement = document.createElement('div');
+        cardElement.className = index === 1 ? 'card hidden-card' : 'card';
+        cardElement.innerHTML = index === 1 ? '' : `${card.value} ${card.suit}`;
+        dealerCardsDiv.appendChild(cardElement);
+        if (index === 0) revealCard(cardElement);
+      });
 
-      // Update scores
       playerScore = calculateScore(playerHand);
       dealerScore = calculateScore(dealerHand);
       document.getElementById('game-feedback').innerText = `Your score: ${playerScore}`;
     }
 
-    // Calculate the score of a hand
-    function calculateScore(hand) {
-      let score = 0;
-      let aces = 0;
-      for (let card of hand) {
-        if (card.value === 'A') {
-          aces++;
-          score += 11;
-        } else if (['K', 'Q', 'J'].includes(card.value)) {
-          score += 10;
-        } else {
-          score += parseInt(card.value);
-        }
-      }
-      while (score > 21 && aces > 0) {
-        score -= 10;
-        aces--;
-      }
-      return score;
-    }
-
-    // Hit
     function hit() {
       playerHand.push(drawCard());
-      playerScore = calculateScore(playerHand);
       updateUI();
 
       if (playerScore > 21) {
-        gameOver('You busted! Dealer wins!');
+        document.getElementById('game-feedback').innerText = `Bust! You lose. Final score: ${playerScore}`;
+        disableButtons();
       }
     }
 
-    // Stand
     function stand() {
-      document.getElementById('dealer-cards').innerHTML = `<div class="card">${dealerHand[0].value} ${dealerHand[0].suit}</div><div class="card">${dealerHand[1].value} ${dealerHand[1].suit}</div>`;
-      dealerPlay();
-    }
+      const dealerCardsDiv = document.getElementById('dealer-cards');
+      dealerCardsDiv.innerHTML = '';
+      for (let card of dealerHand) {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'card';
+        cardElement.innerHTML = `${card.value} ${card.suit}`;
+        dealerCardsDiv.appendChild(cardElement);
+        revealCard(cardElement);
+      }
 
-    // Dealer's turn
-    function dealerPlay() {
       while (dealerScore < 17) {
         dealerHand.push(drawCard());
         dealerScore = calculateScore(dealerHand);
         updateUI();
       }
 
-      if (dealerScore > 21) {
-        gameOver('Bertak busted! You win!');
+      let message;
+      if (dealerScore > 21 || playerScore > dealerScore) {
+        message = `Victory! The general's forces have crumbled`;
+      } else if (playerScore === dealerScore) {
+        message = `A stalemate! The general holds his ground, but your prowess is unmatched. Your score: ${playerScore}, Dealer's score: ${dealerScore}`;
       } else {
-        if (playerScore > dealerScore) {
-          gameOver('You win!');
-        } else if (playerScore < dealerScore) {
-          gameOver('The general wins! Oh no!');
-        } else {
-          gameOver('It\'s a tie! The general has met his match!');
-        }
+        message = `Defeat! The general's strategy overwhelms you this time. Your score: ${playerScore}, Dealer's score: ${dealerScore}`;
       }
-    }
-
-    // Game Over
-    function gameOver(message) {
       document.getElementById('game-feedback').innerText = message;
-      document.querySelector('#control-buttons').style.display = 'none';
-
-      if (message.includes('wins')) {
-        // Redirect after a short delay
-        document.getElementById('game-feedback').innerHTML += '<br><br>Redirecting to Final Boss...';
-        setTimeout(() => {
-          window.location.href = '/Boss'; // Redirect to Boss.html
-        }, 2000); // Optional delay before redirect
-      } else if (message.includes('tie')) {
-        // Tie scenario: Show replay prompt
-        document.getElementById('game-feedback').innerHTML += `
-        <br><br>Give it another go?
-          <br>
-          <button onclick="restartGame()" style="background-color: gold; color: black; border: 2px solid black; padding: 12px 25px; cursor: pointer; border-radius: 5px; margin: 10px;">Yes</button>
-          <button onclick="window.location.href='/Boss'" style="background-color: gold; color: black; border: 2px solid black; padding: 12px 25px; cursor: pointer; border-radius: 5px; margin: 10px;">No</button>
-        `;
-      }
+      disableButtons();
     }
 
-    // Restart the game after a tie
-    function restartGame() {
-      document.getElementById('game-feedback').innerText = '';
-      document.querySelector('#control-buttons').style.display = 'block';
-      initializeGame();
+    function disableButtons() {
+      document.getElementById('control-buttons').style.display = 'none';
     }
 
-    // Initialize the game
-    function initializeGame() {
+    function startGame() {
+      document.getElementById('start-button').style.display = 'none';
+      document.getElementById('game-container').style.display = 'block';
       createDeck();
       dealCards();
     }
-
-    // Start the game when the page loads
-    window.onload = initializeGame;
   </script>
 </body>
 </html>
