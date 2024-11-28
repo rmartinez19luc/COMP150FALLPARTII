@@ -48,12 +48,14 @@
       opacity: 0.8;
       border-radius: 50%;
       cursor: pointer;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease, box-shadow 0.3s ease;
       z-index: 1;
     }
 
+    /* Glowing effect on hover */
     .hover-oval:hover {
       opacity: 1;
+      box-shadow: 0 0 15px 5px rgba(173, 216, 230, 0.8); /* Soft glowing blue */
     }
 
     .left-oval {
@@ -147,6 +149,11 @@
       background-color: lightblue;
       padding: 5px 10px;
       border-radius: 8px;
+    }
+    /* Glowing effect on character container */
+    .glowing {
+      box-shadow: 0 0 20px 10px rgba(173, 216, 230, 0.8); /* Soft blue glow */
+      transition: box-shadow 0.3s ease;
     }
   </style>
 </head>
@@ -304,6 +311,7 @@
         posY <= leftOvalArea.maxY
       ) {
         leftPrompt.style.display = "block";
+        characterContainer.classList.add('glowing'); // Add glowing effect
       } else {
         leftPrompt.style.display = "none";
       }
@@ -316,6 +324,7 @@
         posY <= rightOvalArea.maxY
       ) {
         rightPrompt.style.display = "block";
+        characterContainer.classList.add('glowing'); // Add glowing effect
       } else {
         rightPrompt.style.display = "none";
       }
