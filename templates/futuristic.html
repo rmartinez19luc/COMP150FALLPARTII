@@ -155,6 +155,32 @@
       box-shadow: 0 0 20px 10px rgba(173, 216, 230, 0.8); /* Soft blue glow */
       transition: box-shadow 0.3s ease;
     }
+    .glowing-star {
+      position: absolute;
+      top: 70px; /* Adjust the position as needed */
+      left: 70%; /* Center horizontally */
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #ff0, #ffa500, transparent 70%);
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(255, 255, 0, 0.8);
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      z-index: 2;
+    }
+
+    /* Pulse Animation */
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 255, 0, 0.8);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        transform: scale(1.2);
+      }
+    }
   </style>
 </head>
 <body>
@@ -203,10 +229,37 @@
 
   <div class="gem-button" onclick="location.href='/futuristic_minigame'" onmouseenter="playSound()"></div>
 
+  <div class="glowing-star" onclick="revealFunFact()"></div>
+  
   <!-- MP3 audio -->
   <audio id="gemSound" src="static/shiny-sparkles-drama.mp3" preload="auto"></audio>
   
   <script>
+    // Fun fact popup logic
+    function revealFunFact() {
+      const factBox = document.createElement('div');
+      factBox.style.position = 'absolute';
+      factBox.style.top = '120px';
+      factBox.style.left = '50%';
+      factBox.style.transform = 'translateX(-50%)';
+      factBox.style.backgroundColor = '#4287f5';
+      factBox.style.color = 'white';
+      factBox.style.padding = '15px';
+      factBox.style.borderRadius = '10px';
+      factBox.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.8)';
+      factBox.style.fontSize = '18px';
+      factBox.style.textAlign = 'center';
+      factBox.style.zIndex = '1000';
+
+      factBox.textContent = "Did you know? Bertak's starship navigates using pulsars—stars that emit regular pulses of radiation. These cosmic lighthouses help adventurers like you explore uncharted galaxies!";
+
+      document.body.appendChild(factBox);
+
+      // Remove the fact box after 5 seconds
+      setTimeout(() => {
+        factBox.remove();
+      }, 3000);
+    }
     // Get the character container and popup elements
     const characterContainer = document.getElementById('character-container');
     const popup = document.getElementById('popup');
