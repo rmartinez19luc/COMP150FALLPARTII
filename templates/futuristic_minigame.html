@@ -83,10 +83,30 @@
             color: #ff0077;
             text-shadow: 0 0 10px #ff0077, 0 0 20px #ff77ff;
         }
+        #energyBarContainer {
+            width: 80%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            margin: 10px auto 20px auto;
+            position: relative;
+        }
+        #energyBar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4500, #ff7700);
+            width: 100%; /* Initial width */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.7);
+            transition: width 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body>
     <h1>Gem Jumper 3000</h1>
+    <div id="energyBarContainer">
+        <div id="energyBar"></div>
+    </div>
     <p>Move to collect gems before you run out of energy!</p>
     <div id="status">
         <p>Energy: <span id="energy">10</span></p>
@@ -209,6 +229,55 @@
         });
 
         renderGrid();
+        function updateEnergyBar() {
+            const energyBar = document.getElementById('energyBar');
+            const energyPercentage = (energy / 10) * 100; // Assuming max energy is 10
+            energyBar.style.width = `${Math.max(0, energyPercentage)}%`;
+        }
+
+        function movePlayer(direction) {
+            if (energy <= 0) {
+                loseGame();
+                return;
+            }
+
+            switch (direction) {
+                case 'up': if (player.x > 0) player.x--; break;
+                case 'down': if (player.x < gridSize - 1) player.x++; break;
+                case 'left': if (player.y > 0) player.y--; break;
+                case 'right': if (player.y < gridSize - 1) player.y++; break;
+            }
+
+            energy--;
+            energyDisplay.textContent = energy;
+            updateEnergyBar();
+
+            const gemIndex = gems.findIndex(gem => gem.x === player.x && gem.y === player.y);
+            if (gemIndex !== -1) {
+                gems.splice(gemIndex, 1);
+                gemsCollected++;
+                gemsCollectedDisplay.textContent = gemsCollected;
+                gems.push({
+                    x: Math.floor(Math.random() * gridSize),
+                    y: Math.floor(Math.random() * gridSize),
+                    shape: 'gem-triangle'
+                });
+                energy += 1;
+                energyDisplay.textContent = energy;
+                updateEnergyBar();
+            }
+
+            if (gemsCollected === 5) {
+                winGame();
+            } else if (energy <= 0) {
+                loseGame();
+            }
+
+            renderGrid();
+        }
+
+        renderGrid();
+        updateEnergyBar(); // Initialize energy bar
     </script>
 </body>
 </html>

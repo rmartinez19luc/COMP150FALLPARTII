@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial="1.0">
   <title>Final Boss</title>
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #000;
@@ -22,6 +22,7 @@
     h1 {
       text-align: center;
       margin-top: 35px;
+      font-family: 'Orbitron', sans-serif;
     }
 
     button {
@@ -128,6 +129,7 @@
     }
 
     .prompt {
+      font-family: 'Orbitron', sans-serif; /* Apply Orbitron font */
       display: none; /* Hide by default */
       position: absolute;
       top: 0;
@@ -140,6 +142,7 @@
     }
     
     .gem-prompt {
+      font-family: 'Orbitron', sans-serif; /* Apply Orbitron font */
       display: none;
       position: absolute;
       top: 35%;
@@ -276,8 +279,8 @@
       gemSound.play();
     }
     // Starting position
-    let posX = window.innerWidth * 0.05;
-    let posY = window.innerHeight * 0.8;
+    let posX = 150;  // Positioning the character container to the right of the left oval
+    let posY = window.innerHeight * 0.45; // Adjust this as needed for the vertical position
 
     // Speed of movement
     const speed = 10;
