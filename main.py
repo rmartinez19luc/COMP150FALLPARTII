@@ -74,6 +74,10 @@ def medieval():
 def medieval_minigame():
     return render_template('medieval_minigame.html')
 
+@app.route('/medieval_knightboss')
+def medieval_knightboss():
+    return render_template('medieval_knightboss.html')
+
 @app.route('/futuristic')
 def futuristic():
     return render_template('futuristic.html')

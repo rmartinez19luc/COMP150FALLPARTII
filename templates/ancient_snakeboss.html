@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyborg Boss Battle</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <h1>Cyborg Boss Battle</h1>
+
+    <div id="class-selection">
+        <h2>Select Your Character</h2>
+        <button onclick="selectClass('Mage')">Mage</button>
+        <button onclick="selectClass('Rogue')">Rogue</button>
+        <button onclick="selectClass('Time Keeper')">Time Keeper</button>
+        <button onclick="selectClass('Knight')">Knight</button>
+    </div>
+
+    <div id="battle" style="display: none;">
+        <h2>You are playing as: <span id="character-class"></span></h2>
+        <div id="game-area">
+            <div id="player">
+                <img id="player-sprite" src="static/sprites/placeholder.png" alt="Player Sprite">
+                <p id="player-health">Player Health: 100</p>
+            </div>
+            <div id="boss">
+                <img id="boss-sprite" src="static/sprites/cyborg_boss.jpg" alt="Cyborg Boss">
+                <p id="boss-health">Boss Health: 100</p>
+            </div>
+        </div>
+        <div id="controls">
+            <button onclick="attack()">Attack</button>
+            <button onclick="specialAttack()">Special Attack</button>
+            <button onclick="goBack()">Go Back</button>
+        </div>
+        <p id="message"></p>
+    </div>
+
+    <script src="static/script.js"></script>
+    <script>
+        let playerHealth = 100;
+        let bossHealth = 100;
+
+        // Function to handle class selection
+        function selectClass(character) {
+            document.getElementById('character-class').innerText = character;
+
+            const spriteMap = {
+                'Mage': 'static/sprites/Mage.jpg',
+                'Rogue': 'static/sprites/rogue.jpg',
+                'Time Keeper': 'static/sprites/timekeeper.jpg',
+                'Knight': 'static/sprites/knight.jpg'
+            };
+
+            document.getElementById('player-sprite').src = spriteMap[character] || 'static/sprites/placeholder.png';
+
+            document.getElementById('class-selection').style.display = 'none';
+            document.getElementById('battle').style.display = 'block';
+        }
+
+        // Function to handle normal attack
+        function attack() {
+            let playerDamage = Math.floor(Math.random() * 15) + 5; // Random damage between 5-20
+            bossHealth -= playerDamage;
+            updateHealth();
+
+            document.getElementById('message').innerText = `You attacked the Cyborg Boss for ${playerDamage} damage!`;
+
+            // Boss counterattack
+            bossCounterAttack();
+        }
+
+        // Function to handle special attack
+        function specialAttack() {
+            let playerDamage = Math.floor(Math.random() * 30) + 10; // Special attack with higher damage
+            bossHealth -= playerDamage;
+            updateHealth();
+
+            document.getElementById('message').innerText = `You used a special attack for ${playerDamage} damage!`;
+
+            // Boss counterattack
+            bossCounterAttack();
+        }
+
+        // Function to update health values and check for end conditions
+        function updateHealth() {
+            document.getElementById('boss-health').innerText = `Boss Health: ${bossHealth}`;
+            document.getElementById('player-health').innerText = `Player Health: ${playerHealth}`;
+
+            if (bossHealth <= 0) {
+                document.getElementById('message').innerText = 'You defeated the Cyborg Boss!';
+                document.getElementById('controls').style.display = 'none'; // Hide controls after boss defeat
+            }
+
+            if (playerHealth <= 0) {
+                document.getElementById('message').innerText = 'You were defeated by the Cyborg Boss!';
+                document.getElementById('controls').style.display = 'none'; // Hide controls if player loses
+            }
+        }
+
+        // Function for boss counterattack
+        function bossCounterAttack() {
+            if (bossHealth > 0) {
+                let bossDamage = Math.floor(Math.random() * 10) + 5; // Boss attacks back with random damage
+                playerHealth -= bossDamage;
+                document.getElementById('message').innerText += ` The Boss counterattacked for ${bossDamage} damage!`;
+                updateHealth();
+            }
+        }
+
+        // Go back to class selection screen
+        function goBack() {
+            document.getElementById('battle').style.display = 'none';
+            document.getElementById('class-selection').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
