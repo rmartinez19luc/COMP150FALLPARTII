@@ -2,6 +2,7 @@ import random
 
 from flask import Flask, jsonify, render_template, request
 
+
 app = Flask(__name__)
 
 player_health = 100
@@ -41,6 +42,9 @@ def cyborg_battle():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# Define routes
+count = 0
 
 
 @app.route('/')
@@ -166,6 +170,34 @@ def register():
         except sqlite3.IntegrityError:
             return "Username already taken", 400
     return render_template('register.html')
+
+@app.route('/save_game', methods=['POST'])
+def save_game():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    game_state = request.json['state']  # Expecting game state to be sent as JSON
+    conn = sqlite3.connect('game_data.db')
+    cursor = conn.cursor()
+    cursor.execute("REPLACE INTO game_state (user_id, state) VALUES (?, ?)", (session['user_id'], game_state))
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Game state saved successfully!"})
+
+@app.route('/load_game', methods=['GET'])
+def load_game():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = sqlite3.connect('game_data.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT state FROM game_state WHERE user_id = ?", (session['user_id'],))
+    game_state = cursor.fetchone()
+    conn.close()
+    if game_state:
+        return jsonify({"state": game_state[0]})
+    return jsonify({"state": None})
+
 
 
 @app.route('/increment', methods=['POST'])
