@@ -38,31 +38,18 @@ h1 {
   position: relative; /* Needed for positioning the text box */
 }
 
-/* Box for the text to enhance visibility */
-.text-box {
+/* Updated styling for the main text to make it more readable */
+.main-text {
   display: inline-block;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
-  color: #fff; /* White text */
+  color: #FFD700; /* Gold color for better visibility */
+  font-size: 1.5em; /* Larger font size for readability */
+  font-weight: bold; /* Make the text bolder */
   padding: 20px;
-  font-size: 1.2em;
-  border-radius: 10px;
+  text-align: center;
   max-width: 80%;
   margin: 20px auto;
-  text-align: center;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Shadow for extra visibility */
 }
-
-
-textarea {
-  resize: none;
-  font-size: 16px;
-  padding: 10px;
-}
-
-container {
-  text-align: center;
-  margin-top: 100px;
-}
-
 textarea {
   resize: none;
   font-size: 16px;
