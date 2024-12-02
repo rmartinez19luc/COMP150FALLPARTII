@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  color: #fff; /* Light text for contrast */
+  color: #f2f2f2; /* Light gray text for better visibility */
   text-align: center;
   margin: 0;
   padding: 0;
@@ -26,15 +26,31 @@ body {
 }
 
 h1 {
-  color: #ffcc00; /* Gold for the title to make it pop */
+  color: #FF6347; /* Tomato red for the title to make it stand out */
   font-size: 3em; /* Larger size for impact */
   margin-top: 50px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Shadow effect to make title pop */
 }
 
 .container {
   text-align: center;
   margin-top: 100px;
+  position: relative; /* Needed for positioning the text box */
 }
+
+/* Box for the text to enhance visibility */
+.text-box {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+  color: #fff; /* White text */
+  padding: 20px;
+  font-size: 1.2em;
+  border-radius: 10px;
+  max-width: 80%;
+  margin: 20px auto;
+  text-align: center;
+}
+
 
 textarea {
   resize: none;
