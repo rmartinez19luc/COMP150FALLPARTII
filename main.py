@@ -134,6 +134,40 @@ def battle():
     })
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        conn = sqlite3.connect('game_data.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        user = cursor.fetchone()
+        conn.close()
+        if user and check_password_hash(user[2], password):
+            session['user_id'] = user[0]
+            return redirect(url_for('second'))
+        else:
+            return "Invalid username or password", 403
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = generate_password_hash(request.form['password'])
+        try:
+            conn = sqlite3.connect('game_data.db')
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('login'))
+        except sqlite3.IntegrityError:
+            return "Username already taken", 400
+    return render_template('register.html')
+
+
 @app.route('/increment', methods=['POST'])
 def increment():
     global count

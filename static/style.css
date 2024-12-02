@@ -89,6 +89,15 @@ button:hover {
   background-color: #4B0082; /* Indigo */
 }
 
+/* Login Button (Bold, intense colors) */
+.final-boss-portal {
+  background-color: #4B0082; /* Green */
+}
+
+/* Register Button (Bold, intense colors) */
+.final-boss-portal {
+  background-color: #4B0082; /* Green */
+}
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4; /* Light background */

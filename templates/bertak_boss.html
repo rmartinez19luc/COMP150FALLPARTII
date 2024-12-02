@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyborg Boss Battle</title>
+    <title>Bertak's Boss Battle</title>
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <h1>Cyborg Boss Battle</h1>
+    <h1>Bertak Boss Battle</h1>
 
     <div id="class-selection">
         <h2>Select Your Character</h2>
@@ -25,7 +25,7 @@
                 <p id="player-health">Player Health: 100</p>
             </div>
             <div id="boss">
-                <img id="boss-sprite" src="static/sprites/cyborg_boss.jpg" alt="Cyborg Boss">
+                <img id="boss-sprite" src="static/sprites/bertak_boss.jpg" alt="Bertak Boss">
                 <p id="boss-health">Boss Health: 100</p>
             </div>
         </div>
@@ -65,7 +65,7 @@
             bossHealth -= playerDamage;
             updateHealth();
 
-            document.getElementById('message').innerText = `You attacked the Cyborg Boss for ${playerDamage} damage!`;
+            document.getElementById('message').innerText = `You attacked the Bertak for ${playerDamage} damage!`;
 
             // Boss counterattack
             bossCounterAttack();
@@ -89,12 +89,12 @@
             document.getElementById('player-health').innerText = `Player Health: ${playerHealth}`;
 
             if (bossHealth <= 0) {
-                document.getElementById('message').innerText = 'You defeated the Cyborg Boss!';
+                document.getElementById('message').innerText = 'You defeated the Bertak!';
                 document.getElementById('controls').style.display = 'none'; // Hide controls after boss defeat
             }
 
             if (playerHealth <= 0) {
-                document.getElementById('message').innerText = 'You were defeated by the Cyborg Boss!';
+                document.getElementById('message').innerText = 'You were defeated by Bertak!';
                 document.getElementById('controls').style.display = 'none'; // Hide controls if player loses
             }
         }
