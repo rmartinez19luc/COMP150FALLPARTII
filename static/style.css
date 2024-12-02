@@ -4,13 +4,6 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-
-  /* Set background with a moving gradient and the provided GIF background */
-  background: url('https://giffiles.alphacoders.com/567/56779.gif') no-repeat center center fixed, 
-              linear-gradient(135deg, #4B0082, #8B4513, #800000); /* Use gradient for fallback */
-  background-size: cover;
-  background-attachment: fixed;
-  animation: gradientBackground 15s ease infinite; /* Gradient animation for extra movement */
 }
 
 @keyframes gradientBackground {
@@ -25,29 +18,6 @@ body {
   }
 }
 
-@keyframes gradientBackground {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes gradientBackground {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
 h1 {
   color: #FF6347; /* Tomato red for the title to make it stand out */
@@ -114,12 +84,12 @@ button:hover {
 }
 
 /* Login Button (Bold, intense colors) */
-.final-boss-portal {
+.login-portal {
   background-color: #4B0082; /* Green */
 }
 
 /* Register Button (Bold, intense colors) */
-.final-boss-portal {
+.register-portal {
   background-color: #4B0082; /* Green */
 }
 body {
@@ -332,4 +302,18 @@ h1, h2 {
 
 #controls button:hover {
     background-color: #0056b3;
+}
+
+.black-button {
+    background-color: black !important; /* Black background */
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+}
+
+button.black-button:hover {
+  background-color: #333 !important; /* Darker shade on hover */
 }

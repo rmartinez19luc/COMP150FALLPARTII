@@ -54,13 +54,19 @@ function updateBattleState(data) {
 
     // Check if the boss has been defeated
     if (data.boss_health <= 0) {
-        document.getElementById("message").textContent = `You defeated the Cyborg Boss!`;
+        document.getElementById("message").innerHTML = `<span style="color: darkblue; font-weight: bold;">You defeated the Boss!</span>`;
         document.getElementById("controls").style.display = "none";  // Hide attack buttons
+        setTimeout(() => {
+            window.location.href = "/portals";
+        }, 5000);
     }
 
     // Check if the player has been defeated
     if (data.player_health <= 0) {
-        document.getElementById("message").textContent = `You were defeated by the Cyborg Boss. Game Over.`;
+        document.getElementById("message").innerHTML = `<span class="bold-blue">You were defeated by the Boss. Game Over.</span>`;
         document.getElementById("controls").style.display = "none";  // Hide attack buttons
+        setTimeout(() => {
+            window.location.href = "/portals";
+        }, 5000);
     }
 }

@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyborg Boss Battle</title>
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        body {
+            background-image: url('static/sprites/cyborg_bossbackground.jpg'); /* Replace with your sprite path */
+            background-repeat: no-repeat; /* or no-repeat if you want a single image */
+            background-size: contain; /* or cover depending on your preference */
+            background-attachment: fixed;
+            background-position: center center
+        }
+
+    </style>
 </head>
 <body>
     <h1>Cyborg Boss Battle</h1>
     
     <div id="class-selection">
         <h2>Select Your Character</h2>
-        <button onclick="selectClass('Mage')">Mage</button>
-        <button onclick="selectClass('Rogue')">Rogue</button>
-        <button onclick="selectClass('Time Keeper')">Time Keeper</button>
-        <button onclick="selectClass('Knight')">Knight</button>
+        <button class= "black-button" onclick="selectClass('Mage')">Mage</button>
+        <button class= "black-button" onclick="selectClass('Rogue')">Rogue</button>
+        <button class= "black-button" onclick="selectClass('Time Keeper')">Time Keeper</button>
+        <button class= "black-button"  onclick="selectClass('Knight')">Knight</button>
     </div>
 
     <div id="battle" style="display: none;">
