@@ -1,4 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  color: #fff; /* Light text for contrast */
+  text-align: center;
+  margin: 0;
+  padding: 0;
+
+  /* Set background with a moving gradient and the provided GIF background */
+  background: url('https://giffiles.alphacoders.com/567/56779.gif') no-repeat center center fixed, 
+              linear-gradient(135deg, #4B0082, #8B4513, #800000); /* Use gradient for fallback */
+  background-size: cover;
+  background-attachment: fixed;
+  animation: gradientBackground 15s ease infinite; /* Gradient animation for extra movement */
+}
+
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+h1 {
+  color: #ffcc00; /* Gold for the title to make it pop */
+  font-size: 3em; /* Larger size for impact */
+  margin-top: 50px;
+}
+
 .container {
+  text-align: center;
+  margin-top: 100px;
+}
+
+textarea {
+  resize: none;
+  font-size: 16px;
+  padding: 10px;
+}
+
+container {
   text-align: center;
   margin-top: 100px;
 }
