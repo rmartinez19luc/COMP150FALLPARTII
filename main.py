@@ -4,6 +4,7 @@ from flask import Flask, jsonify, render_template, request
 
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key' 
 
 player_health = 100
 boss_health = 120
@@ -50,6 +51,40 @@ count = 0
 @app.route('/')
 def index():
     return render_template('sound_demo.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        conn = sqlite3.connect('game_data.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
+        user = cursor.fetchone()
+        conn.close()
+        if user and check_password_hash(user[2], password):
+            session['user_id'] = user[0]
+            return redirect(url_for('portals'))  # Redirect to the portals page after successful login
+        else:
+            return "Invalid username or password", 403
+    return render_template('login.html')
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = generate_password_hash(request.form['password'])
+        try:
+            conn = sqlite3.connect('game_data.db')
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('portals'))  # Redirect to the portals page after successful registration
+        except sqlite3.IntegrityError:
+            return "Username already taken", 400
+    return render_template('register.html')
 
 
 @app.route('/portals')
@@ -137,66 +172,6 @@ def battle():
         'boss_health': boss_health
     })
 
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        conn = sqlite3.connect('game_data.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
-        user = cursor.fetchone()
-        conn.close()
-        if user and check_password_hash(user[2], password):
-            session['user_id'] = user[0]
-            return redirect(url_for('second'))
-        else:
-            return "Invalid username or password", 403
-    return render_template('login.html')
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = generate_password_hash(request.form['password'])
-        try:
-            conn = sqlite3.connect('game_data.db')
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-            conn.commit()
-            conn.close()
-            return redirect(url_for('login'))
-        except sqlite3.IntegrityError:
-            return "Username already taken", 400
-    return render_template('register.html')
-
-@app.route('/save_game', methods=['POST'])
-def save_game():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    game_state = request.json['state']  # Expecting game state to be sent as JSON
-    conn = sqlite3.connect('game_data.db')
-    cursor = conn.cursor()
-    cursor.execute("REPLACE INTO game_state (user_id, state) VALUES (?, ?)", (session['user_id'], game_state))
-    conn.commit()
-    conn.close()
-    return jsonify({"message": "Game state saved successfully!"})
-
-@app.route('/load_game', methods=['GET'])
-def load_game():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    conn = sqlite3.connect('game_data.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT state FROM game_state WHERE user_id = ?", (session['user_id'],))
-    game_state = cursor.fetchone()
-    conn.close()
-    if game_state:
-        return jsonify({"state": game_state[0]})
-    return jsonify({"state": None})
 
 
 
