@@ -41,7 +41,6 @@
         </div>
         <div id="controls">
             <button onclick="attack()">Attack</button>
-            <button onclick="specialAttack()">Special Attack</button>
             <button onclick="goBack()">Go Back</button>
         </div>
         <p id="message"></p>
@@ -57,7 +56,7 @@
             document.getElementById('character-class').innerText = character;
 
             const spriteMap = {
-                'Mage': 'static/sprites/Mage.jpg',
+                'Mage': 'static/sprites/mage.jpg',
                 'Rogue': 'static/sprites/rogue.jpg',
                 'Time Keeper': 'static/sprites/timekeeper.jpg',
                 'Knight': 'static/sprites/knight.jpg'
@@ -81,18 +80,6 @@
             bossCounterAttack();
         }
 
-        // Function to handle special attack
-        function specialAttack() {
-            let playerDamage = Math.floor(Math.random() * 30) + 10; // Special attack with higher damage
-            bossHealth -= playerDamage;
-            updateHealth();
-
-            document.getElementById('message').innerText = `You used a special attack for ${playerDamage} damage!`;
-
-            // Boss counterattack
-            bossCounterAttack();
-        }
-
         // Function to update health values and check for end conditions
         function updateHealth() {
             document.getElementById('boss-health').innerText = `Boss Health: ${bossHealth}`;
@@ -104,7 +91,8 @@
             }
 
             if (playerHealth <= 0) {
-                document.getElementById('message').innerText = 'You were defeated by the Cyborg Boss!';
+                document.getElementById("message").innerHTML = `<span style="color: white; font-weight: bold;">You were defeated by the Cyborg Boss!</span>`;
+
                 document.getElementById('controls').style.display = 'none'; // Hide controls if player loses
             }
         }

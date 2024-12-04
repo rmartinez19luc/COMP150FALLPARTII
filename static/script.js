@@ -26,18 +26,6 @@ async function attack() {
     updateBattleState(data);
 }
 
-async function specialAttack() {
-    const response = await fetch('/cyborg_battle', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ action: 'specialAttack' })
-    });
-    const data = await response.json();
-    updateBattleState(data);
-}
-
 async function goBack() {
     // Go back to the class selection screen
     document.getElementById("battle").style.display = "none";
@@ -54,11 +42,11 @@ function updateBattleState(data) {
 
     // Check if the boss has been defeated
     if (data.boss_health <= 0) {
-        document.getElementById("message").innerHTML = `<span style="color: darkblue; font-weight: bold;">You defeated the Boss!</span>`;
+        document.getElementById("message").innerHTML = `<span style="color: white; font-weight: bold;">You defeated the Boss!</span>`;
         document.getElementById("controls").style.display = "none";  // Hide attack buttons
         setTimeout(() => {
             window.location.href = "/portals";
-        }, 5000);
+        }, 3000);
     }
 
     // Check if the player has been defeated
@@ -67,6 +55,6 @@ function updateBattleState(data) {
         document.getElementById("controls").style.display = "none";  // Hide attack buttons
         setTimeout(() => {
             window.location.href = "/portals";
-        }, 5000);
+        }, 3000);
     }
 }

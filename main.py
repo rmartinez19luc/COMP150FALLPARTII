@@ -2,13 +2,11 @@ import random
 
 from flask import Flask, jsonify, render_template, request
 
-
-
 app = Flask(__name__)
 app.secret_key = 'your_secret_key' 
 
 player_health = 100
-boss_health = 120
+boss_health = 100
 
 @app.route('/cyborg_battle', methods=['POST'])
 def cyborg_battle():
@@ -21,19 +19,13 @@ def cyborg_battle():
     if action == "attack":
         damage = random.randint(10, 20)
         boss_health -= damage
-        result = f"You strike the Cyborg Boss for {damage} damage!"
-
-    elif action == "defend":
-        result = "You brace for the boss's attack!"
-
-    elif action == "run":
-        result = "You run away from the fight!"
+        result = f"You strike the Boss for {damage} damage!"
 
     # Cyborg Boss attack (Random damage)
     if boss_health > 0:
         boss_damage = random.randint(5, 15)
         player_health -= boss_damage
-        result += f" The Cyborg Boss strikes you for {boss_damage} damage!"  # Correct concatenation
+        result += f" The Boss strikes you for {boss_damage} damage!" 
 
     # Return the updated battle state
     return jsonify({
@@ -173,7 +165,8 @@ def battle():
         'player_health': player_health,
         'boss_health': boss_health
     })
-@app.route('/final_game_screen')
+
+@app.route('/Final_game_screen')
 def final_game_screen():
     return render_template('Final_game_screen.html')  # Final game screen
 
