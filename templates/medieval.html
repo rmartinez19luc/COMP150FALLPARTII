@@ -138,13 +138,29 @@
         const knightRect = getRect(knightImage);
 
         // Handle popup when character collides with the diamond
-        if (checkCollision(characterRect, diamondRect)) {
-          popup.style.display = 'block';
-          popup.style.left = `${diamondRect.left}px`;
-          popup.style.top = `${diamondRect.bottom + 10}px`;  // Ensure it's below the diamond
+        // Handle popup when character collides with the knight image
+        if (checkCollision(characterRect, knightRect)) {
+          popupRight.style.display = 'block';
+
+          // Calculate left position for the knight popup
+          let knightPopupLeft = knightRect.left + (knightRect.width / 2) - (popupRight.offsetWidth / 2);
+          if (knightPopupLeft < 0) {
+            knightPopupLeft = 10; // Ensure it doesn't go off-screen on the left
+          } else if (knightPopupLeft + popupRight.offsetWidth > window.innerWidth) {
+            knightPopupLeft = window.innerWidth - popupRight.offsetWidth - 10; // Ensure it doesn't go off-screen on the right
+          }
+          popupRight.style.left = `${knightPopupLeft}px`;
+
+          // Calculate top position to place it higher than the diamond popup
+          let knightPopupTop = knightRect.top - popupRight.offsetHeight - 30; // Move 30px higher than the knight
+          if (knightPopupTop < 0) {
+            knightPopupTop = knightRect.top - popupRight.offsetHeight - 10; // Slightly closer fallback
+          }
+          popupRight.style.top = `${knightPopupTop}px`;
         } else {
-          popup.style.display = 'none';
+          popupRight.style.display = 'none';
         }
+
 
         // Handle popup when character collides with the knight image
         if (checkCollision(characterRect, knightRect)) {
