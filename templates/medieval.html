@@ -7,23 +7,18 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     body {
-      background-color: #000;
-      background-image: url('/static/sprites/medieval_portal.jpg');
+      background: #000 url('/static/sprites/medieval_portal.jpg') no-repeat center 15%;
       background-size: cover;
-      background-position: center 15%; /* Position the image with a vertical offset */
-      background-repeat: no-repeat;
       font-family: 'Cinzel', serif;
       color: white;
       margin: 0;
       padding: 0;
       overflow: hidden;
     }
-
     h1 {
       text-align: center;
       margin-top: 35px;
     }
-
     button {
       font-size: 16px;
       padding: 10px 20px;
@@ -34,29 +29,20 @@
       color: white;
       border-radius: 5px;
     }
-
     button:hover {
       background-color: #2980b9;
     }
-
-    /* Character container styling */
     #character-container {
       position: absolute;
       top: 80%;
-      left: 0%;
-      transform: translate(0, 0);
       display: flex;
     }
-
-    /* Individual character images */
     #character-container img {
       width: 50px;
       height: 50px;
       margin-right: 5px;
     }
-
-    /* Popup Styling */
-    #popup {
+    #popup, #popup-right {
       display: none;
       position: absolute;
       background-color: rgba(0, 0, 0, 0.7);
@@ -67,135 +53,75 @@
       font-size: 18px;
       z-index: 1000;
     }
-
-    #popup-right {
-      display: none;
+    #diamond {
       position: absolute;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 18px;
-      z-index: 1000;
+      left: 75%;
+      top: 75%;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(45deg, #B0B0B0, #D3D3D3);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      border-radius: 5px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      animation: sparkle 2s infinite alternate;
     }
-
+    #knight-image {
+      position: absolute;
+      left: 60%;
+      top: 60%;
+      width: 10px;  /* 4 times smaller */
+      height: 10px; /* 4 times smaller */
+      z-index: 600;
+    }
+    @keyframes sparkle {
+      0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
+      100% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.7); }
+    }
   </style>
 </head>
 <body>
   <h1>Welcome to the Medieval Portal!</h1>
-
-  <!-- Popup message -->
-  <div id="popup">
-    <p>There lies the Knight General's armour on the floor. Do you wish to poke holes in it?</p>
-    <button onclick="location.href='/medieval_minigame'">Sabotage the Knight.</button>
-  </div>
-
-  <div id="popup-right">
-    <p>The Knight is alerted of your presence. Do you wish to face him?</p>
-    <button onclick="location.href='/medieval_knightboss'">Face the Knight General</button>
-  </div>
-
-  <!-- Button to go back -->
+  <div id="popup"><p>There lies the Knight General's armour. Do you wish to poke holes in it?</p>
+    <button onclick="location.href='/medieval_minigame'">Sabotage the Knight</button></div>
+  <div id="popup-right"><p>The Knight is alerted. Do you wish to face him?</p>
+    <button onclick="location.href='/medieval_knightboss'">Face the Knight General</button></div>
   <button onclick="window.location.href='/portals'">Go Back to Portals</button>
-
-  <!-- Character container with 4 images -->
   <div id="character-container">
-    <img src="/static/sprites/knight.jpg" alt="Knight" id="knight">
-    <img src="/static/sprites/Mage.jpg" alt="Mage" id="mage">
-    <img src="/static/sprites/rogue.jpg" alt="Rogue" id="rouge">
-    <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper" id="timekeeper">
+    <img src="/static/sprites/knight.jpg" alt="Knight">
+    <img src="/static/sprites/Mage.jpg" alt="Mage">
+    <img src="/static/sprites/rogue.jpg" alt="Rogue">
+    <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper">
   </div>
+  <div id="diamond"></div>
+  <div id="knight-image"><img src="/static/sprites/knight pic.webp" alt="Knight"></div>
 
   <script>
-    // Get the character container and popup element
     const characterContainer = document.getElementById('character-container');
     const popup = document.getElementById('popup');
     const popupRight = document.getElementById('popup-right');
-    
-    // Starting position
-    let posX = window.innerWidth * 0.05;
-    let posY = window.innerHeight * 0.8;
-
-    // Speed of movement
-    const speed = 10;
-
-    // Set padding so the character can't go too close to the left or right edges
-    const paddingX = 40;
-    const paddingY = 20;
-
-    // Get the viewport dimensions
+    const diamond = document.getElementById('diamond');
+    const knightImage = document.getElementById('knight-image');
+    let posX = window.innerWidth * 0.05, posY = window.innerHeight * 0.8;
+    const speed = 10, paddingX = 40, paddingY = 20;
     const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
     const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
 
-    // Define the trigger area for showing the popup (smaller range)
-    const triggerAreaLeft = {
-      minX: 500,  // smaller minimum X position to show popup
-      maxX: 600,  // smaller maximum X position to show popup
-      minY: 400,  // smaller minimum Y position to show popup
-      maxY: 600,  // smaller maximum Y position to show popup
+    const triggerAreaDiamond = { minX: diamond.offsetLeft, maxX: diamond.offsetLeft + diamond.offsetWidth, minY: diamond.offsetTop, maxY: diamond.offsetTop + diamond.offsetHeight };
+    const triggerAreaKnight = { minX: knightImage.offsetLeft, maxX: knightImage.offsetLeft + knightImage.offsetWidth, minY: knightImage.offsetTop, maxY: knightImage.offsetTop + knightImage.offsetHeight };
+
+    const updatePosition = () => {
+      characterContainer.style.left = `${posX}px`;
+      characterContainer.style.top = `${posY}px`;
+      popup.style.display = (posX >= triggerAreaDiamond.minX && posX <= triggerAreaDiamond.maxX && posY >= triggerAreaDiamond.minY && posY <= triggerAreaDiamond.maxY) ? 'block' : 'none';
+      popupRight.style.display = (posX >= triggerAreaKnight.minX && posX <= triggerAreaKnight.maxX && posY >= triggerAreaKnight.minY && posY <= triggerAreaKnight.maxY) ? 'block' : 'none';
     };
 
-    const triggerAreaRight = {
-      minX: 950,
-      maxX: 1050,
-      minY: 400,
-      maxY: 600,
-    };
-
-      const updatePosition = () => {
-      characterContainer.style.left = `${posX}px`; // Corrected syntax
-      characterContainer.style.top = `${posY}px`;  // Corrected syntax
-
-        console.log(`Character X: ${posX}, Y: ${posY}`);
-
-        // Check and log if the character is in the trigger areas
-        console.log('Left Trigger:', posX >= triggerAreaLeft.minX && posX <= triggerAreaLeft.maxX && posY >= triggerAreaLeft.minY && posY <= triggerAreaLeft.maxY);
-        console.log('Right Trigger:', posX >= triggerAreaRight.minX && posX <= triggerAreaRight.maxX && posY >= triggerAreaRight.minY && posY <= triggerAreaRight.maxY);
-
-      if (
-        posX >= triggerAreaLeft.minX &&
-        posX <= triggerAreaLeft.maxX &&
-        posY >= triggerAreaLeft.minY &&
-        posY <= triggerAreaLeft.maxY
-      ) {
-        console.log('Showing left popup');
-          popup.style.display = 'block';
-          popup.style.left = `${Math.min(window.innerWidth - popup.offsetWidth, posX - 165)}px`;
-          popup.style.top = `${Math.min(window.innerHeight - popup.offsetHeight, posY - 175)}px`;
-        } else {
-          popup.style.display = 'none';
-        }
-
-      if (
-        posX >= triggerAreaRight.minX &&
-        posX <= triggerAreaRight.maxX &&
-        posY >= triggerAreaRight.minY &&
-        posY <= triggerAreaRight.maxY
-      ) {
-    console.log('Showing right popup');
-        popupRight.style.display = 'block';
-        popupRight.style.left = `${Math.min(window.innerWidth - popupRight.offsetWidth, posX - 165)}px`;
-        popupRight.style.top = `${Math.min(window.innerHeight - popupRight.offsetHeight, posY - 175)}px`;
-      } else {
-        popupRight.style.display = 'none';
-      }
-    };
-
-    // Listen for keydown events to move the character container
     window.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case 'ArrowLeft':
-          if (posX > paddingX) posX -= speed; // Prevent moving past the left edge
-          break;
-        case 'ArrowRight':
-          if (posX < maxX) posX += speed; // Prevent moving past the right edge
-          break;
-      }
+      if (e.key === 'ArrowLeft' && posX > paddingX) posX -= speed;
+      if (e.key === 'ArrowRight' && posX < maxX) posX += speed;
       updatePosition();
     });
 
-    // Initial position update
     updatePosition();
   </script>
 </body>
