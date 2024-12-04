@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Final Boss</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
     body {
       background: #000 url('/static/sprites/medieval_portal.jpg') no-repeat center 15%;
@@ -36,6 +35,7 @@
       position: absolute;
       top: 80%;
       display: flex;
+      z-index: 1000; /* Ensure it overlaps the diamond */
     }
     #character-container img {
       width: 50px;
@@ -51,40 +51,53 @@
       border-radius: 10px;
       text-align: center;
       font-size: 18px;
-      z-index: 1000;
+      z-index: 1100;
     }
     #diamond {
       position: absolute;
       left: 75%;
-      top: 75%;
+      top: 78%;
       width: 40px;
       height: 40px;
-      background: linear-gradient(45deg, #B0B0B0, #D3D3D3);
+      background: linear-gradient(45deg, #FFFFFF, #D3D3D3, #A9A9A9, #808080, #B0B0B0);
+      background-size: 300% 300%;
       clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      border-radius: 5px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 255, 255, 0.6); /* Stronger box-shadow */
       animation: sparkle 2s infinite alternate;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      z-index: 1;
+    }
+
+    @keyframes sparkle {
+      0% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4); /* Increased brightness */
+      }
+      100% {
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 50px rgba(255, 255, 255, 0.8); /* Increased sparkle */
+      }
     }
     #knight-image {
       position: absolute;
-      left: 60%;
-      top: 60%;
-      width: 10px;  /* 4 times smaller */
-      height: 10px; /* 4 times smaller */
-      z-index: 600;
+      left: 85%;
+      top: 65%;
+      width: 50px;
+      height: 50px;
+      z-index: 500;  /* Ensure it's above other elements */
     }
-    @keyframes sparkle {
-      0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
-      100% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.7); }
-    }
+    
   </style>
 </head>
 <body>
   <h1>Welcome to the Medieval Portal!</h1>
-  <div id="popup"><p>There lies the Knight General's armour. Do you wish to poke holes in it?</p>
-    <button onclick="location.href='/medieval_minigame'">Sabotage the Knight</button></div>
-  <div id="popup-right"><p>The Knight is alerted. Do you wish to face him?</p>
-    <button onclick="location.href='/medieval_knightboss'">Face the Knight General</button></div>
+  <div id="popup">
+    <p>There lies the Knight General's armour. Do you wish to poke holes in it?</p>
+    <button onclick="location.href='/medieval_minigame'">Sabotage the Knight</button>
+  </div>
+  <div id="popup-right">
+    <p>The Knight is alerted. Do you wish to face him?</p>
+    <button onclick="location.href='/medieval_knightboss'">Face the Knight General</button>
+  </div>
   <button onclick="window.location.href='/portals'">Go Back to Portals</button>
   <div id="character-container">
     <img src="/static/sprites/knight.jpg" alt="Knight">
@@ -93,36 +106,76 @@
     <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper">
   </div>
   <div id="diamond"></div>
-  <div id="knight-image"><img src="/static/sprites/knight pic.webp" alt="Knight"></div>
+  <div id="knight-image"><img src="/static/sprites/pixel knight.jpg" alt="Knight"></div>
 
   <script>
-    const characterContainer = document.getElementById('character-container');
-    const popup = document.getElementById('popup');
-    const popupRight = document.getElementById('popup-right');
-    const diamond = document.getElementById('diamond');
-    const knightImage = document.getElementById('knight-image');
-    let posX = window.innerWidth * 0.05, posY = window.innerHeight * 0.8;
-    const speed = 10, paddingX = 40, paddingY = 20;
-    const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
-    const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
+    document.addEventListener("DOMContentLoaded", () => {
+      const characterContainer = document.getElementById('character-container');
+      const popup = document.getElementById('popup');
+      const popupRight = document.getElementById('popup-right');
+      const diamond = document.getElementById('diamond');
+      const knightImage = document.getElementById('knight-image');
 
-    const triggerAreaDiamond = { minX: diamond.offsetLeft, maxX: diamond.offsetLeft + diamond.offsetWidth, minY: diamond.offsetTop, maxY: diamond.offsetTop + diamond.offsetHeight };
-    const triggerAreaKnight = { minX: knightImage.offsetLeft, maxX: knightImage.offsetLeft + knightImage.offsetWidth, minY: knightImage.offsetTop, maxY: knightImage.offsetTop + knightImage.offsetHeight };
+      let posX = window.innerWidth * 0.05, posY = window.innerHeight * 0.8;
+      const speed = 10, paddingX = 40, paddingY = 20;
 
-    const updatePosition = () => {
-      characterContainer.style.left = `${posX}px`;
-      characterContainer.style.top = `${posY}px`;
-      popup.style.display = (posX >= triggerAreaDiamond.minX && posX <= triggerAreaDiamond.maxX && posY >= triggerAreaDiamond.minY && posY <= triggerAreaDiamond.maxY) ? 'block' : 'none';
-      popupRight.style.display = (posX >= triggerAreaKnight.minX && posX <= triggerAreaKnight.maxX && posY >= triggerAreaKnight.minY && posY <= triggerAreaKnight.maxY) ? 'block' : 'none';
-    };
+      const getRect = (element) => element.getBoundingClientRect();
+      const checkCollision = (rect1, rect2) => {
+        return (
+          rect1.left < rect2.right &&
+          rect1.right > rect2.left &&
+          rect1.top < rect2.bottom &&
+          rect1.bottom > rect2.top
+        );
+      };
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' && posX > paddingX) posX -= speed;
-      if (e.key === 'ArrowRight' && posX < maxX) posX += speed;
-      updatePosition();
+      const updatePosition = () => {
+        characterContainer.style.left = `${posX}px`;
+        characterContainer.style.top = `${posY}px`;
+
+        const characterRect = getRect(characterContainer);
+        const diamondRect = getRect(diamond);
+        const knightRect = getRect(knightImage);
+
+        // Handle popup when character collides with the diamond
+        if (checkCollision(characterRect, diamondRect)) {
+          popup.style.display = 'block';
+          popup.style.left = `${diamondRect.left}px`;
+          popup.style.top = `${diamondRect.bottom + 10}px`;  // Ensure it's below the diamond
+        } else {
+          popup.style.display = 'none';
+        }
+
+        // Handle popup when character collides with the knight image
+        if (checkCollision(characterRect, knightRect)) {
+          popupRight.style.display = 'block';
+          popupRight.style.left = `${knightRect.left - 50}px`;  // Positioning to the left of the knight image
+          popupRight.style.top = `${knightRect.bottom + 30}px`;  // Positioning it slightly below the knight image
+        } else {
+          popupRight.style.display = 'none';
+        }
+      };
+
+      // Recalculate maxX and maxY when the window is resized or when content is loaded
+      const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
+      const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' && posX > paddingX) {
+          posX -= speed;
+        }
+        if (e.key === 'ArrowRight' && posX < maxX) {
+          posX += speed;
+        }
+        if (e.key === 'ArrowUp' && posY > paddingY) {
+          posY -= speed;
+        }
+        if (e.key === 'ArrowDown' && posY < maxY) {
+          posY += speed;
+        }
+        updatePosition();
+      });
     });
-
-    updatePosition();
   </script>
 </body>
 </html>
