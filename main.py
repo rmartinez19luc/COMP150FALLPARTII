@@ -123,9 +123,9 @@ def futuristic_minigame():
 def cyborg_boss():
     return render_template('cyborg_boss.html')
 
-@app.route('/Final_game_screen')
-def Final_game_screen():
-    return render_template('Final_game_screen.html')
+@app.route('/Finalscreen.html')
+def Finalscreen():
+    return render_template('Finalscreen.html')
 
 @app.route('/Boss')
 def Boss():
