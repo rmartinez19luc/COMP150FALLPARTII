@@ -95,6 +95,23 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
+    /* Styling for the playing card */
+    #playing-card {
+      position: absolute;
+      top: 83%; /* Center vertically */
+      left: 60%; /* Place 3/4 to the left of the screen */
+      transform: translate(-50%, -50%);
+      width: 80px; /* Adjust card size */
+      height: 120px;
+      cursor: pointer;
+    }
+
+    #playing-card img {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
   </style>
 </head>
 <body>
@@ -103,10 +120,17 @@
   <div id="blackjack-box" onclick="window.location.href='/boss_minigame'">
     Go to Blackjack
   </div>
+
+  <!-- Add the playing card -->
+  <div id="playing-card">
+    <img src="/static/sprites/playing-card.jpg" alt="Playing Card">
+    
+  </div>
+  
   <!-- Popup message -->
   <div id="popup">
     <p>Bertak offers you a deal. You must beat him in a game of Blackjack. Do you accept?</p>
-    <button onclick="location.href='/boss_minigame'">Gambel away!</button>
+    <button onclick="location.href='/boss_minigame'">Gamble away!</button>
   </div>
 
   <div id="popup-right">
@@ -129,11 +153,11 @@
   </div>
 
   <script>
-    // Get the character container and popup element
+    // Get relevant elements
     const characterContainer = document.getElementById('character-container');
     const popup = document.getElementById('popup');
-    const popupRight = document.getElementById('popup-right');
-    
+    const playingCard = document.getElementById('playing-card');
+
     // Starting position
     let posX = window.innerWidth * 0.05;
     let posY = window.innerHeight * 0.8;
@@ -141,7 +165,7 @@
     // Speed of movement
     const speed = 10;
 
-    // Set padding so the character can't go too close to the left or right edges
+    // Set padding so the character can't go too close to the edges
     const paddingX = 40;
     const paddingY = 20;
 
@@ -149,49 +173,31 @@
     const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
     const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
 
-    // Define the trigger area for showing the popup (smaller range)
-    const triggerAreaLeft = {
-      minX: 550,  // smaller minimum X position to show popup
-      maxX: 600,  // smaller maximum X position to show popup
-      minY: 500,  // smaller minimum Y position to show popup
-      maxY: 600,  // smaller maximum Y position to show popup
-    };
-
-    const triggerAreaRight = {
-      minX: 1000,
-      maxX: 1050,
-      minY: 500,
-      maxY: 600,
+    // Function to detect collision
+    const isColliding = (rect1, rect2) => {
+      return (
+        rect1.left < rect2.right &&
+        rect1.right > rect2.left &&
+        rect1.top < rect2.bottom &&
+        rect1.bottom > rect2.top
+      );
     };
 
     const updatePosition = () => {
       characterContainer.style.left = `${posX}px`;
       characterContainer.style.top = `${posY}px`;
 
-      if (
-        posX >= triggerAreaLeft.minX &&
-        posX <= triggerAreaLeft.maxX &&
-        posY >= triggerAreaLeft.minY &&
-        posY <= triggerAreaLeft.maxY
-      ) {
+      // Get bounding rectangles for collision detection
+      const characterRect = characterContainer.getBoundingClientRect();
+      const cardRect = playingCard.getBoundingClientRect();
+
+      // Check for collision and show popup if true
+      if (isColliding(characterRect, cardRect)) {
         popup.style.display = 'block';
         popup.style.left = `${posX - 165}px`;
         popup.style.top = `${posY - 175}px`;
       } else {
         popup.style.display = 'none';
-      }
-
-      if (
-        posX >= triggerAreaRight.minX &&
-        posX <= triggerAreaRight.maxX &&
-        posY >= triggerAreaRight.minY &&
-        posY <= triggerAreaRight.maxY
-      ) {
-        popupRight.style.display = 'block';
-        popupRight.style.left = `${posX - 165}px`;
-        popupRight.style.top = `${posY - 175}px`;
-      } else {
-        popupRight.style.display = 'none';
       }
     };
 
@@ -204,6 +210,12 @@
         case 'ArrowRight':
           if (posX < maxX) posX += speed; // Prevent moving past the right edge
           break;
+        case 'ArrowUp':
+          if (posY > paddingY) posY -= speed; // Prevent moving past the top edge
+          break;
+        case 'ArrowDown':
+          if (posY < maxY) posY += speed; // Prevent moving past the bottom edge
+          break;
       }
       updatePosition();
     });
@@ -211,5 +223,6 @@
     // Initial position update
     updatePosition();
   </script>
+
 </body>
 </html>
