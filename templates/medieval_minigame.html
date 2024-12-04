@@ -8,9 +8,7 @@
         body {
             font-family: 'Times New Roman', Times, serif;
             text-align: center;
-            background-image: url('https://example.com/medieval-background.jpg');
-            background-size: cover;
-            color: #d0c8a1; /* Light parchment color */
+            color: #d0c8a1;
             margin: 0;
             padding: 0;
         }
@@ -112,7 +110,7 @@
                 }
             }
         }
-        function hanePlayerMove(e) {
+        function handlePlayerMove(e) {
             if (currentPlayer !== "player") return;
 
             const col = +e.target.dataset.col;
