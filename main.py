@@ -1,12 +1,42 @@
-import random
 
-from flask import Flask, jsonify, render_template, request
+import sqlite3
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key' 
+app.secret_key = 't32%4p7^'  # Replace with a secure and unique key
+
+
+# Initialize the database
+def init_db():
+    conn = sqlite3.connect('game_data.db')
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        username TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL
+                    )''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS game_state (
+                        user_id INTEGER,
+                        state TEXT,
+                        FOREIGN KEY (user_id) REFERENCES users (id)
+                    )''')
+    conn.commit()
+    conn.close()
+
+init_db()
+
+
+
+
+
+
+
 
 player_health = 100
 boss_health = 100
+
+
 
 @app.route('/cyborg_battle', methods=['POST'])
 def cyborg_battle():
