@@ -3,6 +3,7 @@ import random
 from flask import Flask, jsonify, render_template, request
 
 
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key' 
 
@@ -171,11 +172,11 @@ def battle():
         'player_health': player_health,
         'boss_health': boss_health
     })
-
-
 @app.route('/Final_game_screen')
 def Final_game_screen():
     return render_template('Final_game_screen.html')
+
+
 
 
 
