@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victory Achieved</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212; /* Dark theme for the final screen */
+            color: #f0f8ff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #FFD700; /* Gold color for victory */
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            text-shadow: 2px 2px 10px rgba(255, 215, 0, 0.8);
+        }
+        .info-box {
+            margin: 20px auto;
+            padding: 20px;
+            width: 90%;
+            background-color: #282828;
+            border: 2px solid #FFD700; 
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 1.5em;
+            color: #ffffff; 
+            text-align: center;
+        }
+        button {
+            background: linear-gradient(45deg, #32CD32, #006400); /* Gradient for a heroic feel */
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 1.4em;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px; 
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 15px;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        button:focus {
+            outline: none;
+        }
+        footer {
+            margin-top: 40px;
+            color: #808080;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Victory Achieved!</h1>
+
+    <div class="info-box">
+        <strong>Congratulations, Hero!</strong><br>
+        You have successfully defeated Bertak and restored the balance across all dimensions. The shards of the time machine have been reunited, and the worlds are now safe. Your bravery and determination will echo through time as a beacon of hope for all.
+    </div>
+
+    <p>What would you like to do next?</p>
+
+    <button onclick="playAgain()">Play Again</button>
+    <button onclick="exitGame()">Exit Game</button>
+
+    <audio id="victory-sound" src="static/victory.mp3" preload="auto"></audio>
+
+    <script>
+        // Play victory sound when the page loads
+        window.onload = function() {
+            const victorySound = document.getElementById('victory-sound');
+            victorySound.play();
+        };
+
+        // Function to play the game again
+        function playAgain() {
+            window.location.href = '/'; // Redirect to the first page
+        }
+
+        // Function to exit the game
+        function exitGame() {
+            alert('Thank you for playing! Goodbye!');
+            window.close(); // Attempt to close the browser tab
+        }
+    </script>
+
+    <footer>
+        <p>© 2024 Shattered Realms: The Rise of Heroes. All rights reserved.</p>
+    </footer>
+</body>
+</html>

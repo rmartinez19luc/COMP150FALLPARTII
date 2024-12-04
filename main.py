@@ -173,6 +173,10 @@ def battle():
     })
 
 
+@app.route('/Final_game_screen')
+def Final_game_screen():
+    return render_template('Final_game_screen.html')
+
 
 
 @app.route('/increment', methods=['POST'])
