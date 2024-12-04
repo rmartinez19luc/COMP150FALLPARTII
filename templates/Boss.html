@@ -79,6 +79,7 @@
       font-size: 18px;
       z-index: 1000;
     }
+
     #blackjack-box {
       position: fixed;
       top: 50%;
@@ -95,10 +96,11 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
+
     /* Styling for the playing card */
     #playing-card {
       position: absolute;
-      top: 83%; /* Center vertically */
+      top: 82%; /* Center vertically */
       left: 60%; /* Place 3/4 to the left of the screen */
       transform: translate(-50%, -50%);
       width: 80px; /* Adjust card size */
@@ -112,6 +114,16 @@
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
+
+    /* Bertak Boss Image */
+    #bertak-boss {
+      position: absolute;
+      top: 65%;
+      left: 80%;
+      transform: translateY(-50%);
+      width: 150px; /* Adjust size */
+      height: 200px; /* Adjust size */
+    }
   </style>
 </head>
 <body>
@@ -124,7 +136,6 @@
   <!-- Add the playing card -->
   <div id="playing-card">
     <img src="/static/sprites/playing-card.jpg" alt="Playing Card">
-    
   </div>
   
   <!-- Popup message -->
@@ -134,16 +145,15 @@
   </div>
 
   <div id="popup-right">
-    <p>Bertak awaits for your arrival. Do you wish to proceed?</p>
+    <p>Bertak awaits your arrival. Do you wish to proceed?</p>
     <button onclick="location.href='/bertak_boss'">Face the Final Boss!</button>
   </div>
 
   <!-- Button to go back -->
   <button onclick="window.location.href='/portals'">Go Back to Portals</button>
-   <!-- Button for final screen  -->
+  <!-- Button for final screen  -->
   <button onclick="window.location.href='/Final_game_screen.html'">Go to Final Game Screen</button>
 
- 
   <!-- Character container with 4 images -->
   <div id="character-container">
     <img src="/static/sprites/knight.jpg" alt="Knight" id="knight">
@@ -152,11 +162,18 @@
     <img src="/static/sprites/timekeeper.jpg" alt="Timekeeper" id="timekeeper">
   </div>
 
+  <!-- Bertak Boss Image -->
+  <div id="bertak-boss">
+    <img src="/static/sprites/Bertak_boss.gif" alt="Bertak Boss">
+  </div>
+
   <script>
     // Get relevant elements
     const characterContainer = document.getElementById('character-container');
     const popup = document.getElementById('popup');
+    const popupRight = document.getElementById('popup-right');
     const playingCard = document.getElementById('playing-card');
+    const bertakBoss = document.getElementById('bertak-boss');
 
     // Starting position
     let posX = window.innerWidth * 0.05;
@@ -190,14 +207,32 @@
       // Get bounding rectangles for collision detection
       const characterRect = characterContainer.getBoundingClientRect();
       const cardRect = playingCard.getBoundingClientRect();
+      const bertakRect = bertakBoss.getBoundingClientRect();
 
-      // Check for collision and show popup if true
+      // Check for collision with playing card and show popup
       if (isColliding(characterRect, cardRect)) {
         popup.style.display = 'block';
         popup.style.left = `${posX - 165}px`;
         popup.style.top = `${posY - 175}px`;
       } else {
         popup.style.display = 'none';
+      }
+
+      // Check for collision with Bertak boss area and show second popup
+      // Adjusted collision detection for where the gif is currently located
+      const bertakAdjustedRect = {
+        top: bertakRect.top,
+        left: bertakRect.left,
+        right: bertakRect.right,
+        bottom: bertakRect.bottom + 50 // You can adjust this based on the area you want to trigger the popup
+      };
+
+      if (isColliding(characterRect, bertakAdjustedRect)) {
+        popupRight.style.display = 'block';
+        popupRight.style.left = `${posX - 165}px`;
+        popupRight.style.top = `${posY - 175}px`;
+      } else {
+        popupRight.style.display = 'none';
       }
     };
 
@@ -223,6 +258,7 @@
     // Initial position update
     updatePosition();
   </script>
+
 
 </body>
 </html>
