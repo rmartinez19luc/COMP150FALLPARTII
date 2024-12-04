@@ -53,6 +53,7 @@ count = 0
 def index():
     return render_template('sound_demo.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -172,10 +173,9 @@ def battle():
         'player_health': player_health,
         'boss_health': boss_health
     })
-@app.route('/Final_game_screen')
-def Final_game_screen():
-    return render_template('Final_game_screen.html')
-
+@app.route('/final_game_screen')
+def final_game_screen():
+    return render_template('Final_game_screen.html')  # Final game screen
 
 
 
