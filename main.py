@@ -123,6 +123,10 @@ def futuristic_minigame():
 def cyborg_boss():
     return render_template('cyborg_boss.html')
 
+@app.route('/Final_game_screen')
+def Final_game_screen():
+    return render_template('Final_game_screen.html')
+
 @app.route('/Boss')
 def Boss():
     return render_template('Boss.html')
@@ -165,13 +169,6 @@ def battle():
         'player_health': player_health,
         'boss_health': boss_health
     })
-
-@app.route('/Final_game_screen')
-def final_game_screen():
-    return render_template('Final_game_screen.html')  # Final game screen
-
-
-
 
 @app.route('/increment', methods=['POST'])
 def increment():

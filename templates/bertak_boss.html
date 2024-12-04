@@ -3,18 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bertak's Boss Battle</title>
+    <title>Bertak Boss Battle</title>
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        body {
+            background-image: url('static/sprites/bertak_finalbackground.jpg'); /* Replace with your sprite path */
+            background-repeat: no-repeat; /* or no-repeat if you want a single image */
+            background-size: contain; /* or cover depending on your preference */
+            background-attachment: fixed;
+            background-position: center center
+        }
+
+    </style>
 </head>
 <body>
     <h1>Bertak Boss Battle</h1>
-
+    
     <div id="class-selection">
         <h2>Select Your Character</h2>
-        <button onclick="selectClass('Mage')">Mage</button>
-        <button onclick="selectClass('Rogue')">Rogue</button>
-        <button onclick="selectClass('Time Keeper')">Time Keeper</button>
-        <button onclick="selectClass('Knight')">Knight</button>
+        <button class= "black-button" onclick="selectClass('Mage')">Mage</button>
+        <button class= "black-button" onclick="selectClass('Rogue')">Rogue</button>
+        <button class= "black-button" onclick="selectClass('timekeeper')">Time Keeper</button>
+        <button class= "black-button"  onclick="selectClass('Knight')">Knight</button>
     </div>
 
     <div id="battle" style="display: none;">
@@ -31,7 +41,6 @@
         </div>
         <div id="controls">
             <button onclick="attack()">Attack</button>
-            <button onclick="specialAttack()">Special Attack</button>
             <button onclick="goBack()">Go Back</button>
         </div>
         <p id="message"></p>
@@ -47,9 +56,9 @@
             document.getElementById('character-class').innerText = character;
 
             const spriteMap = {
-                'Mage': 'static/sprites/Mage.jpg',
+                'Mage': 'static/sprites/mage.jpg',
                 'Rogue': 'static/sprites/rogue.jpg',
-                'Time Keeper': 'static/sprites/timekeeper.jpg',
+                'timekeeper': 'static/sprites/timekeeper.jpg',
                 'Knight': 'static/sprites/knight.jpg'
             };
 
@@ -65,19 +74,7 @@
             bossHealth -= playerDamage;
             updateHealth();
 
-            document.getElementById('message').innerText = `You attacked the Bertak for ${playerDamage} damage!`;
-
-            // Boss counterattack
-            bossCounterAttack();
-        }
-
-        // Function to handle special attack
-        function specialAttack() {
-            let playerDamage = Math.floor(Math.random() * 30) + 10; // Special attack with higher damage
-            bossHealth -= playerDamage;
-            updateHealth();
-
-            document.getElementById('message').innerText = `You used a special attack for ${playerDamage} damage!`;
+            document.getElementById('message').innerText = `You attacked the Bertak Boss for ${playerDamage} damage!`;
 
             // Boss counterattack
             bossCounterAttack();
@@ -89,12 +86,13 @@
             document.getElementById('player-health').innerText = `Player Health: ${playerHealth}`;
 
             if (bossHealth <= 0) {
-                document.getElementById('message').innerText = 'You defeated the Bertak!';
+                document.getElementById('message').innerText = 'You defeated the Bertak Boss!';
                 document.getElementById('controls').style.display = 'none'; // Hide controls after boss defeat
             }
 
             if (playerHealth <= 0) {
-                document.getElementById('message').innerText = 'You were defeated by Bertak!';
+                document.getElementById("message").innerHTML = `<span style="color: white; font-weight: bold;">You were defeated by the Bertak Boss!</span>`;
+
                 document.getElementById('controls').style.display = 'none'; // Hide controls if player loses
             }
         }

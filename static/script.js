@@ -45,9 +45,13 @@ function updateBattleState(data) {
         document.getElementById("message").innerHTML = `<span style="color: white; font-weight: bold;">You defeated the Boss!</span>`;
         document.getElementById("controls").style.display = "none";  // Hide attack buttons
         setTimeout(() => {
-            window.location.href = "/portals";
+            if (data.boss_name === "bertak_boss") {
+                window.location.href = "/Final_game_screen.html";  // Bertak defeated, redirect to victory page
+            } else {
+                window.location.href = "/portals";  // Other bosses defeated, redirect to portals
+            }
         }, 3000);
-    }
+        }
 
     // Check if the player has been defeated
     if (data.player_health <= 0) {
@@ -55,6 +59,6 @@ function updateBattleState(data) {
         document.getElementById("controls").style.display = "none";  // Hide attack buttons
         setTimeout(() => {
             window.location.href = "/portals";
-        }, 3000);
+        }, 5000);
     }
 }
