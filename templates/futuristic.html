@@ -65,7 +65,7 @@
     }
 
     .right-oval {
-      right: 90px;
+      right: 110px;
       top: 35%;
     }
 
@@ -101,9 +101,9 @@
     /* Character container styling */
     #character-container {
       position: absolute;
-      top: 0%;
-      left: 0%;
-      transform: translate(0, 0);
+      top: 10%;
+      left: 50px;
+      transform: translateY(-50%);
       display: flex;
       z-index: 3;
     }
@@ -188,12 +188,6 @@
 </head>
 <body>
   <h1>Welcome to the Futuristic Portal!</h1>
-
-  <!-- Popup message -->
-  <div id="popup">
-    <p>A gem lies on the ground. Would you like to inspect it?</p>
-    <button onclick="location.href='/futuristic_minigame'">Inspect the gem</button>
-  </div>
   
   <div id="popup-right">
     <p>The Cyborg General noticed the malware you have implanted. Do you wish to face him?</p>
@@ -276,132 +270,78 @@
       const gemSound = document.getElementById('gemSound');
       gemSound.play();
     }
-    // Starting position
-    let posX = 150;  // Positioning the character container to the right of the left oval
-    let posY = window.innerHeight * 0.50; // Adjust this as needed for the vertical position
+      // Starting position
+      let posX = 150;
+      let posY = window.innerHeight * 0.50;
 
-    // Speed of movement
-    const speed = 10;
+      // Speed of movement
+      const speed = 10;
 
-    // Set padding so the character can't go too close to the left or right edges
-    const paddingX = 40;
-    const paddingY = 20;
+      // Calculate the viewport dimensions and adjust for character size
+      const characterWidth = 50;
+      const characterHeight = 50;
+      const maxX = window.innerWidth - characterWidth;
+      const maxY = window.innerHeight - characterHeight;
 
-    // Get the viewport dimensions
-    const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
-    const maxY = window.innerHeight - characterContainer.offsetHeight - paddingY;
+      // Update character's position
+      const updatePosition = () => {
+        characterContainer.style.transform = `translate(${posX}px, ${posY}px)`;
 
-    // Define the trigger area for showing the popup (smaller range) for portals
-    const triggerAreaLeft = {
-      minX: 550,  
-      maxX: 600,  
-      minY: 500,  
-      maxY: 550,  // Reduced maxY for a smaller collision area
-    };
+        // Check collision with gem button
+        const gemButton = document.querySelector('.gem-button');
+        if (isColliding(characterContainer, gemButton)) {
+          gemPrompt.style.display = 'block';
+        } else {
+          gemPrompt.style.display = 'none';
+        }
 
-    const triggerAreaRight = {
-      minX: 1000,
-      maxX: 1050,
-      minY: 500,
-      maxY: 550,  // Reduced maxY for a smaller collision area
-    };
+        // Check collision with left oval
+        if (isColliding(characterContainer, leftOval)) {
+          leftPrompt.style.display = 'block';
+          characterContainer.classList.add('glowing');
+        } else {
+          leftPrompt.style.display = 'none';
+          characterContainer.classList.remove('glowing');
+        }
 
-    // Define the trigger area for the gem button (smaller range)
-    const triggerAreaGem = {
-      minX: 200,   // X position of the gem button (starting point)
-      maxX: 300,   // X position of the gem button (end point)
-      minY: 350,   // Y position of the gem button (starting point)
-      maxY: 450,   // Y position of the gem button (end point)
-    };
+        // Check collision with right oval
+        if (isColliding(characterContainer, rightOval)) {
+          rightPrompt.style.display = 'block';
+          characterContainer.classList.add('glowing');
+        } else {
+          rightPrompt.style.display = 'none';
+          characterContainer.classList.remove('glowing');
+        }
+      };
 
-    // Define the trigger areas for ovals (smaller range)
-    const leftOvalArea = {
-      minX: 50,    // X position of the left oval (starting point)
-      maxX: 150,   // X position of the left oval (end point)
-      minY: 400,   // Y position of the left oval (starting point)
-      maxY: 500,   // Y position of the left oval (end point)
-    };
+      // Check collision between two elements
+      const isColliding = (elem1, elem2) => {
+        const rect1 = elem1.getBoundingClientRect();
+        const rect2 = elem2.getBoundingClientRect();
+        return (
+          rect1.x < rect2.x + rect2.width &&
+          rect1.x + rect1.width > rect2.x &&
+          rect1.y < rect2.y + rect2.height &&
+          rect1.y + rect1.height > rect2.y
+        );
+      };
 
-    const rightOvalArea = {
-      minX: 1000,   // X position of the right oval (starting point)
-      maxX: 1300,   // X position of the right oval (end point)
-      minY: 400,   // Y position of the right oval (starting point)
-      maxY: 500,   // Y position of the right oval (end point)
-    };
+      // Keydown event listener for movement
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp' && posY > 0) {
+          posY -= speed;
+        } else if (e.key === 'ArrowDown' && posY < maxY) {
+          posY += speed;
+        } else if (e.key === 'ArrowLeft' && posX > 0) {
+          posX -= speed;
+        } else if (e.key === 'ArrowRight' && posX < maxX) {
+          posX += speed;
+        }
+        updatePosition();
+      });
 
-    // Function to update character's position
-    const updatePosition = () => {
-      characterContainer.style.transform = translate(${posX}px, ${posY}px);
-
-      // Check collision with left portal
-      if (
-        posX >= triggerAreaLeft.minX &&
-        posX <= triggerAreaLeft.maxX &&
-        posY >= triggerAreaLeft.minY &&
-        posY <= triggerAreaLeft.maxY
-      ) {
-        popup.style.display = "block";
-      } else {
-        popup.style.display = "none";
-      }
-
-      // Check collision with gem button
-      if (
-        posX >= triggerAreaGem.minX &&
-        posX <= triggerAreaGem.maxX &&
-        posY >= triggerAreaGem.minY &&
-        posY <= triggerAreaGem.maxY
-      ) {
-        gemPrompt.style.display = "block"; // Show gem prompt
-      } else {
-        gemPrompt.style.display = "none"; // Hide gem prompt
-      }
-
-      // Check collision with left oval
-      if (
-        posX >= leftOvalArea.minX &&
-        posX <= leftOvalArea.maxX &&
-        posY >= leftOvalArea.minY &&
-        posY <= leftOvalArea.maxY
-      ) {
-        leftPrompt.style.display = "block";
-        characterContainer.classList.add('glowing'); // Add glowing effect
-      } else {
-        leftPrompt.style.display = "none";
-      }
-
-      // Check collision with right oval
-      if (
-        posX >= rightOvalArea.minX &&
-        posX <= rightOvalArea.maxX &&
-        posY >= rightOvalArea.minY &&
-        posY <= rightOvalArea.maxY
-      ) {
-        rightPrompt.style.display = "block";
-        characterContainer.classList.add('glowing'); // Add glowing effect
-      } else {
-        rightPrompt.style.display = "none";
-      }
-    };
-
-    // Listen for key events to move the character
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowUp' && posY > paddingY) {
-        posY -= speed;
-      } else if (e.key === 'ArrowDown' && posY < maxY) {
-        posY += speed;
-      } else if (e.key === 'ArrowLeft' && posX > paddingX) {
-        posX -= speed;
-      } else if (e.key === 'ArrowRight' && posX < maxX) {
-        posX += speed;
-      }
-
-      // Update the position
+      // Initialize character position
       updatePosition();
-    });
-
-    // Initialize the position update
-    updatePosition();
   </script>
 </body>
 </html>
