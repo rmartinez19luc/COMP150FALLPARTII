@@ -19,17 +19,32 @@ body {
 }
 
 
+.register-background {
+  background: linear-gradient(135deg, #8B4513, #FFD700); 
+  background-size: 200% 200%;
+  animation: gradientBackground 8s ease infinite; 
+  transition: background 0.5s ease-in-out; 
+}
+
+.login-background {
+  background: linear-gradient(135deg, #4B0082, #00CED1); 
+  background-size: 200% 200%;
+  animation: gradientBackground 8s ease infinite; 
+  transition: background 0.5s ease-in-out; 
+}
+
+
 h1 {
-  color: #FF6347; /* Tomato red for the title to make it stand out */
-  font-size: 3em; /* Larger size for impact */
+  color: #FF6347; 
+  font-size: 3em;
   margin-top: 50px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Shadow effect to make title pop */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); 
 }
 
 .container {
   text-align: center;
   margin-top: 100px;
-  position: relative; /* Needed for positioning the text box */
+  position: relative; 
 }
 
 /* Updated styling for the main text to make it more readable */

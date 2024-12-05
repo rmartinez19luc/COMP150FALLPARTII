@@ -55,7 +55,7 @@
     }
     #diamond {
       position: absolute;
-      left: 75%;
+      left: 65%;
       top: 78%;
       width: 40px;
       height: 40px;
@@ -129,48 +129,40 @@
         );
       };
 
-      const updatePosition = () => {
-        characterContainer.style.left = `${posX}px`;
-        characterContainer.style.top = `${posY}px`;
+    const updatePosition = () => {
+      characterContainer.style.left = `${posX}px`;
+      characterContainer.style.top = `${posY}px`;
 
-        const characterRect = getRect(characterContainer);
-        const diamondRect = getRect(diamond);
-        const knightRect = getRect(knightImage);
+      const characterRect = getRect(characterContainer);
+      const diamondRect = getRect(diamond);
+      const knightRect = getRect(knightImage);
 
-        // Handle popup when character collides with the diamond
-        // Handle popup when character collides with the knight image
-        if (checkCollision(characterRect, knightRect)) {
-          popupRight.style.display = 'block';
+      // Handle popup when character collides with the diamond
+      if (checkCollision(characterRect, diamondRect)) {
+        popup.style.display = 'block';
 
-          // Calculate left position for the knight popup
-          let knightPopupLeft = knightRect.left + (knightRect.width / 2) - (popupRight.offsetWidth / 2);
-          if (knightPopupLeft < 0) {
-            knightPopupLeft = 10; // Ensure it doesn't go off-screen on the left
-          } else if (knightPopupLeft + popupRight.offsetWidth > window.innerWidth) {
-            knightPopupLeft = window.innerWidth - popupRight.offsetWidth - 10; // Ensure it doesn't go off-screen on the right
-          }
-          popupRight.style.left = `${knightPopupLeft}px`;
+        // Positioning the popup above the diamond
+        const popupTop = diamondRect.top - popup.offsetHeight - 10; // 10px padding above the diamond
+        popup.style.top = `${popupTop}px`;
 
-          // Calculate top position to place it higher than the diamond popup
-          let knightPopupTop = knightRect.top - popupRight.offsetHeight - 30; // Move 30px higher than the knight
-          if (knightPopupTop < 0) {
-            knightPopupTop = knightRect.top - popupRight.offsetHeight - 10; // Slightly closer fallback
-          }
-          popupRight.style.top = `${knightPopupTop}px`;
-        } else {
-          popupRight.style.display = 'none';
-        }
+        const popupLeft = diamondRect.left + (diamondRect.width / 2) - (popup.offsetWidth / 2); // Centering horizontally
+        popup.style.left = `${popupLeft}px`;
+      } else {
+        popup.style.display = 'none';
+      }
 
+      // Handle popup when character collides with the knight image
+      if (checkCollision(characterRect, knightRect)) {
+        popupRight.style.display = 'block';
 
-        // Handle popup when character collides with the knight image
-        if (checkCollision(characterRect, knightRect)) {
-          popupRight.style.display = 'block';
-          popupRight.style.left = `${knightRect.left - 50}px`;  // Positioning to the left of the knight image
-          popupRight.style.top = `${knightRect.bottom + 30}px`;  // Positioning it slightly below the knight image
-        } else {
-          popupRight.style.display = 'none';
-        }
-      };
+        // Positioning the popup at the top of the screen
+        popupRight.style.top = `400px`; // Fixed position at the top
+        popupRight.style.left = `${knightRect.left + (knightRect.width / 2) - (popupRight.offsetWidth / 2)}px`; // Centered horizontally with knight
+      } else {
+        popupRight.style.display = 'none';
+      }
+    };
+
 
       // Recalculate maxX and maxY when the window is resized or when content is loaded
       const maxX = window.innerWidth - characterContainer.offsetWidth - paddingX;
